@@ -1,0 +1,439 @@
+ <div class="dashboard">
+  <h2>Bienvenido</h2>
+<div class="container">
+   <div class="dropdown ms-auto" style="cursor: pointer;">
+    <button
+      class="btn btn-light dropdown-toggle d-flex align-items-center"
+      type="button"
+      id="userMenuButton"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="fas fa-user-circle fa-lg me-2"></i>
+      <span>Mi Cuenta</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+      <li>
+        <a class="dropdown-item" routerLink="/usersManagement" (click)="$event.stopPropagation()">
+          <i class="fas fa-users me-2"></i> Gestor de Usuarios
+        </a>
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+      <li>
+        <button
+          class="dropdown-item text-danger d-flex align-items-center"
+          type="button"
+          (click)="logout($event) ">
+          <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+  <div class="container mt-4">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="selectedTab === 'categorias'"
+          (click)="selectTab('categorias')">
+          Categorías
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link"
+          [class.active]="selectedTab === 'subcategorias'"
+          (click)="selectTab('subcategorias')">
+          Subcategorías
+        </button>
+      </li>
+      <li class="nav-item">
+        <button class="nav-link" [class.active]="selectedTab === 'productos'"
+          (click)="selectTab('productos')">
+          Productos
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content border p-3">
+      <div *ngIf="selectedTab === 'categorias'">
+        <h2>Gestión de Categorías</h2>
+        <button class="btn btn-success mb-3" (click)="openModalAddCategory()" *ngIf="userlogged.rol === 'admin'">
+          <i class="bi bi-plus-lg"></i> Añadir Categoría
+        </button>
+        <div *ngIf="showMessage"
+          class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close"
+            (click)="showMessage = false"></button>
+        </div>
+
+        <div class="container mt-4">
+          <h5>Categorías</h5>
+
+          <!-- Input para búsqueda -->
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Buscar por nombre..."
+              [(ngModel)]="searchCategories"
+              (ngModelChange)="filtrarCategorias()" />
+          </div>
+
+          <!-- Tabla de resultados -->
+          <table class="table table-bordered table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Estado</th>
+                <th *ngIf="userlogged.rol === 'admin'">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let categoria of categoryFilter">
+                <td>{{ categoria.id_category }}</td>
+                <td>{{ categoria.name_category }}</td>
+                <td>{{ categoria.state_category === 1 ? 'Activo' : 'Inactivo'
+                  }}</td>
+                <td *ngIf="userlogged.rol === 'admin'">
+                  <button class="btn btn-sm btn-primary"
+                    (click)="openModalEditCategory(categoria) " >Editar</button>
+                  <button class="btn btn-danger btn-sm"
+                    *ngIf="categoria.state_category === 1"
+                    (click)="deleteCategory(categoria.id_category)">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Modal Bootstrap -->
+        <div class="modal fade" id="modalEditarCategoria" tabindex="-1"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form (ngSubmit)="saveChangesCategory()">
+                <div class="modal-header">
+                  <!-- Título del modal cambia dinámicamente -->
+                  <h5 class="modal-title">
+                    {{ isEditing ? 'Editar Categoría' : 'Añadir Categoría' }}
+                  </h5>
+                  <button type="button" class="btn-close"
+                    data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label>Nombre</label>
+                    <input type="text" class="form-control"
+                      [(ngModel)]="categoryEdit.name_category"
+                      name="name_category" required>
+                  </div>
+                  <div class="mb-3">
+                    <label>Estado</label>
+                    <select class="form-select"
+                      [(ngModel)]="categoryEdit.state_category"
+                      name="state_category">
+                      <option [value]="1">Activo</option>
+                      <option [value]="0">Inactivo</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success">Guardar</button>
+                  <button type="button" class="btn btn-secondary"
+                    data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedTab === 'subcategorias'">
+        <div *ngIf="selectedTab === 'subcategorias'">
+          <h2>Gestión de Subcategorías</h2>
+          <button class="btn btn-success mb-3"
+            (click)="openModalAddSubcategory()" *ngIf="userlogged.rol === 'admin'">
+            <i class="bi bi-plus-lg"></i> Añadir subcategorías
+          </button>
+          <div *ngIf="showMessage"
+            class="alert alert-success alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close"
+              (click)="showMessage = false"></button>
+          </div>
+
+          <div class="container mt-4">
+            <h5>Subcategorías</h5>
+
+            <!-- Input para búsqueda -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar por nombre..."
+                [(ngModel)]="searchSubcategories"
+                (ngModelChange)="filtrarSubcategory()" />
+            </div>
+
+            <!-- Tabla de resultados -->
+            <table class="table table-bordered table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Stock</th>
+                  <th>Nombre Categoria</th>
+                  <th>Estado</th>
+                  <th *ngIf="userlogged.rol === 'admin'">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let subcategory of subcategoryFilter">
+                  <td>{{ subcategory.id_subcategory }}</td>
+                  <td>{{ subcategory.name_subcategory }}</td>
+                  <td>{{ subcategory.amount_products }}</td>
+                  <td>{{ subcategory.nombre_categoria }}</td>
+                  <td>{{ subcategory.state_subcategory === 1 ? 'Activo' :
+                    'Inactivo'
+
+                    }}</td>
+                  <td *ngIf="userlogged.rol === 'admin'">
+                    <button class="btn btn-sm btn-primary"
+                      (click)="openModalEditSubcategory(subcategory)">
+                      Editar
+                    </button>
+
+                    <button class="btn btn-danger btn-sm"
+                      *ngIf="subcategory.state_subcategory === 1"
+                      (click)="deleteSubcategory(subcategory.id_subcategory)">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Modal Bootstrap -->
+          <div class="modal fade" id="modalEditarSubcategoria" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form (ngSubmit)="saveChangesSubcategory()">
+                  <div class="modal-header">
+                    <h5 class="modal-title">
+                      {{ isEditing ? 'Editar Subcategoría' :
+                      'Añadir Subcategoría' }}
+                    </h5>
+                    <button type="button" class="btn-close"
+                      data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Nombre de la subcategoría -->
+                    <div class="mb-3">
+                      <label>Nombre</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="subcategoryEdit.name_subcategory"
+                        name="name_subcategory"
+                        required />
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="mb-3">
+                      <label>Estado</label>
+                      <select
+                        class="form-select"
+                        [(ngModel)]="subcategoryEdit.state_subcategory"
+                        name="state_subcategory">
+                        <option [value]="1">Activo</option>
+                        <option [value]="0">Inactivo</option>
+                      </select>
+                    </div>
+
+                    <!-- ng-select de categorías -->
+                    <div class="mb-3">
+                      <label>Categoría</label>
+                      <ng-select
+                        [items]="activeCategories"
+                        bindLabel="name_category"
+                        bindValue="id_category"
+                        [(ngModel)]="subcategoryEdit.category_id"
+                        name="category_id"
+                        placeholder="Selecciona una categoría"
+                        [searchable]="true"
+                        [clearable]="false"
+                        required>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="submit"
+                      class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary"
+                      data-bs-dismiss="modal">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="selectedTab === 'productos'">
+        <div *ngIf="selectedTab === 'productos'">
+          <h2>Gestión de Productos</h2>
+          <button class="btn btn-success mb-3"
+            (click)="openModalAddProduct()" *ngIf="userlogged.rol === 'admin'">
+            <i class="bi bi-plus-lg"></i> Añadir productos
+          </button>
+          <div *ngIf="showMessage"
+            class="alert alert-success alert-dismissible fade show"
+            role="alert">
+            {{ message }}
+            <button type="button" class="btn-close"
+              (click)="showMessage = false"></button>
+          </div>
+
+          <div class="container mt-4">
+            <h5>Lista de Productos</h5>
+
+            <!-- Input para búsqueda -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar por nombre..."
+                [(ngModel)]="searchProducts"
+                (ngModelChange)="filterProducts()" />
+            </div>
+            <!-- Tabla de resultados -->
+            <table class="table table-bordered table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Nombre Categoria</th>
+                  <th>Nombre Subcategoria</th>
+                  <th>Estado</th>
+                  <th *ngIf="userlogged.rol === 'admin'">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of productsFilter">
+                  <td>{{ product.id_product }}</td>
+                  <td>{{ product.nombre_product }}</td>
+                  <td>{{ product.nombre_categoria }}</td>
+                  <td>{{ product.nombre_subcategoria }}</td>
+                  <td>{{ product.state_product === 1 ? 'Activo' :
+                    'Inactivo'
+
+                    }}</td>
+                  <td *ngIf="userlogged.rol === 'admin'">
+                    <button class="btn btn-sm btn-primary"
+                      (click)="openModalEditProduct(product)">
+                      Editar
+                    </button>
+
+                    <button class="btn btn-danger btn-sm"
+                      *ngIf="product.state_product === 1"
+                      (click)="deleteProduct(product.id_product)">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- Modal Bootstrap -->
+          <div class="modal fade" id="modalEditarProducto" tabindex="-1"
+            aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <form (ngSubmit)="saveChangesProduct()">
+                  <div class="modal-header">
+                    <h5 class="modal-title">
+                      {{ isEditing ? 'Editar Producto' : 'Añadir Producto' }}
+                    </h5>
+                    <button type="button" class="btn-close"
+                      data-bs-dismiss="modal"></button>
+                  </div>
+
+                  <div class="modal-body">
+                    <!-- Nombre del producto -->
+                    <div class="mb-3">
+                      <label>Nombre</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="productEdit.nombre_product"
+                        name="nombre_product"
+                        required />
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="mb-3">
+                      <label>Estado</label>
+                      <select
+                        class="form-select"
+                        [(ngModel)]="productEdit.state_product"
+                        name="state_product">
+                        <option [value]="1">Activo</option>
+                        <option [value]="0">Inactivo</option>
+                      </select>
+                    </div>
+
+                    <!-- ng-select de categorías -->
+                    <div class="mb-3">
+                      <label>Categoría</label>
+                      <ng-select
+                        [items]="activeCategories"
+                        bindLabel="name_category"
+                        bindValue="id_category"
+                        [(ngModel)]="productEdit.category_id"
+                        name="category_id"
+                        placeholder="Selecciona una categoría"
+                        [searchable]="true"
+                        [clearable]="false"
+                        (change)="filterSubcategoriesByCategory()"
+                        required>
+                      </ng-select>
+                    </div>
+
+                    <!-- ng-select de subcategorías -->
+                    <div class="mb-3">
+                      <label>Subcategoría</label>
+                      <ng-select
+                        [items]="subcategoryActiveFiltered"
+                        bindLabel="name_subcategory"
+                        bindValue="id_subcategory"
+                        [(ngModel)]="productEdit.subcategory_id"
+                        name="subcategory_id"
+                        placeholder="Selecciona una subcategoría"
+                        [searchable]="true"
+                        [clearable]="false"
+                        required>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="modal-footer">
+                    <button type="submit"
+                      class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-secondary"
+                      data-bs-dismiss="modal">
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>

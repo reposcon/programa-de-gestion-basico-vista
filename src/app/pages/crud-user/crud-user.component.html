@@ -1,0 +1,142 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="container mt-4">
+
+    <!-- Botón para ir al home -->
+    <button class="btn btn-primary mb-3 me-2" routerLink="/home">
+      <i class="bi bi-house"></i> Ir al Home
+    </button>
+
+    <!-- Botón para añadir usuario -->
+    <button class="btn btn-success mb-3" (click)="openModalAddUser()" *ngIf="userlogged.rol === 'admin'">
+      <i class="bi bi-plus-lg"></i> Añadir Usuario
+    </button>
+
+    <div *ngIf="showMessage"
+        class="alert alert-success alert-dismissible fade show"
+        role="alert">
+        {{ message }}
+        <button type="button" class="btn-close"
+            (click)="showMessage = false"></button>
+    </div>
+
+    <div class="mb-3">
+      <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar por nombre de usuario..."
+          [(ngModel)]="searchUser"
+          (ngModelChange)="filterUsers()" />
+    </div>
+
+    <table class="table table-bordered table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Nombre de usuario</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.id_user }}</td>
+          <td>{{ user.name_user }}</td>
+          <td>{{ user.rol }}</td>
+          <td>{{ user.state === 1 ? 'Activo' : 'Inactivo' }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary"
+                (click)="openModalEditUser(user)">Editar</button>
+            <button
+                class="btn btn-danger btn-sm"
+                *ngIf="user.state === 1"
+                (click)="deleteUser(user.id_user)">
+                Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal Bootstrap -->
+    <div class="modal fade" id="modalEditarUsuario" tabindex="-1"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form (ngSubmit)="saveUser()">
+                    <div class="modal-header">
+                        <h5 class="modal-title">
+                            {{ isEditing ? 'Editar Usuario' : 'Añadir Usuario' }}
+                        </h5>
+                        <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body" *ngIf="userToEdit">
+                        <!-- Nombre de usuario -->
+                        <div class="mb-3">
+                            <label>Nombre de usuario</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                [(ngModel)]="userToEdit.name_user"
+                                name="name_user"
+                                required />
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            <label>Contraseña</label>
+                            <input
+                                type="password"
+                                class="form-control"
+                                [(ngModel)]="userToEdit.password_user"
+                                name="password_user"
+                                required />
+                        </div>
+
+                        <!-- Rol -->
+                        <div class="mb-3" *ngIf="userlogged.rol === 'admin' ">
+                            <label>Rol</label>
+                            <select
+                                class="form-select"
+                                [(ngModel)]="userToEdit.rol"
+                                name="rol"
+                                required>
+                                <option value="admin">Admin</option>
+                                <option value="basico">Básico</option>
+                            </select>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-3"  *ngIf="userlogged.rol === 'admin' ">
+                            <label>Estado</label>
+                            <select
+                                class="form-select"
+                                [(ngModel)]="userToEdit.state"
+                                name="state">
+                                <option [value]="1">Activo</option>
+                                <option [value]="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">
+                            Guardar
+                        </button>
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+  </div>
+</div>
+
+<app-footer></app-footer>
