@@ -1,0 +1,100 @@
+<div class="modal fade show d-block" tabindex="-1" aria-modal="true" role="dialog" style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
+  <div class="modal-dialog modal-dialog-centered">
+    
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+      <div class="modal-header border-0 py-3 px-4 d-flex align-items-center" 
+           [style.background]="isEditing 
+            ? 'linear-gradient(135deg, #ffc107, #e0a800)' 
+            : 'linear-gradient(135deg, #198754, #146c43)'">
+        
+        <h5 class="modal-title fw-bold d-flex align-items-center" [class.text-white]="!isEditing" [class.text-dark]="isEditing">
+          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
+            <i class="bi" 
+               [ngClass]="isEditing ? 'bi-pencil-square text-warning' : 'bi-person-plus-fill text-success'" 
+               style="font-size: 1.1rem;"></i>
+          </div>
+          {{ isEditing ? 'Editar Usuario' : 'Añadir Usuario' }}
+        </h5>
+        
+        <button type="button" class="btn-close" [class.btn-close-white]="!isEditing" (click)="onClose()"></button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="modal-body p-4">
+          
+          <div class="text-end mb-3" *ngIf="isEditing">
+            <span class="badge bg-light text-muted border rounded-pill px-3 fw-normal">
+              Usuario ID: #{{userData.id_user || '---'}}
+            </span>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Nombre de usuario</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="bi bi-person-circle"></i>
+              </span>
+              <input type="text" class="form-control bg-light border-0 py-2 ps-2" 
+                     [(ngModel)]="userData.name_user" name="name_user" 
+                     placeholder="Ej: juan.perez" required>
+            </div>
+          </div>
+
+          <div class="mb-4" *ngIf="!isEditing">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Contraseña</label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="bi bi-shield-lock"></i>
+              </span>
+              <input type="password" class="form-control bg-light border-0 py-2 ps-2" 
+                     [(ngModel)]="userData.password_user" name="password_user" 
+                     placeholder="••••••••" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div [class]="isEditing ? 'col-md-6 mb-3' : 'col-md-12 mb-3'">
+              <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Rol de acceso</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                  <i class="bi bi-person-badge"></i>
+                </span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium" [(ngModel)]="userData.rol" name="rol" required>
+                  <option value="admin">Administrador</option>
+                  <option value="basico">Básico / Operador</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3" *ngIf="isEditing">
+              <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Estado</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                  <i class="bi bi-toggle-on"></i>
+                </span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium" [(ngModel)]="userData.state" name="state" required>
+                  <option [value]="1">Activo</option>
+                  <option [value]="0">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+          <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" (click)="onClose()">
+            Cancelar
+          </button>
+          
+          <button type="submit" class="btn rounded-pill px-4 fw-bold shadow-sm" 
+            [ngClass]="isEditing ? 'btn-warning text-dark' : 'btn-success text-white'"
+            [disabled]="!userData.name_user">
+            <i class="bi me-2" [ngClass]="isEditing ? 'bi-arrow-clockwise' : 'bi-check-circle-fill'"></i>
+            {{ isEditing ? 'Actualizar Cambios' : 'Registrar Usuario' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,27 @@
-<header class="header">
-  <h1>Mi Panel de Administración</h1>
- 
+<header class="header shadow-sm bg-white sticky-top">
+  <div class="header-container container-fluid d-flex align-items-center justify-content-between py-2 px-4">
+
+    <div class="header-logo logo-clickable d-flex align-items-center" (click)="openHome()">
+      <div class="logo-icon-bg shadow-sm d-flex align-items-center justify-content-center me-2">
+        <i class="fas fa-layer-group text-white"></i>
+      </div>
+      <h1 class="logo-text mb-0">Admin<span>Panel</span></h1>
+    </div>
+
+    <div class="header-actions d-flex align-items-center gap-3" *ngIf="userlogged">
+      
+      <div class="user-info d-flex flex-column text-end">
+        <span class="welcome-text text-muted small fw-medium">Bienvenido,</span>
+        <span class="user-name fw-bold text-dark">{{ userlogged.name_user }}</span>
+      </div>
+
+      <div class="status-indicator-badge d-flex align-items-center px-3 py-1 rounded-pill shadow-sm"
+           [ngClass]="userlogged.state === 1 ? 'status-online' : 'status-offline'">
+        <span class="status-dot-pulse me-2"></span>
+        <span class="status-text fw-bold">{{ userlogged.state === 1 ? 'Online' : 'Offline' }}</span>
+      </div>
+      
+    </div>
+
+  </div>
 </header>

@@ -18,7 +18,6 @@ export class SubcategoryServiceService {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  // Agrega este:
   create(category: any): Observable<any> {
     return this.http.post(this.apiUrl, category);
   }
@@ -26,6 +25,11 @@ export class SubcategoryServiceService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  toggle(id: number) {
+  return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
+}
+
 
 
 }

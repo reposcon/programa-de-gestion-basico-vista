@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,29 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
-export class HeaderComponent  {
- constructor(
-   
-  ) {}
+export class HeaderComponent implements OnInit {
+
+  userSub: any = {};
+  userlogged: any = {};
+  constructor(
+    private authService: AuthService,
+    private router: Router
+
+  ) { }
+
+  ngOnInit(): void {
+    this.authService.currentUser$.subscribe(user => {
+      this.userlogged = user;
+    });
+  }
+
+  openHome() {
+    if (this.userlogged) {
+      this.router.navigate(['/home']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
 
 }

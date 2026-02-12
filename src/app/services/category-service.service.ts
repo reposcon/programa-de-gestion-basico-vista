@@ -27,4 +27,10 @@ export class CategoryServiceService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
+  toggle(id: number) {
+    return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
+  }
+
+
+
 }

@@ -1,0 +1,91 @@
+<div class="modal fade" id="modalAddSub" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+      <div class="modal-header border-0 py-3 px-4 d-flex align-items-center" 
+           style="background: linear-gradient(135deg, #198754, #146c43);">
+        <h5 class="modal-title text-white fw-bold d-flex align-items-center">
+          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 35px; height: 35px;">
+            <i class="fas fa-layer-group text-success" style="font-size: 0.9rem;"></i>
+          </div>
+          Nueva Subcategoría
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form (ngSubmit)="save()">
+        <div class="modal-body p-4">
+          
+          <div class="mb-4">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+              Nombre de la Subcategoría
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="fas fa-tag"></i>
+              </span>
+              <input type="text" 
+                     class="form-control bg-light border-0 py-2 ps-2"
+                     [(ngModel)]="sub.name_subcategory" 
+                     name="name_sub" 
+                     placeholder="Ej: Smartphones, Zapatos..."
+                     required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+              Categoría Padre
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="fas fa-sitemap"></i>
+              </span>
+              <select class="form-select bg-light border-0 py-2 ps-2 fw-medium" 
+                      [(ngModel)]="sub.category_id"
+                      name="cat_id" 
+                      required>
+                <option [ngValue]="null" disabled>Seleccione una categoría...</option>
+                <option *ngFor="let cat of categories" [value]="cat.id_category">
+                  {{ cat.name_category }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+              Estado
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="fas fa-toggle-on"></i>
+              </span>
+              <select class="form-select bg-light border-0 py-2 ps-2 fw-medium" 
+                      [(ngModel)]="sub.state_subcategory"
+                      name="st_sub">
+                <option [value]="1">Activo</option>
+                <option [value]="0">Inactivo</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+          <button type="button" 
+                  class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" 
+                  data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" 
+                  class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
+                  data-bs-dismiss="modal"
+                  [disabled]="!sub.name_subcategory || !sub.category_id">
+            <i class="fas fa-save me-2"></i>Guardar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,23 +1,34 @@
-// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes , ExtraOptions } from '@angular/router';
+import { RouterModule, Routes, ExtraOptions } from '@angular/router';
 
-
-// Importa tus componentes de página
-import { HomeComponent } from './pages/home/home.component';
-import { LoginComponent } from './pages/login/login.component';
-import { CrudUserComponent } from './pages/crud-user/crud-user.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './modules/login/login.component';
+import { CrudUsersComponent } from './modules/crud-users/crud-users.component';
+import { authGuard } from './guards/auth.guard'; 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'home', component: HomeComponent },
-  { path: 'usersManagement', component: CrudUserComponent },
+  
+  { 
+    path: 'home', 
+    component: HomeComponent, 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'usermanagement', 
+    component: CrudUsersComponent, 
+    canActivate: [authGuard] 
+  },
+  
+  { path: '**', redirectTo: '/login' }
 ];
+
 const routerOptions: ExtraOptions = {
-  onSameUrlNavigation: 'reload',  // Fuerza recarga si navegas a la misma URL
-  scrollPositionRestoration: 'enabled' // Opcional: para restaurar scroll
+  onSameUrlNavigation: 'reload',
+  scrollPositionRestoration: 'enabled'
 };
+
 @NgModule({
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]

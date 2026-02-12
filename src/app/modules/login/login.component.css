@@ -1,0 +1,36 @@
+.login-wrapper {
+  min-height: calc(100-vh - 120px); /* Ajusta según el alto de tu header/footer */
+  padding: 80px 0;
+}
+
+/* Círculo de fondo para el icono */
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+/* Estilo para los inputs de login */
+.input-group .form-control:focus {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 0.25 mil rem rgba(13, 110, 253, 0.1);
+  border: 0;
+  z-index: 3;
+}
+
+.input-group-text {
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+
+.form-control {
+  border-top-right-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+
+/* Efecto hover en el botón */
+.btn-primary.rounded-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+  transition: all 0.3s ease;
+}

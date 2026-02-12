@@ -6,24 +6,33 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductServiceService {
+
   private apiUrl = 'http://127.0.0.1:8000/api/products';
 
   constructor(private http: HttpClient) { }
 
+  // Obtener todos los productos
   getAll(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
 
+  // Actualizar un producto
   update(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  create(category: any): Observable<any> {
-    return this.http.post(this.apiUrl, category);
+  // Crear un producto
+  create(product: any): Observable<any> {
+    return this.http.post(this.apiUrl, product);
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  deactivate(id: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}`, { state_product: 0 });
+  }
+
+  toggle(id: number) {
+    return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
   }
 
 }
+

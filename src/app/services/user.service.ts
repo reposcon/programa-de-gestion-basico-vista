@@ -9,6 +9,7 @@ export class userService {
   private userSubject = new BehaviorSubject<any>(null);
   public userObservable$ = this.userSubject.asObservable();
 
+
   constructor(private http: HttpClient) {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
@@ -35,4 +36,5 @@ export class userService {
   notifyUserChange(user: any) {
     this.userSubject.next(user);
   }
+
 }

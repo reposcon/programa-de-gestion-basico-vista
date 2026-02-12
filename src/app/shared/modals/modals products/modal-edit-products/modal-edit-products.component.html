@@ -1,0 +1,104 @@
+<div class="modal fade" id="modalEditProd" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+      <div class="modal-header border-0 py-3 px-4 d-flex align-items-center" 
+           style="background: linear-gradient(135deg, #ffc107, #e0a800);">
+        <h5 class="modal-title text-dark fw-bold d-flex align-items-center">
+          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 35px; height: 35px;">
+             <i class="bi bi-box-seam text-warning" style="font-size: 0.9rem;"></i>
+          </div>
+          Editar Producto
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form (ngSubmit)="update()">
+        <div class="modal-body p-4">
+          
+          <div class="text-end mb-3">
+            <span class="badge bg-light text-muted border rounded-pill px-3 fw-normal">
+              ID Producto: #{{productEdit.id_product}}
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+              Nombre del Producto
+            </label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                <i class="bi bi-pencil-square"></i>
+              </span>
+              <input type="text" 
+                     class="form-control bg-light border-0 py-2 ps-2"
+                     [(ngModel)]="productEdit.name_product" 
+                     name="name_product"
+                     placeholder="Nombre del producto"
+                     required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                Categoría
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                  <i class="bi bi-folder"></i>
+                </span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium"
+                        [(ngModel)]="productEdit.category_id"
+                        name="category_id"
+                        required>
+                  <option *ngFor="let cat of categories" [value]="cat.id_category">
+                    {{ cat.name_category }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                Subcategoría
+              </label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                  <i class="bi bi-diagram-2"></i>
+                </span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium"
+                        [(ngModel)]="productEdit.subcategory_id"
+                        name="subcategory_id"
+                        required>
+                  <option *ngFor="let sub of subcategories" [value]="sub.id_subcategory">
+                    {{ sub.name_subcategory }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning-subtle border-0 rounded-3 small py-2 mt-2 d-flex align-items-center">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Asegúrate de que la subcategoría corresponda a la categoría seleccionada.
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+          <button type="button" 
+                  class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" 
+                  data-bs-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="submit" 
+                  class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm text-dark"
+                  data-bs-dismiss="modal"
+                  [disabled]="!productEdit.name_product">
+            <i class="bi bi-arrow-clockwise me-2"></i>Actualizar Producto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
