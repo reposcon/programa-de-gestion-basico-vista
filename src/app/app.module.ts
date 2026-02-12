@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module'; 
+import { AppRoutingModule } from './app-routing.module';
+import { LoadingInterceptor } from './core/loading/loading.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Librerías externas
-import { FullCalendarModule } from '@fullcalendar/angular'; 
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 // Componentes Base
@@ -29,7 +32,8 @@ import { ModalEditProductsComponent } from './shared/modals/modals products/moda
 import { ModalAddSubcategoryComponent } from './shared/modals/modals subcategorias/modal-add-subcategories/modal-add-subcategories.component';
 import { ModalEditSubcategoriesComponent } from './shared/modals/modals subcategorias/modal-edit-subcategories/modal-edit-subcategories.component';
 import { ModalAddCategoriesComponent } from './shared/modals/modals categories/modal-add-categories/modal-add-categories.component';
-import { ModalEditAddUserComponent } from './shared/modals/modals users/modal-edit-add-user/modal-edit-add-user.component';
+import { ModalEditUserComponent } from './shared/modals/modals users/modal-edit-user/modal-edit-user.component';
+import { ModalAddUserComponent } from './shared/modals/modals users/modal-add-user/modal-add-user.component';
 
 @NgModule({
   declarations: [
@@ -48,8 +52,9 @@ import { ModalEditAddUserComponent } from './shared/modals/modals users/modal-ed
     ProductPageComponent,
     SubcategoryPageComponent,
     CategoryPageComponent,
-    ModalEditAddUserComponent,
-    CrudUsersComponent
+    CrudUsersComponent,
+    ModalEditUserComponent,
+    ModalAddUserComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +66,20 @@ import { ModalEditAddUserComponent } from './shared/modals/modals users/modal-ed
     FullCalendarModule
 
   ],
-  providers: [], 
+  providers: [
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptor,
+      multi: true
+    },
+    {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptor,
+    multi: true
+  }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,33 +1,21 @@
-/* Estilo base del Footer */
-.footer {
-  font-size: 0.9rem;
-}
-
-/* Efecto para los links del footer */
 .footer-link-item {
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  font-weight: 500;
 }
 
 .footer-link-item:hover {
-  color: #0d6efd !important; /* Azul primario al pasar el mouse */
+  color: #198754 !important; 
   transform: translateY(-1px);
 }
 
-/* Separador visual para los links en desktop */
-@media (min-width: 768px) {
-  .footer-links {
-    border-left: 1px solid #dee2e6;
-    padding-left: 1.5rem;
-  }
+.blink-animation {
+  animation: blink 2s infinite;
 }
 
-/* Estilo del Badge de versión */
-.badge-version {
-  letter-spacing: 1px;
-  background-color: #f8f9fa;
-  color: #6c757d;
-  border: 1px solid #e9ecef;
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
 }

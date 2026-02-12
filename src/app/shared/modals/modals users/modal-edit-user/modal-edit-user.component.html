@@ -1,0 +1,77 @@
+<div class="modal fade show d-block" tabindex="-1" aria-modal="true" role="dialog" style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+
+      <div class="modal-header border-0 py-3 px-4 d-flex align-items-center"
+           style="background: linear-gradient(135deg, #ffc107, #e0a800);">
+        <h5 class="modal-title fw-bold text-dark d-flex align-items-center">
+          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
+            <i class="bi bi-pencil-square text-warning" style="font-size: 1.1rem;"></i>
+          </div>
+          Editar Usuario
+        </h5>
+        <button class="btn-close" (click)="cancel()"></button>
+      </div>
+
+      <form (ngSubmit)="submit()">
+        <div class="modal-body p-4">
+          
+          <div class="mb-4">
+            <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Nombre de Usuario</label>
+            <div class="input-group shadow-sm rounded-3 overflow-hidden border">
+              <span class="input-group-text bg-white border-0 ps-3 text-muted"><i class="bi bi-person-circle"></i></span>
+              <input type="text" class="form-control border-0 py-2 ps-2 fw-bold"
+                     [(ngModel)]="form.name_user" name="name_user" required>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="d-flex justify-content-between">
+              <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Nueva Contraseña</label>
+              <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle rounded-pill mb-2 px-2 fw-normal" style="font-size: 0.65rem;">Opcional</span>
+            </div>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-key"></i></span>
+              <input type="password" class="form-control bg-light border-0 py-2 ps-2"
+                     [(ngModel)]="form.password_user" name="password_user" 
+                     placeholder="Dejar en blanco para no cambiar">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Rol</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-person-badge"></i></span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark" [(ngModel)]="form.rol" name="rol">
+                  <option value="admin">Admin</option>
+                  <option value="basico">Básico</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Estado</label>
+              <div class="input-group">
+                <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-toggle-on"></i></span>
+                <select class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark" [(ngModel)]="form.state" name="state">
+                  <option [value]="1">Activo</option>
+                  <option [value]="0">Inactivo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+          <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" (click)="cancel()">
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-warning rounded-pill px-4 fw-bold shadow-sm text-dark" [disabled]="!form.name_user">
+            <i class="bi bi-arrow-clockwise me-2"></i>Actualizar Cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,27 +1,42 @@
-<footer class="footer bg-white border-top py-4 mt-5">
-  <div class="footer-container container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between px-4">
-    
+<footer class="footer bg-white border-top py-4 mt-auto">
+  <div
+    class="footer-container container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between px-4">
+
     <div class="footer-info mb-3 mb-md-0">
-      <p class="mb-0 text-muted fw-medium">
-        &copy; {{ currentYear }} <span class="text-primary fw-bold">Practice Admin</span>. 
-        <span class="d-none d-sm-inline">Todos los derechos reservados.</span>
+      <p class="mb-0 text-muted fw-medium small">
+        &copy; {{ currentYear }} <span
+          class="text-primary fw-bold">AdminPanel</span>.
+        <span class="d-none d-sm-inline opacity-75">Gestión Interna
+          Privada.</span>
       </p>
     </div>
-    
-    <div class="footer-meta d-flex align-items-center gap-4">
-      <span class="badge rounded-pill bg-light text-secondary border px-3 py-2 fw-bold" style="font-size: 0.7rem;">
-        SISTEMA v1.2.0
-      </span>
 
-      <div class="footer-links d-flex gap-3">
-        <a href="#" class="text-decoration-none text-muted footer-link-item">
-          <i class="fas fa-shield-alt me-1 text-primary"></i> Seguridad
+    <div
+      class="footer-meta d-flex flex-wrap align-items-center justify-content-center gap-3">
+
+      <div class="footer-links d-flex gap-4 ms-md-2">
+        <a href="#"
+          class="text-decoration-none text-muted small footer-link-item">
+          <i class="bi bi-shield-lock-fill me-1 text-primary"></i> Seguridad
         </a>
-        <a href="#" class="text-decoration-none text-muted footer-link-item">
-          <i class="fas fa-question-circle me-1 text-primary"></i> Soporte
+        <a href="#"
+          class="text-decoration-none text-muted small footer-link-item">
+          <i class="bi bi-headset me-1 text-primary"></i> Soporte
+        </a>
+        <a href="#" class="text-decoration-none text-muted small footer-link-item hover-opacity" title="Manual de uso">
+          <i class="bi bi-book me-1 text-primary"></i> Documentación
         </a>
       </div>
-    </div>
 
+      <div
+        class="d-flex align-items-center bg-light border rounded-pill px-3 py-1">
+        <span class="bg-success rounded-circle me-2 blink-animation"
+          style="width: 8px; height: 8px;"></span>
+        <span class="text-secondary fw-bold"
+          style="font-size: 0.65rem; letter-spacing: 0.5px;">SISTEMA ACTIVO
+          v1.0</span>
+      </div>
+
+    </div>
   </div>
 </footer>

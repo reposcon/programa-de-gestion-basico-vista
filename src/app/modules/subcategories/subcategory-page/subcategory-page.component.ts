@@ -6,6 +6,7 @@ import { userService } from '../../../services/user.service';
 import { Category } from '../../../models/category.model';
 import { Subcategory } from '../../../models/subcategory.model';
 import { ToolService } from '../../../services/tool.service';
+import { UiMessageService } from '../../../services/ui-message.service';
 
 @Component({
   selector: 'app-subcategory-page',
@@ -35,7 +36,8 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
     private subcategoryService: SubcategoryServiceService,
     private categoryService: CategoryServiceService,
     private userService: userService,
-    private toolservice: ToolService
+    private toolservice: ToolService,
+    private uiMessage: UiMessageService
   ) { }
 
   ngOnInit(): void {
@@ -78,22 +80,50 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleSubcategory(sub: Subcategory & { categoryActive: boolean; isActive: boolean }): void {
-  this.subcategoryService.toggle(sub.id_subcategory).subscribe({
-    next: () => {
-      sub.isActive = !sub.isActive;
-      sub.state_subcategory = sub.isActive ? 1 : 0;
+ toggleSubcategory(
+  sub: Subcategory & {
+    categoryActive: boolean;
+    isActive: boolean;
+  }
+): void {
 
-      this.applyFiltersAndOrder();
+  const isActive = sub.state_subcategory === 1;
 
-      this.showSuccessMessage('Estado de la subcategoría actualizado');
+  this.toolservice.confirm({
+    title: isActive ? '¿Desactivar subcategoría?' : '¿Restaurar subcategoría?',
+    text: isActive
+      ? `La subcategoría "${sub.name_subcategory}" quedará inactiva`
+      : `La subcategoría "${sub.name_subcategory}" será restaurada`,
+    confirmText: isActive ? 'Desactivar' : 'Restaurar',
+    icon: 'warning'
+  }).then(confirmed => {
+    if (!confirmed) return;
 
-      this.toolservice.notifyUpdate();
-    },
-    error: err => console.error(err)
+    this.subcategoryService.toggle(sub.id_subcategory).subscribe({
+      next: () => {
+        sub.isActive = !isActive;
+        sub.state_subcategory = sub.isActive ? 1 : 0;
+
+        this.applyFiltersAndOrder();
+
+        this.uiMessage.show(
+          isActive
+            ? 'Subcategoría desactivada correctamente'
+            : 'Subcategoría restaurada correctamente',
+          'success'
+        );
+
+        this.toolservice.notifyUpdate();
+      },
+      error: (err) => {
+        this.uiMessage.show(
+          err?.error?.message || 'Error al actualizar la subcategoría',
+          'warning'
+        );
+      }
+    });
   });
 }
-
 
   applyFiltersAndOrder(): void {
     const search = this.searchSubcategories.toLowerCase();

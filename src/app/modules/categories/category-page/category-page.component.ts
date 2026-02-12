@@ -4,6 +4,7 @@ import { CategoryServiceService } from '../../../services/category-service.servi
 import { userService } from '../../../services/user.service';
 import { Category } from '../../../models/category.model';
 import { ToolService } from '../../../services/tool.service';
+import { UiMessageService } from '../../../services/ui-message.service';
 
 @Component({
   selector: 'app-category-page',
@@ -31,12 +32,13 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
   constructor(
     private categoryService: CategoryServiceService,
     private userService: userService,
-    private toolservice: ToolService
-  ) {}
+    private toolservice: ToolService,
+    private uiMessage: UiMessageService
+  ) { }
 
   ngOnInit(): void {
     this.getCategories();
-      this.toolservice.update$.subscribe(() => this.getCategories());
+    this.toolservice.update$.subscribe(() => this.getCategories());
     this.userSub = this.userService.userObservable$.subscribe(user => this.userlogged = user);
   }
 
@@ -58,15 +60,39 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
     });
   }
 
- toggleCategory(cat: Category): void {
-  this.categoryService.toggle(cat.id_category).subscribe({
-    next: () => {
-      this.toolservice.notifyUpdate(); 
-      this.showSuccessMessage('Estado de la categoría actualizado');
-    },
-    error: err => alert(err.error?.message)
-  });
-}
+  toggleCategory(cat: Category): void {
+
+    const isActive = cat.state_category === 1;
+
+    this.toolservice.confirm({
+      title: isActive ? '¿Desactivar categoría?' : '¿Restaurar categoría?',
+      text: isActive
+        ? `La categoría "${cat.name_category}" quedará inactiva`
+        : `La categoría "${cat.name_category}" será restaurada`,
+      confirmText: isActive ? 'Desactivar' : 'Restaurar',
+      icon: 'warning'
+    }).then(confirmed => {
+      if (!confirmed) return;
+
+      this.categoryService.toggle(cat.id_category).subscribe({
+        next: () => {
+          this.toolservice.notifyUpdate();
+          this.uiMessage.show(
+            isActive
+              ? 'Categoría desactivada correctamente'
+              : 'Categoría restaurada correctamente',
+            'success'
+          );
+        },
+        error: (err) => {
+          this.uiMessage.show(
+            err?.error?.message || 'Error al actualizar la categoría',
+            'warning'
+          );
+        }
+      });
+    });
+  }
 
   applyFiltersAndOrder(): void {
     const search = this.searchCategories.toLowerCase();

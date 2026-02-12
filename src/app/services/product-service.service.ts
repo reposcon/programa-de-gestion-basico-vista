@@ -11,17 +11,14 @@ export class ProductServiceService {
 
   constructor(private http: HttpClient) { }
 
-  // Obtener todos los productos
   getAll(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
 
-  // Actualizar un producto
   update(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  // Crear un producto
   create(product: any): Observable<any> {
     return this.http.post(this.apiUrl, product);
   }

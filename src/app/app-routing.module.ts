@@ -4,24 +4,38 @@ import { RouterModule, Routes, ExtraOptions } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './modules/login/login.component';
 import { CrudUsersComponent } from './modules/crud-users/crud-users.component';
-import { authGuard } from './guards/auth.guard'; 
+
+import { authGuard } from './core/guards/auth.guard';
+import { AdminGuard } from './core/guards/admin.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
+  // 🔐 Login
   { path: 'login', component: LoginComponent },
-  
-  { 
-    path: 'home', 
-    component: HomeComponent, 
-    canActivate: [authGuard] 
+
+  // 🏠 Home (logueado)
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [authGuard]
   },
-  { 
-    path: 'usermanagement', 
-    component: CrudUsersComponent, 
-    canActivate: [authGuard] 
+
+  // 👤 Gestión de usuarios (solo admin)
+  {
+    path: 'usermanagement',
+    component: CrudUsersComponent,
+    canActivate: [authGuard, AdminGuard]
   },
-  
-  { path: '**', redirectTo: '/login' }
+
+  // 🔁 Ruta raíz
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
+  // 🚑 Fallback
+  { path: '**', redirectTo: 'home' }
 ];
 
 const routerOptions: ExtraOptions = {
@@ -33,4 +47,4 @@ const routerOptions: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

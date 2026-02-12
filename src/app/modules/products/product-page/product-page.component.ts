@@ -8,6 +8,7 @@ import { Product } from '../../../models/product.model';
 import { Category } from '../../../models/category.model';
 import { Subcategory } from '../../../models/subcategory.model';
 import { ToolService } from '../../../services/tool.service';
+import { UiMessageService } from '../../../services/ui-message.service';
 
 @Component({
   selector: 'app-product-page',
@@ -41,7 +42,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     private categoryService: CategoryServiceService,
     private subcategoryService: SubcategoryServiceService,
     private userService: userService,
-    private toolservice: ToolService
+    private toolservice: ToolService,
+    private uiMessage: UiMessageService
   ) { }
 
   ngOnInit(): void {
@@ -86,19 +88,52 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  toggleProduct(prod: Product & { categoryActive: boolean; subcategoryActive: boolean; isActive: boolean }): void {
+  toggleProduct(
+  prod: Product & {
+    categoryActive: boolean;
+    subcategoryActive: boolean;
+    isActive: boolean;
+  }
+): void {
+
+  const isActive = prod.state_product === 1;
+
+  this.toolservice.confirm({
+    title: isActive ? '¿Desactivar producto?' : '¿Restaurar producto?',
+    text: isActive
+      ? `El producto "${prod.name_product}" quedará inactivo`
+      : `El producto "${prod.name_product}" será restaurado`,
+    confirmText: isActive ? 'Desactivar' : 'Restaurar',
+    icon: 'warning'
+  }).then(confirmed => {
+    if (!confirmed) return;
+
     this.productService.toggle(prod.id_product).subscribe({
       next: () => {
-        prod.isActive = !prod.isActive;
+        prod.isActive = !isActive;
         prod.state_product = prod.isActive ? 1 : 0;
+
         this.applyFiltersAndOrder();
-        this.showSuccessMessage('Estado del producto actualizado');
+
+        this.uiMessage.show(
+          isActive
+            ? 'Producto desactivado correctamente'
+            : 'Producto restaurado correctamente',
+          'success'
+        );
 
         this.toolservice.notifyUpdate();
       },
-      error: err => alert(err.error?.message)
+      error: (err) => {
+        this.uiMessage.show(
+          err?.error?.message || 'Error al actualizar el producto',
+          'warning'
+        );
+      }
     });
-  }
+  });
+}
+
 
 
   applyFiltersAndOrder(): void {

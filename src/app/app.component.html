@@ -1,1 +1,41 @@
+<div *ngIf="message$ | async as msg" 
+     class="global-message-container animate__animated animate__fadeInRight">
+  <div class="toast-card d-flex align-items-center shadow-lg border-0" 
+       [ngClass]="'toast-' + msg.type">
+    
+    <div class="toast-icon-box d-flex align-items-center justify-content-center me-3">
+      <i class="bi" [ngClass]="{
+        'bi-check-circle-fill': msg.type === 'success',
+        'bi-exclamation-triangle-fill': msg.type === 'danger' || msg.type === 'warning',
+        'bi-info-circle-fill': msg.type === 'info'
+      }"></i>
+    </div>
+
+    <div class="toast-content flex-grow-1">
+      <strong class="d-block small text-uppercase fw-bold opacity-75">
+        {{ msg.type === 'success' ? 'Éxito' : 'Notificación' }}
+      </strong>
+      <span class="fw-medium">{{ msg.text }}</span>
+    </div>
+
+    <button type="button" class="btn-close btn-close-white ms-3 small" style="font-size: 0.7rem;"></button>
+  </div>
+</div>
+<div *ngIf="loading$ | async" class="global-loader shadow-sm">
+  <div class="loader-content text-center">
+    <div class="spinner-container mb-3">
+      <div class="spinner-border text-primary" role="status"
+        style="width: 3rem; height: 3rem; border-width: 0.25rem;">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <div class="spinner-pulse"></div>
+    </div>
+    <h6
+      class="fw-bold text-dark text-uppercase tracking-widest mt-2 animate__animated animate__pulse animate__infinite">
+      Cargando
+    </h6>
+    <p class="text-muted small mb-0">Por favor, espera un momento</p>
+  </div>
+</div>
+
 <router-outlet></router-outlet>

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000/api';
-  
+
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -33,7 +33,7 @@ export class AuthService {
 
   logout(): void {
     const token = localStorage.getItem('token');
-    
+
     this.http.post(`${this.apiUrl}/logout`, {}, {
       headers: { Authorization: `Bearer ${token}` }
     }).subscribe({
@@ -44,7 +44,13 @@ export class AuthService {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
-    
+
     this.router.navigate(['/login']);
   }
+
+  getCurrentUser() {
+    return this.currentUserSubject.value;
+  }
+
+
 }

@@ -3,6 +3,8 @@ import { ProductServiceService } from '../../../../services/product-service.serv
 import { Category } from '../../../../models/category.model';
 import { Subcategory } from '../../../../models/subcategory.model';
 import { Product } from '../../../../models/product.model';
+import { ToolService } from '../../../../services/tool.service';
+import { UiMessageService } from '../../../../services/ui-message.service';
 
 declare var bootstrap: any;
 
@@ -21,9 +23,13 @@ export class ModalEditProductsComponent {
 
   @Output() onUpdate = new EventEmitter<string>();
 
-  constructor(private ProductServiceService: ProductServiceService) { }
+  constructor(
+    private ProductServiceService: ProductServiceService,
+    private toolservice: ToolService,
+    private uiMessage: UiMessageService
+  ) { }
 
-  update() {
+  update(): void {
     if (!this.productEdit.id_product) return;
 
     this.ProductServiceService.update(
@@ -31,14 +37,23 @@ export class ModalEditProductsComponent {
       this.productEdit
     ).subscribe({
       next: () => {
-        this.onUpdate.emit('Producto actualizado correctamente');
+        this.uiMessage.show('Producto actualizado correctamente', 'success');
+        this.toolservice.notifyUpdate();
 
         const modalEl = document.getElementById('modalEditProd');
         const modal = bootstrap.Modal.getInstance(modalEl!);
         modal?.hide();
+      },
+      error: err => {
+        this.uiMessage.show(
+          err?.error?.message || 'Error al actualizar el producto',
+          'warning'
+        );
+        console.error('Error al actualizar producto', err);
       }
     });
   }
+
 
 
 }
