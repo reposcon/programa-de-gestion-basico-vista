@@ -18,12 +18,13 @@ export class DashboardComponent implements OnInit {
     private authService: AuthService,
     private userService: userService,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
     });
+
   }
 
   openUsers() {

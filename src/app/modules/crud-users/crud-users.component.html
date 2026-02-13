@@ -20,7 +20,7 @@
 
     <div class="action-tools d-flex align-items-center gap-3">
       <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" 
-              *ngIf="userlogged?.rol === 'admin'" 
+              *ngIf="userlogged?.role === 'admin'" 
               (click)="openAddModal()">
         <i class="bi bi-plus-lg me-2"></i> Añadir Usuario
       </button>
@@ -72,18 +72,18 @@
               <td><span class="badge bg-info text-dark border fw-medium px-3">{{ user.rol }}</span></td>
               <td>
                 <span class="badge rounded-pill px-3 py-2" 
-                      [ngClass]="user.state === 1 ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
-                  {{ user.state === 1 ? '● Activo' : '● Inactivo' }}
+                      [ngClass]="user.state_user === 1 ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
+                  {{ user.state_user === 1 ? '● Activo' : '● Inactivo' }}
                 </span>
               </td>
-              <td *ngIf="userlogged?.rol === 'admin'" class="text-center">
+              <td *ngIf="userlogged?.id_role === 1" class="text-center">
                 <div class="d-flex justify-content-center gap-2">
                   <button class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
                           (click)="openEditModal(user)" title="Editar">
                     <i class="bi bi-pencil-fill mx-1"></i>
                   </button>
                   <button class="btn btn-outline-danger btn-sm rounded-circle shadow-sm p-2"
-                          [disabled]="user.state === 0"
+                          [disabled]="user.state_user === 0"
                           (click)="deleteUser(user)" title="Desactivar">
                     <i class="bi bi-trash-fill mx-1"></i>
                   </button>

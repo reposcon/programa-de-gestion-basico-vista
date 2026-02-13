@@ -10,31 +10,26 @@ import { AdminGuard } from './core/guards/admin.guard';
 
 const routes: Routes = [
 
-  // 🔐 Login
   { path: 'login', component: LoginComponent },
 
-  // 🏠 Home (logueado)
   {
     path: 'home',
     component: HomeComponent,
     canActivate: [authGuard]
   },
 
-  // 👤 Gestión de usuarios (solo admin)
   {
     path: 'usermanagement',
     component: CrudUsersComponent,
     canActivate: [authGuard, AdminGuard]
   },
 
-  // 🔁 Ruta raíz
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full'
   },
 
-  // 🚑 Fallback
   { path: '**', redirectTo: 'home' }
 ];
 

@@ -1,12 +1,17 @@
-<div class="modal fade show d-block" tabindex="-1" aria-modal="true" role="dialog" style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
+<div class="modal fade show d-block" tabindex="-1" aria-modal="true"
+  role="dialog"
+  style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
       <div class="modal-header border-0 py-3 px-4 d-flex align-items-center"
-           style="background: linear-gradient(135deg, #198754, #146c43);">
+        style="background: linear-gradient(135deg, #198754, #146c43);">
         <h5 class="modal-title fw-bold text-white d-flex align-items-center">
-          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;">
-            <i class="bi bi-person-plus-fill text-success" style="font-size: 1.1rem;"></i>
+          <div
+            class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
+            style="width: 38px; height: 38px;">
+            <i class="bi bi-person-plus-fill text-success"
+              style="font-size: 1.1rem;"></i>
           </div>
           Registrar Usuario
         </h5>
@@ -17,41 +22,66 @@
         <div class="modal-body p-4">
 
           <div class="mb-4">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Usuario</label>
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
+              style="letter-spacing: 0.5px;">Usuario</label>
             <div class="input-group">
-              <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-person"></i></span>
-              <input type="text" class="form-control bg-light border-0 py-2 ps-2"
-                     [(ngModel)]="form.name_user" name="name_user" placeholder="Ej: admin_ventas" required>
+              <span
+                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                  class="bi bi-person"></i></span>
+              <input type="text"
+                class="form-control bg-light border-0 py-2 ps-2"
+                [(ngModel)]="form.name_user" name="name_user"
+                placeholder="Ej: admin_ventas" required>
             </div>
           </div>
 
           <div class="mb-4">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Contraseña</label>
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
+              style="letter-spacing: 0.5px;">Contraseña</label>
             <div class="input-group">
-              <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-lock"></i></span>
-              <input type="password" class="form-control bg-light border-0 py-2 ps-2"
-                     [(ngModel)]="form.password_user" name="password_user" placeholder="••••••••" required>
+              <span
+                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                  class="bi bi-lock"></i></span>
+              <input type="password"
+                class="form-control bg-light border-0 py-2 ps-2"
+                [(ngModel)]="form.password_user" name="password_user"
+                placeholder="••••••••" required>
             </div>
           </div>
 
           <div class="mb-2">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">Rol de Sistema</label>
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
+              style="letter-spacing: 0.5px;">Rol de Sistema</label>
             <div class="input-group">
-              <span class="input-group-text bg-light border-0 ps-3 text-muted"><i class="bi bi-shield-check"></i></span>
-              <select class="form-select bg-light border-0 py-2 ps-2 fw-medium" [(ngModel)]="form.rol" name="rol">
-                <option value="admin">Administrador</option>
-                <option value="basico">Básico / Operador</option>
+              <span
+                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                  class="bi bi-shield-check"></i></span>
+              <select
+                class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
+                [(ngModel)]="form.id_role"
+                name="role_id">
+                <option [value]="undefined" disabled selected>Selecciona un
+                  rol</option> <option *ngFor="let rol of rolesList"
+                  [value]="rol.id_role">
+                  {{ rol.name_role }}
+                </option>
               </select>
             </div>
           </div>
         </div>
 
         <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
-          <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" (click)="cancel()">
+          <button type="button"
+            class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm"
+            (click)="cancel()">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" 
-                  [disabled]="!form.name_user || !form.password_user">
+          <button type="submit"
+            class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
+            [disabled]="!form .name_user || !form.password_user">
             <i class="bi bi-check-lg me-2"></i>Guardar Usuario
           </button>
         </div>

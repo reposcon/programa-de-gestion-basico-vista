@@ -23,36 +23,24 @@ export class ModalAddCategoriesComponent {
     private categoryService: CategoryServiceService,
     private toolservice: ToolService,
     private uiMessage: UiMessageService
-  ) {}
+  ) { }
 
-save(): void {
-  if (!this.categoryEdit.id_category) {
-    // CREATE
-    this.categoryService.create(this.categoryEdit).subscribe({
-      next: () => {
-        this.uiMessage.show('Categoría creada correctamente', 'success');
-        this.toolservice.notifyUpdate();
-      },
-      error: err =>
-        this.uiMessage.show(err?.error?.message || 'Error al crear categoría', 'warning')
-    });
-    return;
+  save(): void {
+    if (!this.categoryEdit.id_category) {
+      this.categoryService.create(this.categoryEdit).subscribe({
+        next: () => {
+          this.uiMessage.show('Categoría creada correctamente', 'success');
+          this.toolservice.notifyUpdate();
+        },
+        error: err =>
+          this.uiMessage.show(err?.error?.message || 'Error al crear categoría', 'warning')
+      });
+      return;
+    }
   }
 
-  // UPDATE
-  const id = this.categoryEdit.id_category; // aquí YA es number
 
-  this.categoryService.update(id, this.categoryEdit).subscribe({
-    next: () => {
-      this.uiMessage.show('Categoría actualizada correctamente', 'success');
-      this.toolservice.notifyUpdate();
-    },
-    error: err =>
-      this.uiMessage.show(err?.error?.message || 'Error al actualizar categoría', 'warning')
-  });
-}
-
-
+  
   private success(message: string) {
     this.onSave.emit(message);
   }

@@ -16,9 +16,9 @@
       </div>
 
       <div class="status-indicator-badge d-flex align-items-center px-3 py-1 rounded-pill shadow-sm"
-           [ngClass]="userlogged.state === 1 ? 'status-online' : 'status-offline'">
+           [ngClass]="userlogged.state_user === 1 ? 'status-online' : 'status-offline'">
         <span class="status-dot-pulse me-2"></span>
-        <span class="status-text fw-bold">{{ userlogged.state === 1 ? 'Online' : 'Offline' }}</span>
+        <span class="status-text fw-bold">{{ userlogged.state_user === 1 ? 'Online' : 'Offline' }}</span>
       </div>
       
     </div>

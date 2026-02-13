@@ -24,38 +24,40 @@ export class ModalAddSubcategoryComponent {
     private subService: SubcategoryServiceService
     , private toolservice: ToolService
     , private uiMessage: UiMessageService
-  
-  ) {}
+
+  ) { }
 
   save(): void {
-  if (!this.sub.name_subcategory || !this.sub.category_id) return;
+    if (!this.sub.name_subcategory || !this.sub.category_id) return;
 
-  const dataToSend = {
-    name_subcategory: this.sub.name_subcategory,
-    state_subcategory: Number(this.sub.state_subcategory),
-    category_id: Number(this.sub.category_id)
-  };
+    const dataToSend = {
+      name_subcategory: this.sub.name_subcategory,
+      state_subcategory: Number(this.sub.state_subcategory),
+      category_id: Number(this.sub.category_id)
+    };
 
-  this.subService.create(dataToSend).subscribe({
-    next: () => {
-      this.uiMessage.show('Subcategoría creada con éxito', 'success');
-      this.toolservice.notifyUpdate();
+    this.subService.create(dataToSend).subscribe({
+      next: () => {
+        this.uiMessage.show('Subcategoría creada con éxito', 'success');
+        this.toolservice.notifyUpdate();
 
-      this.sub = {
-        name_subcategory: '',
-        state_subcategory: 1,
-        category_id: null
-      };
-    },
-    error: err => {
-      this.uiMessage.show(
-        err?.error?.message || 'Error al crear la subcategoría',
-        'warning'
-      );
-      console.error('Error al guardar subcategoría', err);
-    }
-  });
-}
+        this.resetForm();
+      },
+      error: err => {
+        this.uiMessage.show(
+          err?.error?.message || 'Error al crear la subcategoría',
+          'warning'
+        );
+        console.error('Error al guardar subcategoría', err);
+      }
+    });
+  }
+  resetForm() {
+    this.sub = {
+      name_subcategory: '',
+      state_subcategory: 1,
+      category_id: null
+    };
 
-
+  }
 }

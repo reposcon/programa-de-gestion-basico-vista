@@ -49,7 +49,6 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
   getCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (data: Category[]) => {
-        // Añadimos isActive para manejar el estado localmente
         this.categories = data.map(cat => ({
           ...cat,
           isActive: cat.state_category === 1

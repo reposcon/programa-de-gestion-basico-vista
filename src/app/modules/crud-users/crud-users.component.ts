@@ -16,11 +16,10 @@ export class CrudUsersComponent implements OnInit {
   filteredUsers: any[] = [];
   searchUser: string = '';
 
-  showModal: boolean = false;      // Modal de Registro
-  showEditModal: boolean = false;  // Modal de Edición
+  showModal: boolean = false;    
+  showEditModal: boolean = false;  
   userToEdit: any = {};
 
-  // Paginación
   pageSize = 5;
   currentPage = 1;
   pageSizeOptions = [5, 10, 20];
@@ -38,14 +37,12 @@ export class CrudUsersComponent implements OnInit {
     this.loadUsers();
   }
 
-  // Carga de datos
   loadUsers() {
     this.userService.getAll().subscribe({
       next: data => {
-        this.users = data.sort((a: any, b: any) => b.state - a.state);
+        this.users = data.sort((a: any, b: any) => b.state_user - a.state_user);
         
-        // Si es básico, solo ve su propio perfil
-        if (this.userlogged?.rol === 'basico') {
+        if (this.userlogged?.id_role === 2) {
           this.users = [this.userlogged];
         }
 
@@ -69,7 +66,7 @@ export class CrudUsersComponent implements OnInit {
   closeModal(): void {
     this.showModal = false;
     this.showEditModal = false;
-    this.userToEdit = {}; // Limpiamos la referencia
+    this.userToEdit = {}; 
   }
 
   handleSuccess(): void {
@@ -82,12 +79,12 @@ export class CrudUsersComponent implements OnInit {
     const term = this.searchUser.toLowerCase();
     this.filteredUsers = this.users
       .filter(u => u.name_user.toLowerCase().includes(term))
-      .sort((a, b) => b.state - a.state);
+      .sort((a, b) => b.state_user - a.state_user);
     this.currentPage = 1;
   }
 
   deleteUser(user: any) {
-    if (user.state === 0) return;
+    if (user.state_user === 0) return;
 
     this.toolService.confirm({
       title: '¿Desactivar usuario?',

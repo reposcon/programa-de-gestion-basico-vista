@@ -1,30 +1,39 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { User } from '../../../../models/user.model';
 import { userService } from '../../../../services/user.service';
 import { UiMessageService } from '../../../../services/ui-message.service';
-
+import { Role } from '../../../../models/role.model';
+import { RoleService } from '../../../../services/role.service';
 @Component({
   selector: 'app-modal-add-user',
   standalone: false,
   templateUrl: './modal-add-user.component.html',
   styleUrls: ['./modal-add-user.component.css']
 })
-export class ModalAddUserComponent {
+export class ModalAddUserComponent implements OnInit {
 
-  @Output() save = new EventEmitter<void>(); 
+  @Output() save = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
 
   constructor(
-    private userService: userService, 
-    private uiMessage: UiMessageService
-  ) {}
+    private userService: userService,
+    private uiMessage: UiMessageService,
+    private roleService: RoleService
+  ) { }
 
   form: User = {
     name_user: '',
     password_user: '',
-    rol: 'basico',
-    state: 1
+    id_role: 0,
+    state_user: 0,
+    name_role: '',
+    state_role: 0
   };
+  rolesList: Role[] = [];
+  ngOnInit(): void {
+    this.roleService.roles$.subscribe(data => this.rolesList = data);
+    this.roleService.loadRoles(); 
+  }
 
   submit(): void {
     if (!this.form.name_user || !this.form.password_user) {

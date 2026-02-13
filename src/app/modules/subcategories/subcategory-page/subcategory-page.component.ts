@@ -42,12 +42,16 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadInitialData();
+
     this.toolservice.update$.subscribe(() => {
-      this.getSubCategories(); 
+      this.categoryService.getAll().subscribe(cats => {
+        this.categories = cats;
+        this.getSubCategories();
+      });
     });
+
     this.userSub = this.userService.userObservable$.subscribe(user => this.userlogged = user);
   }
-
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
   }
@@ -80,50 +84,50 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
     });
   }
 
- toggleSubcategory(
-  sub: Subcategory & {
-    categoryActive: boolean;
-    isActive: boolean;
-  }
-): void {
+  toggleSubcategory(
+    sub: Subcategory & {
+      categoryActive: boolean;
+      isActive: boolean;
+    }
+  ): void {
 
-  const isActive = sub.state_subcategory === 1;
+    const isActive = sub.state_subcategory === 1;
 
-  this.toolservice.confirm({
-    title: isActive ? '¿Desactivar subcategoría?' : '¿Restaurar subcategoría?',
-    text: isActive
-      ? `La subcategoría "${sub.name_subcategory}" quedará inactiva`
-      : `La subcategoría "${sub.name_subcategory}" será restaurada`,
-    confirmText: isActive ? 'Desactivar' : 'Restaurar',
-    icon: 'warning'
-  }).then(confirmed => {
-    if (!confirmed) return;
+    this.toolservice.confirm({
+      title: isActive ? '¿Desactivar subcategoría?' : '¿Restaurar subcategoría?',
+      text: isActive
+        ? `La subcategoría "${sub.name_subcategory}" quedará inactiva`
+        : `La subcategoría "${sub.name_subcategory}" será restaurada`,
+      confirmText: isActive ? 'Desactivar' : 'Restaurar',
+      icon: 'warning'
+    }).then(confirmed => {
+      if (!confirmed) return;
 
-    this.subcategoryService.toggle(sub.id_subcategory).subscribe({
-      next: () => {
-        sub.isActive = !isActive;
-        sub.state_subcategory = sub.isActive ? 1 : 0;
+      this.subcategoryService.toggle(sub.id_subcategory).subscribe({
+        next: () => {
+          sub.isActive = !isActive;
+          sub.state_subcategory = sub.isActive ? 1 : 0;
 
-        this.applyFiltersAndOrder();
+          this.applyFiltersAndOrder();
 
-        this.uiMessage.show(
-          isActive
-            ? 'Subcategoría desactivada correctamente'
-            : 'Subcategoría restaurada correctamente',
-          'success'
-        );
+          this.uiMessage.show(
+            isActive
+              ? 'Subcategoría desactivada correctamente'
+              : 'Subcategoría restaurada correctamente',
+            'success'
+          );
 
-        this.toolservice.notifyUpdate();
-      },
-      error: (err) => {
-        this.uiMessage.show(
-          err?.error?.message || 'Error al actualizar la subcategoría',
-          'warning'
-        );
-      }
+          this.toolservice.notifyUpdate();
+        },
+        error: (err) => {
+          this.uiMessage.show(
+            err?.error?.message || 'Error al actualizar la subcategoría',
+            'warning'
+          );
+        }
+      });
     });
-  });
-}
+  }
 
   applyFiltersAndOrder(): void {
     const search = this.searchSubcategories.toLowerCase();

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { User } from '../../../../models/user.model';
 import { userService } from '../../../../services/user.service';
 import { UiMessageService } from '../../../../services/ui-message.service';
+import { RoleService } from '../../../../services/role.service';
 
 @Component({
   selector: 'app-modal-edit-user',
@@ -17,14 +18,19 @@ export class ModalEditUserComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
   form!: User;
+  rolesList: any[] = [];
 
   constructor(
-    private userService: userService, 
-    private uiMessage: UiMessageService
-  ) {}
+    private userService: userService,
+    private uiMessage: UiMessageService,
+    private roleService: RoleService
+  ) { }
 
   ngOnInit(): void {
     this.form = { ...this.user };
+    this.userService.getAll();
+    this.roleService.roles$.subscribe(data => this.rolesList = data);
+    this.roleService.loadRoles();
   }
 
   submit(): void {
@@ -36,7 +42,7 @@ export class ModalEditUserComponent implements OnInit {
     this.userService.update(this.form.id_user!, this.form).subscribe({
       next: () => {
         this.uiMessage.show('Usuario actualizado correctamente', 'success');
-        this.update.emit(); // Notifica al padre para cerrar y recargar
+        this.update.emit();
       },
       error: (err) => {
         console.error('Error al actualizar:', err);

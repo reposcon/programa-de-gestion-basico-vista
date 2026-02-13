@@ -54,6 +54,7 @@ export class ModalAddProductComponent {
         'warning'
       );
       console.error('Error al crear producto', err);
+      this.resetForm();
     }
   });
 }

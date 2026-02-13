@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { LoadingInterceptor } from './core/loading/loading.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Librerías externas
@@ -70,14 +71,19 @@ import { ModalAddUserComponent } from './shared/modals/modals users/modal-add-us
 
     {
       provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,
       multi: true
     },
     {
-    provide: HTTP_INTERCEPTORS,
-    useClass: ErrorInterceptor,
-    multi: true
-  }
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true
+    }
 
   ],
   bootstrap: [AppComponent]

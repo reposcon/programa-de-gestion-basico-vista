@@ -19,7 +19,7 @@ export class AdminGuard implements CanActivate {
       return false;
     }
 
-    if (user.rol !== 'admin') {
+    if (user.id_role !== 1) {
       this.uiMessage.show(
         'No puedes acceder a esta sección porque no tienes permisos',
         'warning'

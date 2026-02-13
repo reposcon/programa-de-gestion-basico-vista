@@ -1,23 +1,29 @@
 <div class="modal fade" id="modalCategoria" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-      
-      <div class="modal-header bg-gradient-success border-0 py-3 px-4 d-flex align-items-center" 
-           style="background: linear-gradient(135deg, #198754, #146c43);">
+
+      <div
+        class="modal-header bg-gradient-success border-0 py-3 px-4 d-flex align-items-center"
+        style="background: linear-gradient(135deg, #198754, #146c43);">
         <h5 class="modal-title text-white fw-bold d-flex align-items-center">
-          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-             <i class="fas fa-tags text-success" style="font-size: 0.9rem;"></i>
+          <div
+            class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
+            style="width: 35px; height: 35px;">
+            <i class="fas fa-tags text-success" style="font-size: 0.9rem;"></i>
           </div>
           Nueva Categoría
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white"
+          data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <form (ngSubmit)="save()">
         <div class="modal-body p-4">
-          
+
           <div class="mb-4">
-            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+            <label
+              class="form-label small fw-bold text-muted text-uppercase mb-2"
+              style="letter-spacing: 0.5px;">
               Nombre de la Categoría
             </label>
             <div class="input-group">
@@ -35,7 +41,9 @@
           </div>
 
           <div class="mb-2">
-            <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+            <label
+              class="form-label small fw-bold text-muted text-uppercase mb-2"
+              style="letter-spacing: 0.5px;">
               Estado del Registro
             </label>
             <div class="input-group">
@@ -43,8 +51,8 @@
                 <i class="fas fa-toggle-on"></i>
               </span>
               <select class="form-select bg-light border-0 py-2 ps-2 fw-medium"
-                      [(ngModel)]="categoryEdit.state_category"
-                      name="state_category">
+                [(ngModel)]="categoryEdit.state_category"
+                name="state_category">
                 <option [value]="1">Activo</option>
                 <option [value]="0">Inactivo</option>
               </select>
@@ -54,11 +62,15 @@
         </div>
 
         <div class="modal-footer border-top-0 px-4 pb-4 pt-0 gap-2">
-          <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" data-bs-dismiss="modal">
+          <button type="button"
+            class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm"
+            data-bs-dismiss="modal">
             Cancelar
           </button>
-          <button type="submit" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
-                  [disabled]="!categoryEdit.name_category">
+          <button type="submit"
+            class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
+            [disabled]="!categoryEdit.name_category"
+            data-bs-dismiss="modal">
             <i class="fas fa-check-circle me-2"></i>Guardar Categoría
           </button>
         </div>
