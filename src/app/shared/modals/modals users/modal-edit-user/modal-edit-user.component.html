@@ -10,8 +10,7 @@
           <div
             class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
             style="width: 38px; height: 38px;">
-            <i class="bi bi-pencil-square text-warning"
-              style="font-size: 1.1rem;"></i>
+            <i class="fas fa-edit text-warning" style="font-size: 0.9rem;"></i>
           </div>
           Editar Usuario
         </h5>
@@ -65,7 +64,8 @@
                   class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
                   [(ngModel)]="form.id_role"
                   name="id_role">
-                  <option [value]="undefined" disabled selected>Selecciona un
+                  <option [value]="undefined" disabled selected>
+                    <span></span>Selecciona un
                     rol</option> <option *ngFor="let rol of rolesList"
                     [value]="rol.id_role">
                     {{ rol.name_role }}
@@ -79,9 +79,6 @@
                 class="form-label fw-bold small text-muted text-uppercase mb-2"
                 style="letter-spacing: 0.5px;">Estado</label>
               <div class="input-group">
-                <span
-                  class="input-group-text bg-light border-0 ps-3 text-muted"><i
-                    class="bi bi-toggle-on"></i></span>
                 <select
                   class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
                   [(ngModel)]="form.state_user" name="state_user">

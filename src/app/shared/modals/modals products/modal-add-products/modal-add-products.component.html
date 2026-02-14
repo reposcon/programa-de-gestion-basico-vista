@@ -1,29 +1,41 @@
-<div class="modal fade" id="modalAddProd" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+<div class="modal fade" id="modalAddProd" tabindex="-1" aria-hidden="true"
+    data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
-            
-            <div class="modal-header border-0 py-3 px-4 d-flex align-items-center" 
-                 style="background: linear-gradient(135deg, #198754, #146c43);">
-                <h5 class="modal-title text-white fw-bold d-flex align-items-center">
-                    <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm" style="width: 35px; height: 35px;">
-                        <i class="fas fa-box text-success" style="font-size: 0.9rem;"></i>
+
+            <div
+                class="modal-header border-0 py-3 px-4 d-flex align-items-center"
+                style="background: linear-gradient(135deg, #198754, #146c43);">
+                <h5
+                    class="modal-title text-white fw-bold d-flex align-items-center">
+                    <div
+                        class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
+                        style="width: 35px; height: 35px;">
+                        <i class="fas fa-box text-success"
+                            style="font-size: 0.9rem;"></i>
                     </div>
                     Nuevo Producto
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close" (click)="resetForm()"></button>
+                <button type="button" class="btn-close btn-close-white"
+                    data-bs-dismiss="modal" aria-label="Close"
+                    (click)="resetForm()"></button>
             </div>
 
             <div class="modal-body p-4">
-                
+
                 <div class="mb-3">
-                    <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                    <label
+                        class="form-label small fw-bold text-muted text-uppercase mb-2"
+                        style="letter-spacing: 0.5px;">
                         Nombre del Producto
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light border-0 ps-3 text-muted">
-                            <i class="fas fa-shopping-cart"></i>
+                        <span
+                            class="input-group-text bg-light border-0 ps-3 text-muted">
+                            <i class="fas fa-box me-2"></i>
                         </span>
-                        <input type="text" class="form-control bg-light border-0 py-2 ps-2"
+                        <input type="text"
+                            class="form-control bg-light border-0 py-2 ps-2"
                             [(ngModel)]="prod.name_product" name="name_product"
                             placeholder="Ej: Camiseta de Algodón">
                     </div>
@@ -31,18 +43,24 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2"
+                            style="letter-spacing: 0.5px;">
                             Categoría
                         </label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-0 ps-3 text-muted">
-                                <i class="fas fa-layer-group"></i>
+                            <span
+                                class="input-group-text bg-light border-0 ps-3 text-muted">
+                                <i class="fas fa-tags me-2"></i>
                             </span>
-                            <select class="form-select bg-light border-0 py-2 ps-2" 
-                                    [(ngModel)]="prod.category_id"
-                                    (change)="prod.subcategory_id = null">
-                                <option [ngValue]="null" disabled>Seleccionar...</option>
-                                <option *ngFor="let c of categories" [value]="c.id_category">
+                            <select
+                                class="form-select bg-light border-0 py-2 ps-2"
+                                [(ngModel)]="prod.category_id"
+                                (change)="prod.subcategory_id = null">
+                                <option [ngValue]="null"
+                                    disabled>Seleccionar...</option>
+                                <option *ngFor="let c of categories"
+                                    [value]="c.id_category">
                                     {{ c.name_category }}
                                 </option>
                             </select>
@@ -50,18 +68,25 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2"
+                            style="letter-spacing: 0.5px;">
                             Subcategoría
                         </label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-0 ps-3 text-muted">
-                                <i class="fas fa-stream"></i>
+                            <span
+                                class="input-group-text bg-light border-0 ps-3 text-muted">
+                                <i class="fas fa-layer-group me-2"></i>
                             </span>
-                            <select class="form-select bg-light border-0 py-2 ps-2"
-                                    [(ngModel)]="prod.subcategory_id"
-                                    [disabled]="!prod.category_id">
-                                <option [ngValue]="null" disabled>Seleccionar...</option>
-                                <option *ngFor="let s of subcategoryActiveFiltered" [value]="s.id_subcategory">
+                            <select
+                                class="form-select bg-light border-0 py-2 ps-2"
+                                [(ngModel)]="prod.subcategory_id"
+                                [disabled]="!prod.category_id">
+                                <option [ngValue]="null"
+                                    disabled>Seleccionar...</option>
+                                <option
+                                    *ngFor="let s of subcategoryActiveFiltered"
+                                    [value]="s.id_subcategory">
                                     {{ s.name_subcategory }}
                                 </option>
                             </select>
@@ -70,15 +95,19 @@
                 </div>
 
                 <div class="mb-2">
-                    <label class="form-label small fw-bold text-muted text-uppercase mb-2" style="letter-spacing: 0.5px;">
+                    <label
+                        class="form-label small fw-bold text-muted text-uppercase mb-2"
+                        style="letter-spacing: 0.5px;">
                         Estado Inicial
                     </label>
                     <div class="input-group">
-                        <span class="input-group-text bg-light border-0 ps-3 text-muted">
+                        <span
+                            class="input-group-text bg-light border-0 ps-3 text-muted">
                             <i class="fas fa-check-circle"></i>
                         </span>
-                        <select class="form-select bg-light border-0 py-2 ps-2 fw-medium"
-                                [(ngModel)]="prod.state_product">
+                        <select
+                            class="form-select bg-light border-0 py-2 ps-2 fw-medium"
+                            [(ngModel)]="prod.state_product">
                             <option [value]="1">Activo</option>
                             <option [value]="0">Inactivo</option>
                         </select>
@@ -87,14 +116,16 @@
             </div>
 
             <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
-                <button type="button" class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm" 
-                        data-bs-dismiss="modal" (click)="resetForm()">
+                <button type="button"
+                    class="btn btn-light rounded-pill px-4 fw-bold text-muted border shadow-sm"
+                    data-bs-dismiss="modal" (click)="resetForm()">
                     Cancelar
                 </button>
-                <button type="button" class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
-                        data-bs-dismiss="modal" 
-                        (click)="save()"
-                        [disabled]="!prod.name_product || !prod.category_id">
+                <button type="button"
+                    class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
+                    data-bs-dismiss="modal"
+                    (click)="save()"
+                    [disabled]="!prod.name_product || !prod.category_id">
                     <i class="fas fa-plus-circle me-2"></i>Crear Producto
                 </button>
             </div>

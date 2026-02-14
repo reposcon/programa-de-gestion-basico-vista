@@ -21,13 +21,6 @@
         <span class="status-dot-pulse me-2"></span>
         <span class="status-text fw-bold">{{ userlogged.state_user === 1 ? 'Online' : 'Offline' }}</span>
       </div>
-      
-      <button *ngIf="authService.hasPermission('create_users')" 
-              class="btn btn-sm btn-outline-primary rounded-circle" 
-              title="Acceso rápido: Nuevo Usuario">
-        <i class="fas fa-user-plus"></i>
-      </button>
-
     </div>
 
   </div>
