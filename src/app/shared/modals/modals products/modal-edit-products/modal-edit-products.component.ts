@@ -15,6 +15,7 @@ declare var bootstrap: any;
   styleUrl: './modal-edit-products.component.css'
 })
 
+
 export class ModalEditProductsComponent {
 
   @Input() productEdit: Partial<Product> = {};
@@ -29,6 +30,16 @@ export class ModalEditProductsComponent {
     private uiMessage: UiMessageService
   ) { }
 
+
+  get filteredSubcategories(): Subcategory[] {
+    const selectedCatId = this.productEdit.category_id;
+    if (!selectedCatId) return [];
+
+    return this.subcategories.filter(s => s.category_id == selectedCatId);
+  }
+  onCategoryChange(): void {
+    this.productEdit.subcategory_id = undefined;
+  }
   update(): void {
     if (!this.productEdit.id_product) return;
 
@@ -53,7 +64,4 @@ export class ModalEditProductsComponent {
       }
     });
   }
-
-
-
 }

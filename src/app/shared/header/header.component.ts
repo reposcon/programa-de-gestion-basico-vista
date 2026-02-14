@@ -13,17 +13,17 @@ export class HeaderComponent implements OnInit {
   userSub: any = {};
   userlogged: any = {};
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router
 
   ) { }
 
   ngOnInit(): void {
+
     this.authService.currentUser$.subscribe(user => {
       this.userlogged = user;
     });
   }
-
   openHome() {
     if (this.userlogged) {
       this.router.navigate(['/home']);

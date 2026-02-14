@@ -5,6 +5,7 @@ import { userService } from '../../../services/user.service';
 import { Category } from '../../../models/category.model';
 import { ToolService } from '../../../services/tool.service';
 import { UiMessageService } from '../../../services/ui-message.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-category-page',
@@ -33,15 +34,24 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
     private categoryService: CategoryServiceService,
     private userService: userService,
     private toolservice: ToolService,
-    private uiMessage: UiMessageService
+    private uiMessage: UiMessageService,
+    public authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.getCategories();
-    this.toolservice.update$.subscribe(() => this.getCategories());
-    this.userSub = this.userService.userObservable$.subscribe(user => this.userlogged = user);
-  }
+    this.userSub = this.userService.userObservable$.subscribe(user => {
+      this.userlogged = user;
+      if (this.userlogged && this.authService.hasPermission('view_categories')) {
+        this.getCategories();
+      }
+    });
 
+    this.toolservice.update$.subscribe(() => {
+      if (this.authService.hasPermission('view_categories')) {
+        this.getCategories();
+      }
+    });
+  }
   ngOnDestroy(): void {
     this.userSub?.unsubscribe();
   }

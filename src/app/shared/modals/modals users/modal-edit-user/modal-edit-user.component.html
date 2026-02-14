@@ -49,7 +49,8 @@
                   class="bi bi-key"></i></span>
               <input type="password"
                 class="form-control bg-light border-0 py-2 ps-2"
-                [(ngModel)]="form.password_user" name="password_user"
+                [(ngModel)]="form.password_user"
+                name="password_user"
                 placeholder="Dejar en blanco para no cambiar">
             </div>
           </div>
@@ -60,16 +61,16 @@
                 class="form-label fw-bold small text-muted text-uppercase mb-2"
                 style="letter-spacing: 0.5px;">Rol</label>
               <div class="input-group">
-                 <select
-                class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
-                [(ngModel)]="form.id_role"
-                name="role_id">
-                <option [value]="undefined" disabled selected>Selecciona un
-                  rol</option> <option *ngFor="let rol of rolesList"
-                  [value]="rol.id_role">
-                  {{ rol.name_role }}
-                </option>
-              </select>
+                <select
+                  class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
+                  [(ngModel)]="form.id_role"
+                  name="id_role">
+                  <option [value]="undefined" disabled selected>Selecciona un
+                    rol</option> <option *ngFor="let rol of rolesList"
+                    [value]="rol.id_role">
+                    {{ rol.name_role }}
+                  </option>
+                </select>
               </div>
             </div>
 

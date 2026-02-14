@@ -18,7 +18,6 @@ export class CategoryServiceService {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  // Agrega este:
   create(category: any): Observable<any> {
     return this.http.post(this.apiUrl, category);
   }

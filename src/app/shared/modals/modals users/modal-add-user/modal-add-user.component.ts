@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { User } from '../../../../models/user.model';
 import { userService } from '../../../../services/user.service';
 import { UiMessageService } from '../../../../services/ui-message.service';
@@ -14,6 +14,7 @@ export class ModalAddUserComponent implements OnInit {
 
   @Output() save = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
+  @Input() userlogged: any;
 
   constructor(
     private userService: userService,
@@ -21,18 +22,21 @@ export class ModalAddUserComponent implements OnInit {
     private roleService: RoleService
   ) { }
 
+  roles: Role[] = [];
   form: User = {
     name_user: '',
-    password_user: '',
-    id_role: 0,
-    state_user: 0,
-    name_role: '',
-    state_role: 0
+    state_user: 1,
+    id_role: [2],
+    name_role: ['Cliente'],
+    permissions: []
   };
   rolesList: Role[] = [];
   ngOnInit(): void {
+    this.roleService.roles$.subscribe(roles => {
+      this.roles = roles;
+    });
     this.roleService.roles$.subscribe(data => this.rolesList = data);
-    this.roleService.loadRoles(); 
+    this.roleService.loadRoles();
   }
 
   submit(): void {

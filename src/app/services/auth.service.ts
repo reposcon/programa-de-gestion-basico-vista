@@ -24,12 +24,25 @@ export class AuthService {
     }
   }
 
+  // En tu AuthService o UserService
+  hasPermission(permission: string): boolean {
+    const user = this.getCurrentUser();
+    return !!user && user.permissions?.includes(permission);
+  }
+
+  hasRole(roleName: string): boolean {
+    const user = this.getCurrentUser();
+    return !!user && user.name_role?.[0] === roleName;
+  }
   login(name_user: string, password_user: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { name_user, password_user }).pipe(
       tap((response: any) => {
         if (response && response.access_token) {
+          // Guardamos el token y el usuario
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
+
+          // Notificamos al BehaviorSubject para que toda la app sepa quién entró
           this.currentUserSubject.next(response.user);
         }
       })
@@ -46,12 +59,9 @@ export class AuthService {
 
     this.http.post(`${this.apiUrl}/logout`, {}).subscribe({
       next: () => console.log('Sesión cerrada en servidor'),
-      error: (err) => console.error('Servidor no pudo revocar token (posiblemente ya expiró)'),
-      complete: () => {
-      }
+      error: (err) => console.error('Error al cerrar sesión', err),
+      complete: () => this.clearLocalStorage()
     });
-
-    this.clearLocalStorage();
   }
 
   private clearLocalStorage(): void {

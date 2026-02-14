@@ -13,7 +13,7 @@ import { RoleService } from '../../../../services/role.service';
 export class ModalEditUserComponent implements OnInit {
 
   @Input() user!: User;
-
+  @Input() userlogged: any;
   @Output() update = new EventEmitter<void>();
   @Output() close = new EventEmitter<void>();
 
@@ -39,7 +39,13 @@ export class ModalEditUserComponent implements OnInit {
       return;
     }
 
-    this.userService.update(this.form.id_user!, this.form).subscribe({
+    const dataToSend = { ...this.form };
+
+    if (!dataToSend.password_user || dataToSend.password_user.trim() === '') {
+      delete dataToSend.password_user;
+    }
+
+    this.userService.update(this.form.id_user!, dataToSend).subscribe({
       next: () => {
         this.uiMessage.show('Usuario actualizado correctamente', 'success');
         this.update.emit();

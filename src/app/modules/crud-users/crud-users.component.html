@@ -1,17 +1,22 @@
 <app-header></app-header>
 
 <div class="dashboard-container p-4 bg-light min-vh-100">
-  
-  <div class="action-bar d-flex justify-content-between align-items-center mb-4 p-4 bg-white shadow-sm rounded-4">
+
+  <div
+    class="action-bar d-flex justify-content-between align-items-center mb-4 p-4 bg-white shadow-sm rounded-4">
     <div class="action-title">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-1">
-          <li class="breadcrumb-item"><a routerLink="/home" class="text-decoration-none text-muted small">Inicio</a></li>
-          <li class="breadcrumb-item active fw-bold small text-success" aria-current="page">Usuarios</li>
+          <li class="breadcrumb-item"><a routerLink="/home"
+              class="text-decoration-none text-muted small">Inicio</a></li>
+          <li class="breadcrumb-item active fw-bold small text-success"
+            aria-current="page">Usuarios</li>
         </ol>
       </nav>
       <div class="d-flex align-items-center">
-        <button class="btn btn-light btn-sm rounded-circle me-3 shadow-sm border" routerLink="/home">
+        <button
+          class="btn btn-light btn-sm rounded-circle me-3 shadow-sm border"
+          routerLink="/home">
           <i class="bi bi-arrow-left"></i>
         </button>
         <h2 class="m-0 fw-bold text-dark h4">Gestión de Usuarios</h2>
@@ -19,18 +24,22 @@
     </div>
 
     <div class="action-tools d-flex align-items-center gap-3">
-      <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm" 
-              *ngIf="userlogged?.role === 'admin'" 
-              (click)="openAddModal()">
+      <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
+        *ngIf="userlogged?.id_role === 1 || authService.hasPermission('create_users')"
+        (click)="openAddModal()">
         <i class="bi bi-plus-lg me-2"></i> Añadir Usuario
       </button>
 
-      <div class="d-flex align-items-center bg-white px-3 py-1 rounded-pill border shadow-sm">
-        <span class="me-2 text-muted fw-bold text-uppercase" style="font-size: 0.6rem;">Ver:</span>
-        <select class="form-select form-select-sm border-0 bg-transparent fw-bold" 
-                style="width:auto; outline: none; box-shadow: none;" 
-                [(ngModel)]="pageSize" (change)="currentPage=1">
-          <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt }}</option>
+      <div
+        class="d-flex align-items-center bg-white px-3 py-1 rounded-pill border shadow-sm">
+        <span class="me-2 text-muted fw-bold text-uppercase"
+          style="font-size: 0.6rem;">Ver:</span>
+        <select
+          class="form-select form-select-sm border-0 bg-transparent fw-bold"
+          style="width:auto; outline: none; box-shadow: none;"
+          [(ngModel)]="pageSize" (change)="currentPage=1">
+          <option *ngFor="let opt of pageSizeOptions" [value]="opt">{{ opt
+            }}</option>
         </select>
       </div>
     </div>
@@ -42,9 +51,9 @@
         <span class="input-group-text bg-white border-0 ps-3">
           <i class="bi bi-search text-success"></i>
         </span>
-        <input type="text" class="form-control border-0 py-2" 
-               placeholder="Buscar usuario por nombre..."
-               [(ngModel)]="searchUser" (ngModelChange)="filterUsers()" />
+        <input type="text" class="form-control border-0 py-2"
+          placeholder="Buscar usuario por nombre..."
+          [(ngModel)]="searchUser" (ngModelChange)="filterUsers()" />
       </div>
     </div>
 
@@ -53,38 +62,52 @@
         <table class="table table-hover align-middle mb-0">
           <thead class="bg-light">
             <tr>
-              <th class="border-0 rounded-start ps-4 text-muted small fw-bold">NOMBRE</th>
+              <th
+                class="border-0 rounded-start ps-4 text-muted small fw-bold">NOMBRE</th>
               <th class="border-0 text-muted small fw-bold">ROL</th>
               <th class="border-0 text-muted small fw-bold">ESTADO</th>
-              <th class="border-0 text-center rounded-end text-muted small fw-bold" *ngIf="userlogged?.rol === 'admin'">ACCIONES</th>
+              <th
+                class="border-0 text-center rounded-end text-muted small fw-bold"
+                *ngIf="userlogged?.id_role === 1 || authService.hasPermission('update_users') || authService.hasPermission('delete_users')">
+                ACCIONES
+              </th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of paginatedUsers" class="border-bottom-0">
               <td class="ps-4">
                 <div class="d-flex align-items-center">
-                  <div class="bg-success-subtle text-success rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
+                  <div
+                    class="bg-success-subtle text-success rounded-circle p-2 me-3 d-flex align-items-center justify-content-center"
+                    style="width: 35px; height: 35px;">
                     <i class="bi bi-person-fill"></i>
                   </div>
                   <span class="fw-bold text-dark">{{ user.name_user }}</span>
                 </div>
               </td>
-              <td><span class="badge bg-info text-dark border fw-medium px-3">{{ user.rol }}</span></td>
+              <td><span class="badge bg-info text-dark border fw-medium px-3">{{
+                  user.rol }}</span></td>
               <td>
-                <span class="badge rounded-pill px-3 py-2" 
-                      [ngClass]="user.state_user === 1 ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
+                <span class="badge rounded-pill px-3 py-2"
+                  [ngClass]="user.state_user === 1 ? 'bg-success-subtle text-success border border-success-subtle' : 'bg-danger-subtle text-danger border border-danger-subtle'">
                   {{ user.state_user === 1 ? '● Activo' : '● Inactivo' }}
                 </span>
               </td>
-              <td *ngIf="userlogged?.id_role === 1" class="text-center">
+              <td
+                *ngIf="userlogged?.id_role === 1 || authService.hasPermission('update_users') || authService.hasPermission('delete_users')"
+                class="text-center">
                 <div class="d-flex justify-content-center gap-2">
-                  <button class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
-                          (click)="openEditModal(user)" title="Editar">
+                  <button
+                    *ngIf="userlogged?.id_role === 1 || authService.hasPermission('update_users')"
+                    class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
+                    (click)="openEditModal(user)" title="Editar">
                     <i class="bi bi-pencil-fill mx-1"></i>
                   </button>
-                  <button class="btn btn-outline-danger btn-sm rounded-circle shadow-sm p-2"
-                          [disabled]="user.state_user === 0"
-                          (click)="deleteUser(user)" title="Desactivar">
+                  <button
+                    *ngIf="userlogged?.id_role === 1 || authService.hasPermission('delete_users')"
+                    class="btn btn-outline-danger btn-sm rounded-circle shadow-sm p-2"
+                    [disabled]="user.state_user === 0"
+                    (click)="deleteUser(user)" title="Desactivar">
                     <i class="bi bi-trash-fill mx-1"></i>
                   </button>
                 </div>
@@ -94,28 +117,36 @@
         </table>
       </div>
 
-      <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top" *ngIf="filteredUsers.length > 0">
+      <div
+        class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top"
+        *ngIf="filteredUsers.length > 0">
         <p class="text-muted small mb-0">
-          Mostrando <span class="fw-bold text-success">{{ paginatedUsers.length }}</span> de <span class="fw-bold">{{ filteredUsers.length }}</span> registros
+          Mostrando <span class="fw-bold text-success">{{ paginatedUsers.length
+            }}</span> de <span class="fw-bold">{{ filteredUsers.length }}</span>
+          registros
         </p>
 
         <nav>
           <ul class="pagination pagination-sm mb-0 gap-1">
             <li class="page-item" [class.disabled]="currentPage === 1">
-              <a class="page-link rounded-3 border-0 bg-light text-dark shadow-sm"
+              <a
+                class="page-link rounded-3 border-0 bg-light text-dark shadow-sm"
                 (click)="goToPage(currentPage - 1)" style="cursor: pointer;">
                 <i class="bi bi-chevron-left"></i>
               </a>
             </li>
-            
-            <li class="page-item" *ngFor="let p of [].constructor(totalPages); let i = index"
+
+            <li class="page-item"
+              *ngFor="let p of [].constructor(totalPages); let i = index"
               [class.active]="currentPage === (i + 1)">
               <a class="page-link rounded-3 border-0 shadow-sm fw-bold mx-1"
-                (click)="goToPage(i + 1)" style="cursor: pointer;">{{ i + 1 }}</a>
+                (click)="goToPage(i + 1)" style="cursor: pointer;">{{ i + 1
+                }}</a>
             </li>
 
             <li class="page-item" [class.disabled]="currentPage === totalPages">
-              <a class="page-link rounded-3 border-0 bg-light text-dark shadow-sm"
+              <a
+                class="page-link rounded-3 border-0 bg-light text-dark shadow-sm"
                 (click)="goToPage(currentPage + 1)" style="cursor: pointer;">
                 <i class="bi bi-chevron-right"></i>
               </a>
@@ -130,12 +161,14 @@
 <app-footer></app-footer>
 
 <app-modal-add-user *ngIf="showModal"
-  (save)="handleSuccess()" 
+  [userlogged]="userlogged"
+  (save)="handleSuccess()"
   (close)="closeModal()">
 </app-modal-add-user>
 
 <app-modal-edit-user *ngIf="showEditModal"
-  [user]="userToEdit" 
+  [userlogged]="userlogged"
+  [user]="userToEdit"
   (update)="handleSuccess()"
   (close)="closeModal()">
 </app-modal-edit-user>

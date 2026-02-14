@@ -11,16 +11,23 @@
     <div class="header-actions d-flex align-items-center gap-3" *ngIf="userlogged">
       
       <div class="user-info d-flex flex-column text-end">
-        <span class="welcome-text text-muted small fw-medium">Bienvenido,</span>
-        <span class="user-name fw-bold text-dark">{{ userlogged.name_user }}</span>
+        <span class="welcome-text text-muted small fw-medium ">
+          Bienvenido <i class="fw-bold text-primary">{{ userlogged.name_user }}</i>
+        </span>
       </div>
 
       <div class="status-indicator-badge d-flex align-items-center px-3 py-1 rounded-pill shadow-sm"
-           [ngClass]="userlogged.state_user === 1 ? 'status-online' : 'status-offline'">
+            [ngClass]="userlogged.state_user === 1 ? 'status-online' : 'status-offline'">
         <span class="status-dot-pulse me-2"></span>
         <span class="status-text fw-bold">{{ userlogged.state_user === 1 ? 'Online' : 'Offline' }}</span>
       </div>
       
+      <button *ngIf="authService.hasPermission('create_users')" 
+              class="btn btn-sm btn-outline-primary rounded-circle" 
+              title="Acceso rápido: Nuevo Usuario">
+        <i class="fas fa-user-plus"></i>
+      </button>
+
     </div>
 
   </div>

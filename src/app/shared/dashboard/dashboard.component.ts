@@ -15,21 +15,23 @@ export class DashboardComponent implements OnInit {
   userlogged: any = null;
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService, 
     private userService: userService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+   this.userlogged = this.authService.getCurrentUser();
+
     this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
     });
-
   }
 
   openUsers() {
     this.router.navigate(['/usermanagement']);
   }
+
   logout(event?: Event) {
     if (event) {
       event.preventDefault();
@@ -37,5 +39,4 @@ export class DashboardComponent implements OnInit {
     }
     this.authService.logout();
   }
-
 }

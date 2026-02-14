@@ -18,7 +18,7 @@
 
     <div class="action-tools d-flex align-items-center gap-3">
       <button class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
-        *ngIf="userlogged?.id_role === 1"
+        *ngIf="userlogged?.permissions?.includes('create_subcategories')"
         (click)="openAddModal()"
         data-bs-toggle="modal"
         data-bs-target="#modalAddSub">
@@ -90,9 +90,9 @@
                   {{ sub.state_subcategory === 1 ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-              <td *ngIf="userlogged?.id_role === 1" class="text-center">
+              <td class="text-center">
                 <div class="d-flex justify-content-center gap-2">
-                  <button
+                  <button *ngIf="userlogged?.permissions?.includes('update_subcategories')"
                     class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
                     title="Editar"
                     (click)="openEditModal(sub)"
@@ -101,7 +101,8 @@
                     <i class="bi bi-pencil-fill mx-1"></i>
                   </button>
 
-                  <button class="btn btn-sm rounded-circle shadow-sm p-2 border"
+                  <button *ngIf="userlogged?.permissions?.includes('delete_subcategories')"
+                  class="btn btn-sm rounded-circle shadow-sm p-2 border"
                     [title]="sub.state_subcategory === 1 ? 'Desactivar' : 'Activar'"
                     [ngClass]="sub.state_subcategory === 1 
                    ? 'btn-outline-danger' 

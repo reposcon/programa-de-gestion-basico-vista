@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { userService } from '../../services/user.service';
 import { UiMessageService } from '../../services/ui-message.service';
 import { ToolService } from '../../services/tool.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-crud-users',
@@ -16,8 +17,8 @@ export class CrudUsersComponent implements OnInit {
   filteredUsers: any[] = [];
   searchUser: string = '';
 
-  showModal: boolean = false;    
-  showEditModal: boolean = false;  
+  showModal: boolean = false;
+  showEditModal: boolean = false;
   userToEdit: any = {};
 
   pageSize = 5;
@@ -27,21 +28,23 @@ export class CrudUsersComponent implements OnInit {
   constructor(
     private userService: userService,
     private uiMessage: UiMessageService,
-    private toolService: ToolService
+    private toolService: ToolService,
+    public authService: AuthService
   ) { }
-
   ngOnInit() {
     this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
+      if (this.userlogged && (this.userlogged.id_role === 1 || this.authService.hasPermission('view_users'))) {
+        this.loadUsers();
+      }
     });
-    this.loadUsers();
   }
 
   loadUsers() {
     this.userService.getAll().subscribe({
       next: data => {
         this.users = data.sort((a: any, b: any) => b.state_user - a.state_user);
-        
+
         if (this.userlogged?.id_role === 2) {
           this.users = [this.userlogged];
         }
@@ -66,7 +69,7 @@ export class CrudUsersComponent implements OnInit {
   closeModal(): void {
     this.showModal = false;
     this.showEditModal = false;
-    this.userToEdit = {}; 
+    this.userToEdit = {};
   }
 
   handleSuccess(): void {

@@ -20,31 +20,31 @@ export class ModalEditSubcategoriesComponent {
   constructor(private subcategoryService: SubcategoryServiceService
     , private toolservice: ToolService
     , private uiMessage: UiMessageService
-  ) {}
+  ) { }
 
- update(): void {
-  if (!this.subEdit.id_subcategory) return;
+  update(): void {
+    if (!this.subEdit.id_subcategory) return;
 
-  this.subcategoryService
-    .update(this.subEdit.id_subcategory, this.subEdit)
-    .subscribe({
-      next: () => {
-        this.uiMessage.show(
-          'Subcategoría actualizada correctamente',
-          'success'
-        );
+    this.subcategoryService
+      .update(this.subEdit.id_subcategory, this.subEdit)
+      .subscribe({
+        next: () => {
+          this.uiMessage.show(
+            'Subcategoría actualizada correctamente',
+            'success'
+          );
 
-        this.toolservice.notifyUpdate();
-      },
-      error: err => {
-        this.uiMessage.show(
-          err?.error?.message || 'Error al actualizar la subcategoría',
-          'warning'
-        );
-        console.error('Error al actualizar subcategoría:', err);
-      }
-    });
-}
+          this.toolservice.notifyUpdate();
+        },
+        error: err => {
+          this.uiMessage.show(
+            err?.error?.message || 'Error al actualizar la subcategoría',
+            'warning'
+          );
+          console.error('Error al actualizar subcategoría:', err);
+        }
+      });
+  }
 
 
 }
