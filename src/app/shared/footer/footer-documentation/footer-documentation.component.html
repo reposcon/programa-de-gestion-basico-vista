@@ -1,0 +1,109 @@
+<div class="modal fade" id="documentationModal" tabindex="-1" aria-labelledby="documentationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white p-4">
+                <h5 class="modal-title" id="documentationLabel">
+                    <i class="bi bi-shield-check me-2"></i> Seguridad y Uso: AdminPanel
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="d-flex align-items-start doc-container">
+                    <div class="nav flex-column nav-pills me-3 p-3 bg-light border-end" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active mb-2 text-start" id="tab-matrix" data-bs-toggle="pill" data-bs-target="#content-matrix" type="button" role="tab"><i class="bi bi-person-badge me-2"></i> Roles y Acceso</button>
+                        <button class="nav-link mb-2 text-start" id="tab-users" data-bs-toggle="pill" data-bs-target="#content-users" type="button" role="tab"><i class="bi bi-people me-2"></i> Gestión de Usuarios</button>
+                        <button class="nav-link mb-2 text-start" id="tab-categories" data-bs-toggle="pill" data-bs-target="#content-categories" type="button" role="tab"><i class="bi bi-tags me-2"></i> Catálogo (Cat/Sub)</button>
+                        <button class="nav-link mb-2 text-start" id="tab-products" data-bs-toggle="pill" data-bs-target="#content-products" type="button" role="tab"><i class="bi bi-box-seam me-2"></i> Productos</button>
+                    </div>
+
+                    <div class="tab-content p-4 w-100" id="v-pills-tabContent">
+                        
+                        <div class="tab-pane fade show active" id="content-matrix" role="tabpanel">
+                            <h4 class="mb-3 text-primary">Matriz de Permisos</h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Módulo</th>
+                                            <th class="text-center">Admin</th>
+                                            <th class="text-center">Client</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Vista Principal e Inventario</td>
+                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
+                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Gestión de Roles y Usuarios</td>
+                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
+                                            <td class="text-center text-danger"><i class="bi bi-x-circle-fill"></i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Crear/Editar/Borrar (Todo)</td>
+                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
+                                            <td class="text-center text-danger"><i class="bi bi-x-circle-fill"></i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="alert alert-info py-2 mt-2">
+                                <small><b>Nota:</b> El rol <b>Client</b> tiene permisos de solo lectura (`view_`) en el catálogo.</small>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="content-users" role="tabpanel">
+                            <h4 class="mb-3 text-primary">Usuarios y Roles</h4>
+                            <p>Permisos técnicos asignados:</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-secondary">view_roles</span>
+                                <span class="badge bg-secondary">create_roles</span>
+                                <span class="badge bg-secondary">update_roles</span>
+                                <span class="badge bg-secondary">delete_roles</span>
+                            </div>
+                            <div class="card border-start border-primary border-4 p-3 shadow-sm">
+                                <b>Importante:</b> Solo los usuarios con `manage_users` pueden modificar la estructura de acceso.
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="content-categories" role="tabpanel">
+                            <h4 class="mb-3 text-primary">Categorías y Subcategorías</h4>
+                            <p>Control de jerarquía:</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><b>Subcategorías:</b> Dependen de una Categoría activa.</li>
+                                <li class="list-group-item text-muted small">Permisos: `view_subcategories`, `create_subcategories`, etc.</li>
+                            </ul>
+                            <div class="alert alert-warning mt-3">
+                                ⚠️ <b>Cascada:</b> Al usar `delete_categories`, se desactivan sus hijos automáticamente.
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="content-products" role="tabpanel">
+                            <h4 class="mb-3 text-primary">Productos</h4>
+                            <p>Gestión del inventario final:</p>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 border rounded bg-light">
+                                        <h6><i class="bi bi-eye"></i> Lectura</h6>
+                                        <small>Disponible para todos los roles (Admin/Client).</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 border rounded bg-light">
+                                        <h6><i class="bi bi-pencil-square"></i> Escritura</h6>
+                                        <small>Reservado para `create_products` y `update_products` (Admin).</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cerrar Documentación</button>
+            </div>
+        </div>
+    </div>
+</div>

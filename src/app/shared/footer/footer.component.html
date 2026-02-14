@@ -1,40 +1,43 @@
-<footer class="footer bg-white border-top py-4 mt-auto">
-  <div
-    class="footer-container container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between px-4">
-
-    <div class="footer-info mb-3 mb-md-0">
-      <p class="mb-0 text-muted fw-medium small">
-        &copy; {{ currentYear }} <span
-          class="text-primary fw-bold">AdminPanel</span>.
-        <span class="d-none d-sm-inline opacity-75">Gestión Interna
-          Privada.</span>
-      </p>
-    </div>
-
-    <div
-      class="footer-meta d-flex flex-wrap align-items-center justify-content-center gap-3">
-
-      <div class="footer-links d-flex gap-4 ms-md-2">
-        <a href="#"
-          class="text-decoration-none text-muted small footer-link-item">
-          <i class="bi bi-shield-lock-fill me-1 text-primary"></i> Seguridad
-        </a>
-        <a href="#"
-          class="text-decoration-none text-muted small footer-link-item">
-          <i class="bi bi-headset me-1 text-primary"></i> Soporte
-        </a>
-        <a href="#" class="text-decoration-none text-muted small footer-link-item hover-opacity" title="Manual de uso">
-          <i class="bi bi-book me-1 text-primary"></i> Documentación
-        </a>
+<footer class="footer bg-white border-top py-3 mt-auto shadow-sm">
+  <div class="container-fluid px-4">
+    <div class="row align-items-center gy-3">
+      
+      <div class="col-12 col-md-4 text-center text-md-start">
+        <div class="d-flex align-items-center justify-content-center justify-content-md-start mb-1">
+          <div class="bg-primary bg-opacity-10 p-2 rounded-3 me-2">
+            <i class="bi bi-shield-check text-primary lh-1"></i>
+          </div>
+          <span class="fw-bold text-dark mb-0">AdminPanel</span>
+          <span class="mx-2 text-muted opacity-25">|</span>
+          <span class="small text-muted fw-medium">v{{ appVersion }}</span>
+        </div>
+        <p class="mb-0 text-muted extra-small">
+          &copy; {{ currentYear }} <span class="fw-semibold">Roger Stiven</span>. 
+          <span class="d-none d-lg-inline text-opacity-50">Todos los derechos reservados.</span>
+        </p>
       </div>
 
-      <div
-        class="d-flex align-items-center bg-light border rounded-pill px-3 py-1">
-        <span class="bg-success rounded-circle me-2 blink-animation"
-          style="width: 8px; height: 8px;"></span>
-        <span class="text-secondary fw-bold"
-          style="font-size: 0.65rem; letter-spacing: 0.5px;">SISTEMA ACTIVO
-          v1.0</span>
+      <div class="col-12 col-md-4">
+        <div class="d-flex justify-content-center gap-3 gap-lg-4">
+          <a href="#" class="footer-link-custom" data-bs-toggle="modal" data-bs-target="#supportModal">
+            <i class="bi bi-headset"></i> Soporte
+          </a>
+          <a href="#" class="footer-link-custom" data-bs-toggle="modal" data-bs-target="#documentationModal">
+            <i class="bi bi-journal-text"></i> Guía
+          </a>
+          <a href="#" class="footer-link-custom" data-bs-toggle="modal" data-bs-target="#privacyModal">
+            <i class="bi bi-file-earmark-lock"></i> Privacidad
+          </a>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 d-flex justify-content-center justify-content-md-end">
+        <div class="status-pill d-flex align-items-center bg-light border px-3 py-1 rounded-pill">
+          <div class="pulse-indicator me-2"></div>
+          <span class="text-uppercase fw-bold text-secondary" style="font-size: 0.7rem; letter-spacing: 1px;">
+            Sistema Operativo
+          </span>
+        </div>
       </div>
 
     </div>

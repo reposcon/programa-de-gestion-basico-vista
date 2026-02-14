@@ -1,0 +1,88 @@
+/* Contenedor principal de la doc */
+.doc-container {
+    min-height: 450px;
+}
+
+/* Menú lateral de pestañas */
+#v-pills-tab {
+    width: 240px;
+    height: 100%;
+}
+
+#v-pills-tab .nav-link {
+    border-radius: 8px;
+    color: #495057;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+#v-pills-tab .nav-link:hover {
+    background-color: #e9ecef;
+}
+
+#v-pills-tab .nav-link.active {
+    background-color: #ffffff;
+    color: #0d6efd;
+    border-color: #dee2e6;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* Tarjetas internas de la doc */
+.doc-card {
+    border-radius: 12px;
+    transition: transform 0.2s;
+}
+
+.doc-card:hover {
+    transform: scale(1.01);
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .doc-container {
+        flex-direction: column;
+    }
+    #v-pills-tab {
+        width: 100%;
+        border-end: none !important;
+        border-bottom: 1px solid #dee2e6;
+        flex-direction: row !important;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    #v-pills-tab .nav-link {
+        margin-right: 10px;
+    }
+}
+
+/* Estilos para la tabla de roles */
+.table td, .table th {
+    padding: 1rem;
+    font-size: 0.95rem;
+}
+
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.bi-check-circle-fill {
+    font-size: 1.2rem;
+    color: #198754;
+}
+
+.bi-x-circle-fill {
+    font-size: 1.2rem;
+    color: #dc3545;
+    opacity: 0.6;
+}
+
+/* Badge de permisos técnicos */
+.badge.bg-secondary {
+    background-color: #f0f2f5 !important;
+    color: #495057;
+    border: 1px solid #dee2e6;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 500;
+}

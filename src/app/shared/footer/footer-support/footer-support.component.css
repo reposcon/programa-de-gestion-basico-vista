@@ -1,0 +1,65 @@
+/* Estilos para el Modal de Soporte */
+.modal-support-custom {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.modal-support-custom .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #f0f0f0;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.contact-item:not(.no-hover):hover {
+    background-color: #f8f9fa;
+    border-color: #0d6efd;
+    transform: translateY(-2px);
+    color: #0d6efd;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+/* Colores de fondo suaves para los iconos */
+.bg-primary-light { background-color: rgba(13, 110, 253, 0.1); }
+.bg-success-light { background-color: rgba(25, 135, 84, 0.1); }
+.bg-info-light    { background-color: rgba(13, 202, 240, 0.1); }
+.bg-warning-light { background-color: rgba(255, 193, 7, 0.1); }
+
+.btn-light-secondary {
+    background-color: #f1f3f5;
+    color: #495057;
+    border: none;
+    font-weight: 600;
+    padding: 10px;
+}
+
+.btn-light-secondary:hover {
+    background-color: #e9ecef;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 576px) {
+    .modal-support-custom .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}

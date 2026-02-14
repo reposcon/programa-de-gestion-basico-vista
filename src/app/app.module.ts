@@ -35,6 +35,9 @@ import { ModalEditSubcategoriesComponent } from './shared/modals/modals subcateg
 import { ModalAddCategoriesComponent } from './shared/modals/modals categories/modal-add-categories/modal-add-categories.component';
 import { ModalEditUserComponent } from './shared/modals/modals users/modal-edit-user/modal-edit-user.component';
 import { ModalAddUserComponent } from './shared/modals/modals users/modal-add-user/modal-add-user.component';
+import { FooterDocumentationComponent } from './shared/footer/footer-documentation/footer-documentation.component';
+import { FooterSupportComponent } from './shared/footer/footer-support/footer-support.component';
+import { FooterPrivacityComponent } from './shared/footer/footer-privacity/footer-privacity.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import { ModalAddUserComponent } from './shared/modals/modals users/modal-add-us
     CategoryPageComponent,
     CrudUsersComponent,
     ModalEditUserComponent,
-    ModalAddUserComponent
+    ModalAddUserComponent,
+    FooterDocumentationComponent,
+    FooterSupportComponent,
+    FooterPrivacityComponent
   ],
   imports: [
     BrowserModule,

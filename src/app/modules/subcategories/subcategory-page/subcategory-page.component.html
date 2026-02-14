@@ -107,7 +107,6 @@
                     [ngClass]="sub.state_subcategory === 1 
                    ? 'btn-outline-danger' 
                    : 'btn-outline-success'"
-                    [disabled]="!sub.categoryActive"
                     (click)="toggleSubcategory(sub)">
                     <i class="bi mx-1"
                       [ngClass]="sub.state_subcategory === 1 ? 'bi-trash' : 'bi-arrow-clockwise'">
