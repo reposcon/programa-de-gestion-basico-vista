@@ -26,7 +26,7 @@ export class ModalAddUserComponent implements OnInit {
   form: User = {
     name_user: '',
     state_user: 1,
-    id_role: 2,
+    id_role: 0,
     name_role: 'Cliente',
     permissions: []
   };

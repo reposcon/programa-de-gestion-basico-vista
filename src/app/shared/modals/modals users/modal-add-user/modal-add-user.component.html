@@ -1,17 +1,19 @@
-<div *ngIf="userlogged?.permissions?.includes('create_users')" 
-     class="modal fade show d-block" tabindex="-1" aria-modal="true"
-     role="dialog"
-     style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
-  
+<div *ngIf="userlogged?.permissions?.includes('create_users')"
+  class="modal fade show d-block" tabindex="-1" aria-modal="true"
+  role="dialog"
+  style="background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px);">
+
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
       <div class="modal-header border-0 py-3 px-4 d-flex align-items-center"
         style="background: linear-gradient(135deg, #198754, #146c43);">
         <h5 class="modal-title fw-bold text-white d-flex align-items-center">
-          <div class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
+          <div
+            class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
             style="width: 38px; height: 38px;">
-            <i class="bi bi-person-plus-fill text-success" style="font-size: 1.1rem;"></i>
+            <i class="bi bi-person-plus-fill text-success"
+              style="font-size: 1.1rem;"></i>
           </div>
           Registrar Usuario
         </h5>
@@ -22,7 +24,8 @@
         <div class="modal-body p-4">
 
           <div class="mb-4">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2"
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
               style="letter-spacing: 0.5px;">Nombre de Usuario</label>
             <div class="input-group">
               <span class="input-group-text bg-light border-0 ps-3 text-muted">
@@ -36,7 +39,8 @@
           </div>
 
           <div class="mb-4">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2"
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
               style="letter-spacing: 0.5px;">Contraseña</label>
             <div class="input-group">
               <span class="input-group-text bg-light border-0 ps-3 text-muted">
@@ -50,7 +54,8 @@
           </div>
 
           <div class="mb-2">
-            <label class="form-label fw-bold small text-muted text-uppercase mb-2"
+            <label
+              class="form-label fw-bold small text-muted text-uppercase mb-2"
               style="letter-spacing: 0.5px;">Asignar Rol</label>
             <div class="input-group">
               <span class="input-group-text bg-light border-0 ps-3 text-muted">
@@ -59,15 +64,17 @@
               <select
                 class="form-select bg-light border-0 py-2 ps-2 fw-medium text-dark"
                 [(ngModel)]="form.id_role"
-                name="id_role" required>
-                <option [ngValue]="0" disabled>Selecciona un rol</option> 
-                <option *ngFor="let rol of rolesList" [value]="rol.id_role">
-                  {{ rol.name_role | titlecase }}
+                name="id_role">
+                <option [value]="undefined" disabled selected>
+                  <span></span>Selecciona un
+                  rol</option> <option *ngFor="let rol of rolesList"
+                  [value]="rol.id_role">
+                  {{ rol.name_role }}
                 </option>
               </select>
             </div>
             <div class="form-text mt-2 small text-muted">
-              <i class="bi bi-info-circle me-1"></i> 
+              <i class="bi bi-info-circle me-1"></i>
               Esto determinará los permisos de acceso del usuario.
             </div>
           </div>
