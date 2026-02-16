@@ -3,7 +3,7 @@ export interface User {
   name_user: string;
   password_user?: string;
   state_user: 0 | 1;
-  id_role: number[];
-  name_role: string[];    
+  id_role: number;
+  name_role: string;    
   permissions: string[]; 
 }
