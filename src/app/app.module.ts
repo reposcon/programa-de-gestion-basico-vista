@@ -38,6 +38,9 @@ import { ModalAddUserComponent } from './shared/modals/modals users/modal-add-us
 import { FooterDocumentationComponent } from './shared/footer/footer-documentation/footer-documentation.component';
 import { FooterSupportComponent } from './shared/footer/footer-support/footer-support.component';
 import { FooterPrivacityComponent } from './shared/footer/footer-privacity/footer-privacity.component';
+import { TableGenericComponent } from './shared/table-generic/table-generic.component';
+import { PosComponent } from './modules/pos/pos/pos.component';
+import { ModalcheckoutComponent } from './shared/modals/modal pos/modalcheckout/modalcheckout.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +64,10 @@ import { FooterPrivacityComponent } from './shared/footer/footer-privacity/foote
     ModalAddUserComponent,
     FooterDocumentationComponent,
     FooterSupportComponent,
-    FooterPrivacityComponent
+    FooterPrivacityComponent,
+    TableGenericComponent,
+    PosComponent,
+    ModalcheckoutComponent
   ],
   imports: [
     BrowserModule,

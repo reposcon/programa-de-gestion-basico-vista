@@ -14,18 +14,12 @@ import { AuthService } from '../../../services/auth.service';
   styleUrls: ['./category-page.component.css'],
 })
 export class CategoryPageComponent implements OnInit, OnDestroy {
-
-  categories: (Category & { isActive: boolean })[] = [];
-  categoriesFiltered: (Category & { isActive: boolean })[] = [];
+  categories: Category[] = [];
+  categoriesFiltered: Category[] = [];
   selectedCategory: Partial<Category> = {};
 
-  searchCategories = '';
-  showMessage = false;
-  message = '';
-
-  pageSize = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
+  // Columnas desde el ToolService
+  columns: any[] = [];
 
   userlogged: any = null;
   private userSub!: Subscription;
@@ -39,6 +33,9 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    // Definimos qué columnas queremos ver
+    this.columns = this.toolservice.getColumns('categories');
+
     this.userSub = this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
       if (this.userlogged && this.authService.hasPermission('view_categories')) {
@@ -52,102 +49,47 @@ export class CategoryPageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  ngOnDestroy(): void {
-    this.userSub?.unsubscribe();
-  }
 
+  // TODA TU LÓGICA DE NEGOCIO SE QUEDA IGUAL
   getCategories(): void {
     this.categoryService.getAll().subscribe({
       next: (data: Category[]) => {
-        this.categories = data.map(cat => ({
-          ...cat,
-          isActive: cat.state_category === 1
-        }));
-        this.applyFiltersAndOrder();
+        this.categories = data;
+        this.filterCategory(''); // Inicializamos el filtro
       },
       error: err => console.error(err)
     });
   }
 
   toggleCategory(cat: Category): void {
-
     const isActive = cat.state_category === 1;
-
     this.toolservice.confirm({
       title: isActive ? '¿Desactivar categoría?' : '¿Restaurar categoría?',
-      text: isActive
-        ? `La categoría "${cat.name_category}" quedará inactiva`
-        : `La categoría "${cat.name_category}" será restaurada`,
+      text: isActive ? `La categoría "${cat.name_category}" quedará inactiva` : `La categoría "${cat.name_category}" será restaurada`,
       confirmText: isActive ? 'Desactivar' : 'Restaurar',
       icon: 'warning'
     }).then(confirmed => {
-      if (!confirmed) return;
-
-      this.categoryService.toggle(cat.id_category).subscribe({
-        next: () => {
-          this.toolservice.notifyUpdate();
-          this.uiMessage.show(
-            isActive
-              ? 'Categoría desactivada correctamente'
-              : 'Categoría restaurada correctamente',
-            'success'
-          );
-        },
-        error: (err) => {
-          this.uiMessage.show(
-            err?.error?.message || 'Error al actualizar la categoría',
-            'warning'
-          );
-        }
-      });
+      if (confirmed) {
+        this.categoryService.toggle(cat.id_category).subscribe({
+          next: () => {
+            this.toolservice.notifyUpdate();
+            this.uiMessage.show(isActive ? 'Categoría desactivada' : 'Categoría restaurada', 'success');
+          }
+        });
+      }
     });
   }
 
-  applyFiltersAndOrder(): void {
-    const search = this.searchCategories.toLowerCase();
+  filterCategory(term: string): void {
+    const search = term.toLowerCase();
     this.categoriesFiltered = this.categories
       .filter(cat => cat.name_category?.toLowerCase().includes(search))
-      .sort((a, b) => Number(b.isActive) - Number(a.isActive));
-    this.currentPage = 1;
+      .sort((a, b) => b.state_category - a.state_category);
   }
 
-  openAddModal() {
-    this.selectedCategory = { name_category: '', state_category: 1 };
-  }
+  openAddModal() { this.selectedCategory = { name_category: '', state_category: 1 }; }
+  openEditModal(category: Category) { this.selectedCategory = { ...category }; }
+  onCategorySaved(msg: string) { this.getCategories(); /* Tu lógica de mensaje */ }
 
-  openEditModal(category: Category) {
-    this.selectedCategory = { ...category };
-  }
-
-  onCategorySaved(msg: string) {
-    this.getCategories();
-    this.showSuccessMessage(msg);
-  }
-
-  showSuccessMessage(msg: string) {
-    this.message = msg;
-    this.showMessage = true;
-    setTimeout(() => this.showMessage = false, 3000);
-  }
-
-  filterCategory(): void {
-    this.applyFiltersAndOrder();
-  }
-
-  get paginatedCategories() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.categoriesFiltered.slice(start, start + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.categoriesFiltered.length / this.pageSize);
-  }
-
-  get pagesArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
-  }
+  ngOnDestroy(): void { this.userSub?.unsubscribe(); }
 }

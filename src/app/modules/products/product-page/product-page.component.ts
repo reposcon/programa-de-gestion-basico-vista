@@ -17,24 +17,14 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './product-page.component.html',
   styleUrls: ['./product-page.component.css'],
 })
+
 export class ProductPageComponent implements OnInit, OnDestroy {
-
-  products: (Product & { name_category: string; name_subcategory: string; categoryActive: boolean; subcategoryActive: boolean; isActive: boolean })[] = [];
-  productsFilter: typeof this.products = [];
-
+  products: any[] = [];
+  productsFilter: any[] = [];
   categories: Category[] = [];
   subcategories: Subcategory[] = [];
-
   productEdit: Partial<Product> = {};
-
-  searchProducts = '';
-  pageSize = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
-
-  showMessage = false;
-  message = '';
-
+  columns: any[] = [];
   userlogged: any = null;
   private userSub!: Subscription;
 
@@ -49,6 +39,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.columns = this.toolservice.getColumns('products');
     this.userSub = this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
       if (this.userlogged && this.authService.hasPermission('view_products')) {
@@ -57,15 +48,8 @@ export class ProductPageComponent implements OnInit, OnDestroy {
     });
 
     this.toolservice.update$.subscribe(() => {
-      if (this.authService.hasPermission('view_products')) {
-        this.loadInitialData();
-      }
+      if (this.authService.hasPermission('view_products')) this.loadInitialData();
     });
-  }
-
-
-  ngOnDestroy(): void {
-    this.userSub?.unsubscribe();
   }
 
   loadInitialData(): void {
@@ -78,7 +62,7 @@ export class ProductPageComponent implements OnInit, OnDestroy {
         this.categories = categories;
         this.subcategories = subcategories;
 
-        this.products = products.map((p: Product) => {
+        this.products = products.map((p: any) => {
           const cat = this.categories.find(c => c.id_category === p.category_id);
           const sub = this.subcategories.find(s => s.id_subcategory === p.subcategory_id);
 
@@ -86,74 +70,42 @@ export class ProductPageComponent implements OnInit, OnDestroy {
             ...p,
             name_category: cat?.name_category ?? 'Sin categoría',
             name_subcategory: sub?.name_subcategory ?? 'Sin subcategoría',
-            categoryActive: cat?.state_category === 1,
-            subcategoryActive: sub?.state_subcategory === 1,
+
+            stock_product: p.stock_product ?? p.stock ?? 0,
+            price_product: p.price_sell ?? p.price_sell ?? 0,
+
             isActive: p.state_product === 1
           };
         });
-
-        this.applyFiltersAndOrder();
-      },
-      error: err => console.error(err)
+        this.applyFiltersAndOrder('');
+      }
     });
   }
 
-  toggleProduct(
-    prod: Product & {
-      categoryActive: boolean;
-      subcategoryActive: boolean;
-      isActive: boolean;
-    }
-  ): void {
+  applyFiltersAndOrder(term: string): void {
+    const search = term.toLowerCase();
+    this.productsFilter = this.products
+      .filter(p => p.name_product?.toLowerCase().includes(search))
+      .sort((a, b) => Number(b.isActive) - Number(a.isActive));
+  }
 
+  toggleProduct(prod: any): void {
     const isActive = prod.state_product === 1;
-
     this.toolservice.confirm({
       title: isActive ? '¿Desactivar producto?' : '¿Restaurar producto?',
-      text: isActive
-        ? `El producto "${prod.name_product}" quedará inactivo`
-        : `El producto "${prod.name_product}" será restaurado`,
+      text: `El producto "${prod.name_product}" cambiará su estado.`,
       confirmText: isActive ? 'Desactivar' : 'Restaurar',
       icon: 'warning'
     }).then(confirmed => {
       if (!confirmed) return;
-
       this.productService.toggle(prod.id_product).subscribe({
         next: () => {
-          prod.isActive = !isActive;
-          prod.state_product = prod.isActive ? 1 : 0;
-
-          this.applyFiltersAndOrder();
-
-          this.uiMessage.show(
-            isActive
-              ? 'Producto desactivado correctamente'
-              : 'Producto restaurado correctamente',
-            'success'
-          );
-
+          this.uiMessage.show(isActive ? 'Producto desactivado' : 'Producto restaurado', 'success');
           this.toolservice.notifyUpdate();
-        },
-        error: (err) => {
-          this.uiMessage.show(
-            err?.error?.message || 'Error al actualizar el producto',
-            'warning'
-          );
         }
       });
     });
   }
-
-
-
-  applyFiltersAndOrder(): void {
-    const search = this.searchProducts.toLowerCase();
-    this.productsFilter = this.products
-      .filter(p => p.name_product?.toLowerCase().includes(search))
-      .sort((a, b) => Number(b.isActive) - Number(a.isActive));
-    this.currentPage = 1;
-  }
-
 
   openEditModal(prod: Product): void {
     this.productEdit = { ...prod };
@@ -161,29 +113,10 @@ export class ProductPageComponent implements OnInit, OnDestroy {
 
   reloadProducts(msg: string): void {
     this.loadInitialData();
-    this.showSuccessMessage(msg);
+    this.uiMessage.show(msg, 'success');
   }
 
-  showSuccessMessage(msg: string): void {
-    this.message = msg;
-    this.showMessage = true;
-    setTimeout(() => this.showMessage = false, 3000);
-  }
-
-  get paginatedProducts() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.productsFilter.slice(start, start + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.productsFilter.length / this.pageSize);
-  }
-
-  get pagesArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
   }
 }

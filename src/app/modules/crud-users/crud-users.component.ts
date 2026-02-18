@@ -11,19 +11,14 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./crud-users.component.css']
 })
 export class CrudUsersComponent implements OnInit {
-
   userlogged: any = null;
   users: any[] = [];
   filteredUsers: any[] = [];
-  searchUser: string = '';
+  columns: any[] = [];
 
   showModal: boolean = false;
   showEditModal: boolean = false;
   userToEdit: any = {};
-
-  pageSize = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
 
   constructor(
     private userService: userService,
@@ -31,7 +26,9 @@ export class CrudUsersComponent implements OnInit {
     private toolService: ToolService,
     public authService: AuthService
   ) { }
+
   ngOnInit() {
+    this.columns = this.toolService.getColumns('users');
     this.userService.userObservable$.subscribe(user => {
       this.userlogged = user;
       if (this.userlogged && (this.userlogged.id_role === 1 || this.authService.hasPermission('view_users'))) {
@@ -43,52 +40,32 @@ export class CrudUsersComponent implements OnInit {
   loadUsers() {
     this.userService.getAll().subscribe({
       next: data => {
-        this.users = data.sort((a: any, b: any) => b.state_user - a.state_user);
+        // Mapeo para aplanar el objeto role y que la tabla lo reconozca
+        let processedUsers = data.map((u: any) => ({
+          ...u,
+          name_role: u.role?.name_role || 'Sin Rol'
+        })).sort((a: any, b: any) => b.state_user - a.state_user);
 
         if (this.userlogged?.id_role === 2) {
-          this.users = [this.userlogged];
+          processedUsers = processedUsers.filter((u: any) => u.id_user === this.userlogged.id_user);
         }
 
+        this.users = processedUsers;
         this.filteredUsers = [...this.users];
-        this.currentPage = 1;
       },
       error: () => this.uiMessage.show('Error al obtener usuarios', 'warning')
     });
   }
 
-
-  openAddModal(): void {
-    this.showModal = true;
-  }
-
-  openEditModal(user: any): void {
-    this.userToEdit = { ...user };
-    this.showEditModal = true;
-  }
-
-  closeModal(): void {
-    this.showModal = false;
-    this.showEditModal = false;
-    this.userToEdit = {};
-  }
-
-  handleSuccess(): void {
-    this.loadUsers();
-    this.closeModal();
-  }
-
-
-  filterUsers(): void {
-    const term = this.searchUser.toLowerCase();
+  filterUsers(term: string): void {
+    const search = term.toLowerCase();
     this.filteredUsers = this.users
-      .filter(u => u.name_user.toLowerCase().includes(term))
+      .filter(u => u.name_user.toLowerCase().includes(search))
       .sort((a, b) => b.state_user - a.state_user);
-    this.currentPage = 1;
   }
 
   deleteUser(user: any) {
     if (user.state_user === 0) return;
-
     this.toolService.confirm({
       title: '¿Desactivar usuario?',
       text: `Estás a punto de desactivar a ${user.name_user}.`,
@@ -99,23 +76,15 @@ export class CrudUsersComponent implements OnInit {
           next: () => {
             this.loadUsers();
             this.uiMessage.show('Usuario desactivado correctamente', 'success');
-          },
-          error: () => this.uiMessage.show('Error al desactivar usuario', 'warning')
+          }
         });
       }
     });
   }
 
-  get paginatedUsers() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredUsers.slice(start, start + this.pageSize);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredUsers.length / this.pageSize);
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
-  }
+  // Métodos de control de modales
+  openAddModal(): void { this.showModal = true; }
+  openEditModal(user: any): void { this.userToEdit = { ...user }; this.showEditModal = true; }
+  closeModal(): void { this.showModal = false; this.showEditModal = false; this.userToEdit = {}; }
+  handleSuccess(): void { this.loadUsers(); this.closeModal(); }
 }

@@ -15,36 +15,9 @@ const routes: Routes = [
 
   {
     path: 'home',
-    component: HomeComponent,
-    canActivate: [authGuard] 
+    component: HomeComponent, // Este es tu Dashboard
+    canActivate: [authGuard]
   },
-
-  {
-    path: 'usermanagement',
-    component: CrudUsersComponent,
-    canActivate: [authGuard],
-    data: { permission: 'view_users' }
-  },
-
-  {
-    path: 'productos',
-    component: ProductPageComponent, 
-    canActivate: [authGuard],
-    data: { permission: 'view_products' }
-  },
-  {
-    path: 'subcategorias',
-    component: SubcategoryPageComponent,
-    canActivate: [authGuard],
-    data: { permission: 'view_subcategories' }
-  },
-   {
-    path: 'categorias',
-    component: CategoryPageComponent,
-    canActivate: [authGuard],
-    data: { permission: 'view_categories' }
-  },
-
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'home' }
 ];
@@ -57,4 +30,4 @@ const routerOptions: ExtraOptions = {
   imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

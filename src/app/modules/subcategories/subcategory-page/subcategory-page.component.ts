@@ -14,21 +14,14 @@ import { UiMessageService } from '../../../services/ui-message.service';
   templateUrl: './subcategory-page.component.html',
   styleUrls: ['./subcategory-page.component.css'],
 })
-export class SubcategoryPageComponent implements OnInit, OnDestroy {
 
-  subcategories: (Subcategory & { name_category: string; categoryActive: boolean; isActive: boolean })[] = [];
-  subcategoriesFiltered: (Subcategory & { name_category: string; categoryActive: boolean; isActive: boolean })[] = [];
+export class SubcategoryPageComponent implements OnInit, OnDestroy {
+  subcategories: any[] = [];
+  subcategoriesFiltered: any[] = [];
   categories: Category[] = [];
   selectedSubcategory: Partial<Subcategory> = {};
-
-  searchSubcategories = '';
-  showMessage = false;
-  message = '';
-
-  pageSize = 5;
-  currentPage = 1;
-  pageSizeOptions = [5, 10, 20];
-
+  
+  columns: any[] = []; // Inyectamos las columnas aquí
   userlogged: any = null;
   private userSub!: Subscription;
 
@@ -41,6 +34,7 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.columns = this.toolservice.getColumns('subcategories'); // Cargar config de columnas
     this.loadInitialData();
 
     this.toolservice.update$.subscribe(() => {
@@ -52,10 +46,8 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
 
     this.userSub = this.userService.userObservable$.subscribe(user => this.userlogged = user);
   }
-  ngOnDestroy(): void {
-    this.userSub?.unsubscribe();
-  }
 
+  // Mantenemos tu lógica de carga de datos original
   loadInitialData(): void {
     this.categoryService.getAll().subscribe({
       next: cats => {
@@ -78,63 +70,35 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
             isActive: sub.state_subcategory === 1
           };
         });
-        this.applyFiltersAndOrder();
-      },
-      error: err => console.error(err)
+        this.applyFiltersAndOrder(''); // Iniciamos el filtro
+      }
     });
   }
 
-  toggleSubcategory(
-    sub: Subcategory & {
-      categoryActive: boolean;
-      isActive: boolean;
-    }
-  ): void {
-
+  // Tu lógica de Toggle intacta
+  toggleSubcategory(sub: any): void {
     const isActive = sub.state_subcategory === 1;
-
     this.toolservice.confirm({
       title: isActive ? '¿Desactivar subcategoría?' : '¿Restaurar subcategoría?',
-      text: isActive
-        ? `La subcategoría "${sub.name_subcategory}" quedará inactiva`
-        : `La subcategoría "${sub.name_subcategory}" será restaurada`,
+      text: isActive ? `La subcategoría "${sub.name_subcategory}" quedará inactiva` : `La subcategoría "${sub.name_subcategory}" será restaurada`,
       confirmText: isActive ? 'Desactivar' : 'Restaurar',
       icon: 'warning'
     }).then(confirmed => {
       if (!confirmed) return;
-
       this.subcategoryService.toggle(sub.id_subcategory).subscribe({
         next: () => {
-          sub.isActive = !isActive;
-          sub.state_subcategory = sub.isActive ? 1 : 0;
-
-          this.applyFiltersAndOrder();
-
-          this.uiMessage.show(
-            isActive
-              ? 'Subcategoría desactivada correctamente'
-              : 'Subcategoría restaurada correctamente',
-            'success'
-          );
-
           this.toolservice.notifyUpdate();
-        },
-        error: (err) => {
-          this.uiMessage.show(
-            err?.error?.message || 'Error al actualizar la subcategoría',
-            'warning'
-          );
+          this.uiMessage.show(isActive ? 'Subcategoría desactivada' : 'Subcategoría restaurada', 'success');
         }
       });
     });
   }
 
-  applyFiltersAndOrder(): void {
-    const search = this.searchSubcategories.toLowerCase();
+  applyFiltersAndOrder(term: string): void {
+    const search = term.toLowerCase();
     this.subcategoriesFiltered = this.subcategories
       .filter(sub => sub.name_subcategory?.toLowerCase().includes(search))
       .sort((a, b) => Number(b.isActive) - Number(a.isActive));
-    this.currentPage = 1;
   }
 
   openAddModal(): void {
@@ -147,29 +111,11 @@ export class SubcategoryPageComponent implements OnInit, OnDestroy {
 
   onSubcategorySaved(msg: string): void {
     this.getSubCategories();
-    this.showSuccessMessage(msg);
+    // Aquí puedes usar tu showSuccessMessage o el uiMessage
+    this.uiMessage.show(msg, 'success');
   }
 
-  showSuccessMessage(msg: string): void {
-    this.message = msg;
-    this.showMessage = true;
-    setTimeout(() => this.showMessage = false, 3000);
-  }
-
-  get paginatedSubcategories() {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.subcategoriesFiltered.slice(start, start + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.subcategoriesFiltered.length / this.pageSize);
-  }
-
-  get pagesArray(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
   }
 }

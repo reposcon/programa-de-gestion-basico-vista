@@ -1,0 +1,7 @@
+.table-scroll { height: calc(100vh - 250px); overflow-y: auto; }
+.cart-scroll { height: calc(100vh - 420px); overflow-y: auto; }
+.sticky-top { position: sticky; top: 0; z-index: 10; background: white !important; }
+.bg-success-subtle { background-color: #d1e7dd; color: #0f5132; }
+.bg-danger-subtle { background-color: #f8d7da; color: #842029; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }

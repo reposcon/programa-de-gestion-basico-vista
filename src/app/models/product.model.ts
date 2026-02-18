@@ -6,4 +6,9 @@ export interface Product {
   subcategory_id: number;
   name_category: string;
   name_subcategory: string;
+  price_buy: number;
+  price_sell: number;
+  stock: number;
+  tax_rate: number; 
 }
+
