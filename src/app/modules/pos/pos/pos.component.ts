@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductServiceService } from '../../../services/product-service.service';
-import { SaleService } from '../../../services/sale.service';
-import { PaymentMethod } from '../../../models/paymentMethod.model';
+import { ReportService } from '../../../services/report.service'; // Tu servicio de caja
 import Swal from 'sweetalert2';
 
 @Component({
@@ -17,30 +16,62 @@ export class PosComponent implements OnInit {
   total: number = 0;
   searchQuery: string = '';
 
-  constructor(private productService: ProductServiceService) { }
+  isBoxOpen: boolean = false;
 
-  ngOnInit(): void { this.loadProducts(); }
+  constructor(
+    private productService: ProductServiceService,
+    private reportService: ReportService // Inyectado según tu código
+  ) { }
 
-  loadProducts() {
-    this.productService.getAll().subscribe(res => {
-      this.products = res;
-      this.filteredProducts = res;
+  ngOnInit(): void {
+    this.checkCashStatus();
+    this.loadProducts();
+  }
+
+  checkCashStatus() {
+    this.reportService.checkStatus().subscribe({
+      next: (res) => {
+        this.isBoxOpen = res.is_open;
+      },
+      error: () => {
+        this.isBoxOpen = false;
+        console.error("No se pudo verificar el estado de la caja");
+      }
     });
   }
 
   addToCart(product: any) {
+    if (!this.isBoxOpen) {
+      this.alertBoxClosed();
+      return;
+    }
+
     const existing = this.cart.find(i => i.id_product === product.id_product);
     if (existing) {
       existing.quantity++;
       existing.subtotal = existing.quantity * existing.price_sell;
     } else {
-      this.cart.push({ ...product, quantity: 1, subtotal: product.price_sell });
+      this.cart.push({
+        ...product,
+        quantity: 1,
+        subtotal: Number(product.price_sell)
+      });
     }
     this.calculateTotal();
   }
 
+  alertBoxClosed() {
+    Swal.fire({
+      title: 'Caja Cerrada',
+      text: 'Debes abrir una sesión de caja antes de realizar ventas.',
+      icon: 'warning',
+      confirmButtonColor: '#3498db',
+      confirmButtonText: 'Entendido'
+    });
+  }
+
   calculateTotal() {
-    this.total = this.cart.reduce((acc, item) => acc + item.subtotal, 0);
+    this.total = this.cart.reduce((acc, item) => acc + (item.subtotal || 0), 0);
   }
 
   filterProducts() {
@@ -52,13 +83,27 @@ export class PosComponent implements OnInit {
       p.name_product.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
+
+  loadProducts() {
+    this.productService.getAll().subscribe(res => {
+      this.products = res;
+      this.filteredProducts = res;
+    });
+  }
+
   onSaleSuccess() {
     this.cart = [];
     this.total = 0;
     this.searchQuery = '';
     this.loadProducts();
-  }
 
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    const backdrops = document.querySelectorAll('.modal-backdrop');
+    backdrops.forEach(b => b.remove());
+  }
   removeFromCart(index: number) {
     this.cart.splice(index, 1);
     this.calculateTotal();
@@ -66,16 +111,12 @@ export class PosComponent implements OnInit {
 
   clearCart() {
     if (this.cart.length === 0) return;
-
     Swal.fire({
       title: '¿Vaciar carrito?',
-      text: "Se eliminarán todos los productos seleccionados",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Sí, vaciar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: 'Sí, vaciar'
     }).then((result) => {
       if (result.isConfirmed) {
         this.cart = [];

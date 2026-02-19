@@ -1,29 +1,41 @@
-<app-table-generic 
-  title="Gestión de Categorías" 
-  breadcrumb="Categorías"
-  addButtonText="Añadir Categoría"
-  addModalTarget="#modalCategoria"
-  [data]="categoriesFiltered"
-  [columns]="columns"
-  [canCreate]="authService.hasPermission('create_categories')"
-  [actionTemplate]="catActions"
-  (onAdd)="openAddModal()"
-  (onSearch)="filterCategory($event)">
-</app-table-generic>
+<div class="container-fluid p-0 animate__animated animate__fadeIn">
+  <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+    <app-table-generic 
+      title="Gestión de Categorías" 
+      breadcrumb="Categorías"
+      addButtonText="Nueva Categoría"
+      addModalTarget="#modalCategoria"
+      [data]="categoriesFiltered"
+      [columns]="columns"
+      [canCreate]="authService.hasPermission('create_categories')"
+      [actionTemplate]="catActions"
+      (onAdd)="openAddModal()"
+      (onSearch)="filterCategory($event)">
+    </app-table-generic>
+  </div>
+</div>
 
 <ng-template #catActions let-category>
-  <button *ngIf="authService.hasPermission('update_categories')"
-    class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
-    (click)="openEditModal(category)" data-bs-toggle="modal" data-bs-target="#modalEditarCategoria">
-    <i class="bi bi-pencil-fill mx-1"></i>
-  </button>
+  <div class="d-flex gap-2 justify-content-center">
+    <button *ngIf="authService.hasPermission('update_categories')"
+      class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2 d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;" 
+      (click)="openEditModal(category)" 
+      data-bs-toggle="modal" 
+      data-bs-target="#modalEditarCategoria"
+      title="Editar categoría">
+      <i class="bi bi-pencil-fill fs-6"></i>
+    </button>
 
-  <button *ngIf="authService.hasPermission('delete_categories')"
-    class="btn btn-sm rounded-circle shadow-sm p-2 border"
-    [ngClass]="category.state_category === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
-    (click)="toggleCategory(category)">
-    <i class="bi mx-1" [ngClass]="category.state_category === 1 ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
-  </button>
+    <button *ngIf="authService.hasPermission('delete_categories')"
+      class="btn btn-sm rounded-circle shadow-sm border-2 p-2 d-flex align-items-center justify-content-center transform-hover"
+      style="width: 38px; height: 38px;"
+      [ngClass]="category.state_category === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
+      (click)="toggleCategory(category)"
+      [title]="category.state_category === 1 ? 'Desactivar' : 'Activar'">
+      <i class="bi fs-6" [ngClass]="category.state_category === 1 ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
+    </button>
+  </div>
 </ng-template>
 
 <app-modal-add-categories [categoryEdit]="selectedCategory" (onSave)="onCategorySaved($event)"></app-modal-add-categories>

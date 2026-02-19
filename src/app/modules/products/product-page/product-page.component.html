@@ -1,31 +1,74 @@
-<app-table-generic 
-  title="Gestión de Productos" 
-  breadcrumb="Productos"
-  addButtonText="Añadir Producto"
-  addModalTarget="#modalAddProd"
-  [data]="productsFilter"
-  [columns]="columns"
-  [canCreate]="authService.hasPermission('create_products')"
-  [actionTemplate]="prodActions"
-  (onAdd)="productEdit = {}"
-  (onSearch)="applyFiltersAndOrder($event)">
-</app-table-generic>
+<div class="dashboard-container animate__animated animate__fadeIn p-0">
+  
+  <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+    <app-table-generic 
+      title="Catálogo de Productos" 
+      breadcrumb="Inventario"
+      backLink="/home"
+      addButtonText="Nuevo Producto"
+      addModalTarget="#modalAddProd"
+      [data]="productsFilter"
+      [columns]="columns"
+      [canCreate]="authService.hasPermission('create_products')"
+      [actionTemplate]="prodActions"
+      (onAdd)="prepareAdd()"
+      (onSearch)="applyFiltersAndOrder($event)">
+
+      <div class="d-flex align-items-center gap-2" *ngIf="authService.hasPermission('create_products')">
+        <div class="vr mx-2 opacity-25 d-none d-md-block" style="height: 30px;"></div>
+        
+        <button class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-bolder border-2 transform-hover" 
+                (click)="downloadTemplate()" 
+                title="Descargar formato Excel">
+          <i class="fas fa-file-download me-1"></i> Plantilla
+        </button>
+        
+        <label class="btn btn-success btn-sm rounded-pill px-3 mb-0 fw-bolder shadow-sm d-flex align-items-center transform-hover" 
+               style="cursor: pointer;" title="Subir archivo de productos">
+          <i class="fas fa-file-excel me-2"></i> Importar Excel
+          <input type="file" (change)="onFileChange($event)" hidden accept=".xlsx, .xls">
+        </label>
+      </div>
+
+    </app-table-generic>
+  </div>
+</div>
 
 <ng-template #prodActions let-prod>
-  <button *ngIf="authService.hasPermission('update_products')"
-    class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
-    (click)="openEditModal(prod)" 
-    data-bs-toggle="modal" data-bs-target="#modalEditProd">
-    <i class="bi bi-pencil-fill mx-1"></i>
-  </button>
+  <div class="d-flex gap-2 justify-content-center">
+    
+    <button *ngIf="authService.hasPermission('update_products')"
+      class="btn btn-outline-warning btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      (click)="openEditModal(prod)" 
+      data-bs-toggle="modal" 
+      data-bs-target="#modalEditProd"
+      title="Editar Producto">
+      <i class="bi bi-pencil-fill"></i>
+    </button>
 
-  <button *ngIf="authService.hasPermission('delete_products')"
-    class="btn btn-sm rounded-circle shadow-sm p-2 border"
-    [ngClass]="prod.state_product === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
-    (click)="toggleProduct(prod)">
-    <i class="bi mx-1" [ngClass]="prod.state_product === 1 ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
-  </button>
+    <button *ngIf="authService.hasPermission('update_products')"
+      class="btn btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      [ngClass]="prod.isActive ? 'btn-outline-danger' : 'btn-outline-success'"
+      (click)="toggleProduct(prod)"
+      [title]="prod.isActive ? 'Desactivar Producto' : 'Activar Producto'">
+      <i class="bi" [ngClass]="prod.isActive ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
+    </button>
+  </div>
 </ng-template>
 
-<app-modal-add-products [categories]="categories" [subcategories]="subcategories" (onSave)="reloadProducts($event)"></app-modal-add-products>
-<app-modal-edit-products [productEdit]="productEdit" [categories]="categories" [subcategories]="subcategories" (onUpdate)="reloadProducts($event)"></app-modal-edit-products>
+<app-modal-add-products 
+  [categories]="categories" 
+  [subcategories]="subcategories" 
+  [taxes]="taxes" 
+  (onSave)="reloadProducts($event)">
+</app-modal-add-products>
+
+<app-modal-edit-products 
+  [productEdit]="productEdit" 
+  [categories]="categories" 
+  [subcategories]="subcategories" 
+  [taxes]="taxes" 
+  (onUpdate)="reloadProducts($event)">
+</app-modal-edit-products>

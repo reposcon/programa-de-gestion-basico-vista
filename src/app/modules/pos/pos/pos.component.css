@@ -1,7 +1,33 @@
-.table-scroll { height: calc(100vh - 250px); overflow-y: auto; }
-.cart-scroll { height: calc(100vh - 420px); overflow-y: auto; }
-.sticky-top { position: sticky; top: 0; z-index: 10; background: white !important; }
-.bg-success-subtle { background-color: #d1e7dd; color: #0f5132; }
-.bg-danger-subtle { background-color: #f8d7da; color: #842029; }
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
+/* Transiciones suaves */
+.transition-all {
+  transition: all 0.25s ease-in-out;
+}
+
+/* Efecto al pasar el mouse por los productos */
+.product-row:hover {
+  background-color: #f8f9fa !important;
+  transform: translateX(5px);
+}
+
+/* Efecto en botones */
+.transform-hover:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+/* Scrollbars elegantes */
+.table-responsive::-webkit-scrollbar, 
+.cart-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb, 
+.cart-scroll::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 10px;
+}
+
+/* Espaciado de letras para títulos */
+.tracking-wider {
+  letter-spacing: 0.05em;
+}

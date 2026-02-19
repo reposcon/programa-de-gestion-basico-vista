@@ -1,108 +1,98 @@
 <div class="modal fade" id="documentationModal" tabindex="-1" aria-labelledby="documentationLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+            
             <div class="modal-header bg-dark text-white p-4">
-                <h5 class="modal-title" id="documentationLabel">
-                    <i class="bi bi-shield-check me-2"></i> Seguridad y Uso: AdminPanel
-                </h5>
+                <div class="d-flex align-items-center">
+                    <div class="bg-primary rounded-circle p-2 me-3">
+                        <i class="bi bi-info-circle-fill fs-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0" id="documentationLabel">Guía de Uso para el Personal</h5>
+                        <p class="small text-white-50 mb-0">Aprende a usar tu herramienta de trabajo de forma fácil</p>
+                    </div>
+                </div>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body p-0">
-                <div class="d-flex align-items-start doc-container">
-                    <div class="nav flex-column nav-pills me-3 p-3 bg-light border-end" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active mb-2 text-start" id="tab-matrix" data-bs-toggle="pill" data-bs-target="#content-matrix" type="button" role="tab"><i class="bi bi-person-badge me-2"></i> Roles y Acceso</button>
-                        <button class="nav-link mb-2 text-start" id="tab-users" data-bs-toggle="pill" data-bs-target="#content-users" type="button" role="tab"><i class="bi bi-people me-2"></i> Gestión de Usuarios</button>
-                        <button class="nav-link mb-2 text-start" id="tab-categories" data-bs-toggle="pill" data-bs-target="#content-categories" type="button" role="tab"><i class="bi bi-tags me-2"></i> Catálogo (Cat/Sub)</button>
-                        <button class="nav-link mb-2 text-start" id="tab-products" data-bs-toggle="pill" data-bs-target="#content-products" type="button" role="tab"><i class="bi bi-box-seam me-2"></i> Productos</button>
+                <div class="d-flex align-items-start doc-container" style="min-height: 550px;">
+                    
+                    <div class="nav flex-column nav-pills me-0 p-3 bg-light border-end" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="min-width: 280px;">
+                        <button class="nav-link active mb-2 text-start py-3 shadow-sm" id="tab-pos" data-bs-toggle="pill" data-bs-target="#content-pos" type="button" role="tab">
+                            <i class="bi bi-shop me-2"></i> ¿Cómo vender (POS)?
+                        </button>
+                        <button class="nav-link mb-2 text-start py-3 shadow-sm" id="tab-inventory" data-bs-toggle="pill" data-bs-target="#content-inventory" type="button" role="tab">
+                            <i class="bi bi-box-seam me-2"></i> Productos y el Excel
+                        </button>
+                        <button class="nav-link mb-2 text-start py-3 shadow-sm" id="tab-security" data-bs-toggle="pill" data-bs-target="#content-security" type="button" role="tab">
+                            <i class="bi bi-person-lock me-2"></i> ¿Qué puedo hacer aquí?
+                        </button>
                     </div>
 
-                    <div class="tab-content p-4 w-100" id="v-pills-tabContent">
+                    <div class="tab-content p-4 w-100 bg-white" id="v-pills-tabContent">
                         
-                        <div class="tab-pane fade show active" id="content-matrix" role="tabpanel">
-                            <h4 class="mb-3 text-primary">Matriz de Permisos</h4>
-                            <div class="table-responsive">
-                                <table class="table table-bordered align-middle">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <th>Módulo</th>
-                                            <th class="text-center">Admin</th>
-                                            <th class="text-center">Client</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Vista Principal e Inventario</td>
-                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
-                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gestión de Roles y Usuarios</td>
-                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
-                                            <td class="text-center text-danger"><i class="bi bi-x-circle-fill"></i></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Crear/Editar/Borrar (Todo)</td>
-                                            <td class="text-center text-success"><i class="bi bi-check-circle-fill"></i></td>
-                                            <td class="text-center text-danger"><i class="bi bi-x-circle-fill"></i></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        <div class="tab-pane fade show active" id="content-pos" role="tabpanel">
+                            <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">Ventas y Cobros</h4>
+                            
+                            <div class="alert bg-warning-subtle text-dark border-0 rounded-4 p-3 mb-4">
+                                <h6 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i>¡Paso 1 Obligatorio!</h6>
+                                <p class="small mb-0">Para poder vender, lo primero es ir al módulo de <strong>Control de Caja</strong> y hacer la "Apertura". Si no lo haces, el sistema no te dejará agregar productos al carrito ni cobrar. Es como intentar abrir la tienda sin tener la llave de la caja registradora.</p>
                             </div>
-                            <div class="alert alert-info py-2 mt-2">
-                                <small><b>Nota:</b> El rol <b>Client</b> tiene permisos de solo lectura (`view_`) en el catálogo.</small>
-                            </div>
-                        </div>
 
-                        <div class="tab-pane fade" id="content-users" role="tabpanel">
-                            <h4 class="mb-3 text-primary">Usuarios y Roles</h4>
-                            <p>Permisos técnicos asignados:</p>
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <span class="badge bg-secondary">view_roles</span>
-                                <span class="badge bg-secondary">create_roles</span>
-                                <span class="badge bg-secondary">update_roles</span>
-                                <span class="badge bg-secondary">delete_roles</span>
-                            </div>
-                            <div class="card border-start border-primary border-4 p-3 shadow-sm">
-                                <b>Importante:</b> Solo los usuarios con `manage_users` pueden modificar la estructura de acceso.
-                            </div>
-                        </div>
-
-                        <div class="tab-pane fade" id="content-categories" role="tabpanel">
-                            <h4 class="mb-3 text-primary">Categorías y Subcategorías</h4>
-                            <p>Control de jerarquía:</p>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><b>Subcategorías:</b> Dependen de una Categoría activa.</li>
-                                <li class="list-group-item text-muted small">Permisos: `view_subcategories`, `create_subcategories`, etc.</li>
+                            <h6 class="fw-bold">Pasos para una venta exitosa:</h6>
+                            <ul class="text-muted small">
+                                <li class="mb-2">Busca el producto por su nombre arriba en la lupa.</li>
+                                <li class="mb-2">Presiona el botón azul (+) para mandarlo al carrito.</li>
+                                <li class="mb-2">Cuando termines, dale al botón verde <strong>"Registrar Pago"</strong> para imprimir o guardar la venta.</li>
                             </ul>
-                            <div class="alert alert-warning mt-3">
-                                ⚠️ <b>Cascada:</b> Al usar `delete_categories`, se desactivan sus hijos automáticamente.
-                            </div>
                         </div>
 
-                        <div class="tab-pane fade" id="content-products" role="tabpanel">
-                            <h4 class="mb-3 text-primary">Productos</h4>
-                            <p>Gestión del inventario final:</p>
+                        <div class="tab-pane fade" id="content-inventory" role="tabpanel">
+                            <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">Inventario y Carga masiva</h4>
+                            
+                            <p class="small">Si tienes muchos productos nuevos, puedes subirlos todos de un solo golpe usando un archivo Excel.</p>
+
+                            <div class="card border-0 bg-light rounded-4 p-3 mb-3 shadow-sm">
+                                <h6 class="fw-bold text-success"><i class="bi bi-file-earmark-excel-fill me-2"></i>Reglas para el archivo Excel:</h6>
+                                <div class="bg-white p-3 rounded-3 border-start border-danger border-4">
+                                    <p class="small fw-bold text-danger mb-2">¡Cuidado con los datos de ejemplo!</p>
+                                    <p class="small mb-0">Cuando descargas la plantilla, verás unas filas con nombres de prueba (como "Producto de Ejemplo") y unos números en la columna de IVA. <strong>Debes borrar esas filas completamente</strong> y escribir tus productos reales. Si dejas los ejemplos, el sistema se confundirá y no subirá nada.</p>
+                                </div>
+                                <p class="small mt-2 mb-0"><strong>Nota:</strong> No cambies los nombres de los títulos (la primera fila del Excel). El sistema los necesita para saber dónde va cada cosa.</p>
+                            </div>
+
+                            <p class="small text-muted"><i class="bi bi-info-circle"></i> Verás que algunas subcategorías tienen una flechita. Eso significa que pertenecen a un grupo más grande. Si borras el grupo grande, los productos de esa flechita también desaparecerán.</p>
+                        </div>
+
+                        <div class="tab-pane fade" id="content-security" role="tabpanel">
+                            <h4 class="fw-bold text-dark border-bottom pb-2 mb-3">¿Qué tengo permitido hacer?</h4>
+                            <p class="small text-muted mb-4">El sistema se adapta a quién eres. No todos ven los mismos botones por seguridad del negocio:</p>
+
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <div class="p-3 border rounded bg-light">
-                                        <h6><i class="bi bi-eye"></i> Lectura</h6>
-                                        <small>Disponible para todos los roles (Admin/Client).</small>
+                                    <div class="p-3 border rounded-4 bg-light">
+                                        <h6 class="fw-bold"><i class="bi bi-person-check text-primary me-2"></i>Vendedores</h6>
+                                        <p class="small text-muted mb-0">Pueden ver los productos, hacer ventas y abrir/cerrar su propia caja. No pueden borrar productos ni cambiar los precios del sistema.</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="p-3 border rounded bg-light">
-                                        <h6><i class="bi bi-pencil-square"></i> Escritura</h6>
-                                        <small>Reservado para `create_products` y `update_products` (Admin).</small>
+                                    <div class="p-3 border rounded-4 bg-light text-white bg-dark">
+                                        <h6 class="fw-bold text-warning"><i class="bi bi-star-fill me-2"></i>Administradores</h6>
+                                        <p class="small text-white-50 mb-0">Tienen el control total. Pueden usar el Excel para subir inventario, crear usuarios nuevos, cambiar impuestos (IVA) y ver reportes de dinero.</p>
                                     </div>
                                 </div>
                             </div>
+                            
+                            <p class="small text-muted mt-4"><i class="bi bi-question-circle"></i> Si un botón te aparece gris o no te deja entrar, es porque tu perfil no tiene ese permiso activado. Contacta al dueño del negocio para solicitar acceso.</p>
                         </div>
 
                     </div>
                 </div>
             </div>
-            <div class="modal-footer bg-light">
-                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cerrar Documentación</button>
+            
+            <div class="modal-footer bg-light border-0">
+                <button type="button" class="btn btn-dark rounded-pill px-5 fw-bold py-2" data-bs-dismiss="modal">¡Entendido! A trabajar</button>
             </div>
         </div>
     </div>

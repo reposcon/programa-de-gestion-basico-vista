@@ -12,7 +12,6 @@ import { userService } from '../../services/user.service';
 
 export class DashboardComponent implements OnInit {
   currentTab: string = 'pos'; 
-  today: Date = new Date();
   userlogged: any = null;
 
   constructor(
@@ -27,19 +26,6 @@ export class DashboardComponent implements OnInit {
       this.userlogged = user;
     });
   }
-
-
-  getTitle(): string {
-    switch (this.currentTab) {
-      case 'pos': return 'Punto de Venta';
-      case 'products': return 'Gestión de Productos';
-      case 'subcategories': return 'Gestión de Subcategorías'; 
-      case 'categories': return 'Gestión de Categorías';
-      case 'usermanagement': return 'Gestión de Usuarios'; 
-      default: return 'Panel de Control';
-    }
-  }
-
   logout(event?: Event) {
     if (event) {
       event.preventDefault();

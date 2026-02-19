@@ -1,31 +1,43 @@
-<app-table-generic 
-  title="Gestión de Subcategorías" 
-  breadcrumb="Subcategorías"
-  addButtonText="Añadir Subcategoría"
-  addModalTarget="#modalAddSub"
-  [data]="subcategoriesFiltered"
-  [columns]="columns"
-  [canCreate]="userlogged?.permissions?.includes('create_subcategories')"
-  [actionTemplate]="subActions"
-  (onAdd)="openAddModal()"
-  (onSearch)="applyFiltersAndOrder($event)">
-</app-table-generic>
+<div class="container-fluid p-0 animate__animated animate__fadeIn">
+  <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+    <app-table-generic 
+      title="Gestión de Subcategorías" 
+      breadcrumb="Subcategorías"
+      addButtonText="Nueva Subcategoría"
+      addModalTarget="#modalAddSub"
+      [data]="subcategoriesFiltered"
+      [columns]="columns"
+      [canCreate]="userlogged?.permissions?.includes('create_subcategories')"
+      [actionTemplate]="subActions"
+      (onAdd)="openAddModal()"
+      (onSearch)="applyFiltersAndOrder($event)">
+    </app-table-generic>
+  </div>
+</div>
 
 <ng-template #subActions let-sub>
-  <button *ngIf="userlogged?.permissions?.includes('update_subcategories')"
-    class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
-    (click)="openEditModal(sub)" 
-    data-bs-toggle="modal" 
-    data-bs-target="#modalEditSub">
-    <i class="bi bi-pencil-fill mx-1"></i>
-  </button>
+  <div class="d-flex gap-2 justify-content-center">
+    
+    <button *ngIf="userlogged?.permissions?.includes('update_subcategories')"
+      class="btn btn-outline-warning btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      (click)="openEditModal(sub)" 
+      data-bs-toggle="modal" 
+      data-bs-target="#modalEditSub"
+      title="Editar Subcategoría">
+      <i class="bi bi-pencil-fill"></i>
+    </button>
 
-  <button *ngIf="userlogged?.permissions?.includes('delete_subcategories')"
-    class="btn btn-sm rounded-circle shadow-sm p-2 border"
-    [ngClass]="sub.state_subcategory === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
-    (click)="toggleSubcategory(sub)">
-    <i class="bi mx-1" [ngClass]="sub.state_subcategory === 1 ? 'bi-trash' : 'bi-arrow-clockwise'"></i>
-  </button>
+    <button *ngIf="userlogged?.permissions?.includes('delete_subcategories')"
+      class="btn btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      [ngClass]="sub.state_subcategory === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
+      (click)="toggleSubcategory(sub)"
+      [title]="sub.state_subcategory === 1 ? 'Desactivar' : 'Activar'">
+      <i class="bi" [ngClass]="sub.state_subcategory === 1 ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
+    </button>
+    
+  </div>
 </ng-template>
 
 <app-modal-add-subcategories 

@@ -36,7 +36,7 @@ export class ToolService {
     }).then(result => result.isConfirmed);
   }
 
-  getColumns(module: 'products' | 'users' | 'categories' | 'subcategories') {
+  getColumns(module: 'products' | 'users' | 'categories' | 'subcategories' | 'customers' | 'cash_sessions' | 'sales') {
     const configs = {
       products: [
         { key: 'id_product', label: 'ID', type: 'text' },
@@ -46,11 +46,10 @@ export class ToolService {
         { key: 'price_product', label: 'Precio', type: 'currency' },
         { key: 'state_product', label: 'Estado', type: 'badge' }
       ],
-      // En tool.service.ts -> getColumns
       users: [
         { key: 'id_user', label: 'ID', type: 'text' },
         { key: 'name_user', label: 'Nombre', type: 'text' },
-        { key: 'name_role', label: 'Rol', type: 'badge_flat' }, // Usamos el badge azul para el rol
+        { key: 'name_role', label: 'Rol', type: 'badge_flat' }, 
         { key: 'state_user', label: 'Estado', type: 'badge' }
       ],
       categories: [
@@ -58,20 +57,32 @@ export class ToolService {
         { key: 'name_category', label: 'Categoría', type: 'text' },
         { key: 'state_category', label: 'Estado', type: 'badge' }
       ],
-      // En tool.service.ts
       subcategories: [
         { key: 'id_subcategory', label: 'ID', type: 'text' },
         { key: 'name_subcategory', label: 'Nombre', type: 'text' },
-        { key: 'name_category', label: 'Categoría', type: 'badge_flat' }, // Un tipo nuevo para el estilo azul
+        { key: 'name_category', label: 'Categoría', type: 'badge_flat' },
         { key: 'state_subcategory', label: 'Estado', type: 'badge' }
       ],
-      // Dentro de getColumns en ToolService...
       customers: [
-        { key: 'id_customer', label: 'ID', type: 'text' },
-        { key: 'document_number', label: 'Documento', type: 'text' },
-        { key: 'name_customer', label: 'Cliente', type: 'text' },
+        { key: 'name_customer', label: 'Nombre', type: 'text' },
+        { key: 'document_number_customer', label: 'Documento', type: 'text' },
+        { key: 'email_customer', label: 'Email', type: 'text' },
         { key: 'phone_customer', label: 'Teléfono', type: 'text' },
         { key: 'state_customer', label: 'Estado', type: 'badge' }
+      ],
+      cash_sessions: [
+        { key: 'id', label: 'ID', type: 'text' },
+        { key: 'opened_at', label: 'Apertura', type: 'text' },
+        { key: 'user_name', label: 'Cajero', type: 'text' },
+        { key: 'opening_amount', label: 'Base', type: 'currency' },
+        { key: 'closing_amount', label: 'Ventas', type: 'currency' },
+        { key: 'status', label: 'Estado', type: 'badge_status' } 
+      ],
+      sales: [
+        { key: 'invoice_number', label: 'N° Factura', type: 'text' },
+        { key: 'created_at', label: 'Fecha / Hora', type: 'text' },
+        { key: 'customer_name', label: 'Cliente', type: 'text' },
+        { key: 'total_sale', label: 'Total', type: 'currency' }
       ]
     };
     return configs[module];

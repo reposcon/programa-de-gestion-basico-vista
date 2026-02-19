@@ -22,7 +22,6 @@ export class TableGenericComponent {
   currentPage: number = 1;
   pageSizeOptions = [5, 10, 20];
 
-  // CAMBIO AQUÍ: Permitimos null explícitamente e inicializamos en null
   @Input() actionTemplate: TemplateRef<any> | null = null;
 
   get totalPages(): number {

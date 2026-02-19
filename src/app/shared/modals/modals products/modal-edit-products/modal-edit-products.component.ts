@@ -14,13 +14,12 @@ declare var bootstrap: any;
   templateUrl: './modal-edit-products.component.html',
   styleUrl: './modal-edit-products.component.css'
 })
-
-
 export class ModalEditProductsComponent {
 
   @Input() productEdit: Partial<Product> = {};
   @Input() categories: Category[] = [];
   @Input() subcategories: Subcategory[] = [];
+  @Input() taxes: any[] = []; // <--- AGREGAR ESTA LÍNEA PARA SOLUCIONAR EL ERROR
 
   @Output() onUpdate = new EventEmitter<string>();
 
@@ -30,16 +29,16 @@ export class ModalEditProductsComponent {
     private uiMessage: UiMessageService
   ) { }
 
-
   get filteredSubcategories(): Subcategory[] {
     const selectedCatId = this.productEdit.category_id;
     if (!selectedCatId) return [];
-
-    return this.subcategories.filter(s => s.category_id == selectedCatId);
+    return this.subcategories.filter(s => Number(s.category_id) === Number(selectedCatId));
   }
+
   onCategoryChange(): void {
     this.productEdit.subcategory_id = undefined;
   }
+
   update(): void {
     if (!this.productEdit.id_product) return;
 
@@ -60,7 +59,6 @@ export class ModalEditProductsComponent {
           err?.error?.message || 'Error al actualizar el producto',
           'warning'
         );
-        console.error('Error al actualizar producto', err);
       }
     });
   }

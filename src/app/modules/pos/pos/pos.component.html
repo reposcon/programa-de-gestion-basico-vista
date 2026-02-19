@@ -1,48 +1,65 @@
-<div class="container-fluid py-3 h-100">
+<div class="container-fluid py-3 h-100 bg-light">
+
+  <div *ngIf="!isBoxOpen"
+    class="alert bg-white border-start border-danger border-4 d-flex align-items-center mb-3 rounded-4 shadow-sm animate__animated animate__fadeIn">
+    <div class="bg-danger-soft p-2 rounded-circle me-3">
+      <i class="fas fa-exclamation-triangle text-danger"></i>
+    </div>
+    <div>
+      <span class="fw-bolder text-dark">OPERACIÓN RESTRINGIDA:</span>
+      <span class="text-muted small d-block">No hay una sesión de caja activa. Por favor, realiza la apertura de caja para continuar.</span>
+    </div>
+  </div>
+
   <div class="row g-3 h-100">
-    
     <div class="col-md-7 d-flex flex-column">
-      <div class="card border-0 shadow-sm mb-3 rounded-4">
-        <div class="card-body p-2">
+      
+      <div class="card border-0 shadow-sm mb-3 rounded-4 overflow-hidden">
+        <div class="card-body p-0">
           <div class="input-group">
-            <span class="input-group-text bg-transparent border-0">
-              <i class="fas fa-search text-muted"></i>
+            <span class="input-group-text bg-white border-0 ps-4">
+              <i class="fas fa-search text-primary opacity-50"></i>
             </span>
-            <input type="text" class="form-control border-0 shadow-none" 
-                   placeholder="Buscar por nombre de producto..." 
-                   [(ngModel)]="searchQuery" 
-                   (input)="filterProducts()">
+            <input type="text" class="form-control border-0 shadow-none py-3 fw-bold"
+              placeholder="Buscar producto..."
+              [(ngModel)]="searchQuery"
+              (input)="filterProducts()">
           </div>
         </div>
       </div>
 
       <div class="card border-0 shadow-sm rounded-4 flex-grow-1 overflow-hidden">
-        <div class="table-scroll" style="max-height: 70vh; overflow-y: auto;">
+        <div class="table-responsive" style="max-height: 70vh;">
           <table class="table table-hover align-middle mb-0">
-            <thead class="bg-light sticky-top">
+            <thead class="bg-dark text-white sticky-top">
               <tr>
-                <th class="ps-4">Producto</th>
-                <th>Precio</th>
-                <th>Stock</th>
-                <th class="text-end pe-4">Acción</th>
+                <th class="ps-4 py-3 border-0 small">PRODUCTO</th>
+                <th class="border-0 small">PRECIO</th>
+                <th class="border-0 small text-center">STOCK</th>
+                <th class="text-end pe-4 border-0 small">ACCIÓN</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="bg-white">
               <tr *ngFor="let p of filteredProducts" class="product-row">
                 <td class="ps-4">
-                  <div class="fw-bold">{{ p.name_product }}</div>
-                  <small class="text-muted">ID: {{ p.id_product }}</small>
+                  <div class="fw-bolder text-dark">{{ p.name_product }}</div>
+                  <code class="text-muted x-small">SKU: {{ p.id_product }}</code>
                 </td>
-                <td><span class="fw-bold text-primary">{{ p.price_sell | currency }}</span></td>
                 <td>
-                  <span class="badge rounded-pill" 
-                        [ngClass]="p.stock > 5 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'">
-                    {{ p.stock }} unid.
+                  <span class="fw-bolder text-primary fs-5">{{ p.price_sell | currency }}</span>
+                </td>
+                <td class="text-center">
+                  <span class="badge rounded-pill px-3 py-2 border"
+                    [ngClass]="p.stock > 5 ? 'bg-success-soft text-success' : 'bg-danger-soft text-danger'">
+                    {{ p.stock }} uni.
                   </span>
                 </td>
                 <td class="text-end pe-4">
-                  <button class="btn btn-primary btn-sm rounded-circle p-2 shadow-sm" (click)="addToCart(p)">
-                    <i class="fas fa-plus"></i>
+                  <button
+                    class="btn btn-primary rounded-pill px-3 shadow-sm border-0 transform-hover"
+                    (click)="addToCart(p)"
+                    [disabled]="!isBoxOpen || p.stock <= 0">
+                    <i class="fas fa-plus-circle me-1"></i> Agregar
                   </button>
                 </td>
               </tr>
@@ -53,70 +70,67 @@
     </div>
 
     <div class="col-md-5 d-flex flex-column">
-      <div class="card border-0 shadow-sm h-100 rounded-4 d-flex flex-column">
+      <div class="card border-0 shadow-lg h-100 rounded-4 d-flex flex-column bg-white">
         
-        <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
-          <h5 class="mb-0 fw-bold">Carrito de Venta</h5>
-          <div class="d-flex align-items-center">
-            <span class="badge bg-primary rounded-pill me-3">{{ cart.length }} items</span>
-            
-            <button class="btn btn-outline-danger btn-sm border-0 rounded-circle" 
-                    (click)="clearCart()" 
-                    *ngIf="cart.length > 0"
-                    title="Vaciar carrito">
-              <i class="fas fa-trash-alt"></i>
+        <div class="card-header bg-white py-4 border-0 px-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bolder text-dark">
+              <i class="bi bi-receipt me-2 text-primary"></i>Detalle de Venta
+            </h5>
+            <span class="badge bg-primary rounded-pill px-3 py-2">{{ cart.length }} Items</span>
+          </div>
+        </div>
+
+        <div class="cart-scroll flex-grow-1 px-4" style="max-height: 52vh; overflow-y: auto;">
+          <div *ngIf="cart.length === 0" class="text-center py-5">
+            <i class="bi bi-cart-x display-1 text-light-emphasis mb-3"></i>
+            <h6 class="text-muted fw-bold">Esperando productos...</h6>
+          </div>
+
+          <div *ngFor="let item of cart; let i = index" 
+               class="d-flex align-items-center py-3 border-bottom animate__animated animate__fadeInRight animate__faster">
+            <div class="flex-grow-1">
+              <div class="fw-bolder text-dark small text-uppercase">{{ item.name_product }}</div>
+              <div class="d-flex align-items-center mt-1">
+                <span class="text-primary fw-bold me-2">{{ item.quantity }} x</span>
+                <span class="text-muted small">{{ item.price_sell | currency }}</span>
+              </div>
+            </div>
+            <div class="text-end me-3">
+              <span class="fw-bolder text-dark fs-6">{{ item.subtotal | currency }}</span>
+            </div>
+            <button class="btn btn-outline-danger btn-sm rounded-circle border-0" (click)="removeFromCart(i)">
+              <i class="fas fa-times-circle"></i>
             </button>
           </div>
         </div>
 
-        <div class="cart-scroll flex-grow-1" style="max-height: 55vh; overflow-y: auto;">
-          <div *ngIf="cart.length === 0" class="text-center py-5">
-            <i class="fas fa-shopping-basket fa-3x text-light mb-3"></i>
-            <p class="text-muted">No hay productos agregados</p>
+        <div class="card-footer bg-light p-4 border-0 border-top mt-auto">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="h6 fw-bolder text-muted mb-0">TOTAL ESTIMADO:</span>
+            <span class="h2 fw-bolder text-primary mb-0" style="letter-spacing: -1px;">
+              {{ total | currency }}
+            </span>
           </div>
-          
-          <table class="table table-sm align-middle" *ngIf="cart.length > 0">
-            <tbody>
-              <tr *ngFor="let item of cart; let i = index">
-                <td class="ps-3 py-3">
-                  <div class="fw-bold small">{{ item.name_product }}</div>
-                  <small class="text-muted">{{ item.price_sell | currency }} x {{ item.quantity }}</small>
-                </td>
-                <td class="text-end fw-bold text-dark">
-                  {{ item.subtotal | currency }}
-                </td>
-                <td class="text-end pe-3">
-                  <button class="btn btn-link text-danger p-0 ms-2 shadow-none" 
-                          (click)="removeFromCart(i)"
-                          title="Quitar producto">
-                    <i class="fas fa-times-circle"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
 
-        <div class="card-footer bg-white p-4 border-top mt-auto">
-          <div class="d-flex justify-content-between mb-3">
-            <span class="h5 text-muted">Total a Pagar</span>
-            <span class="h3 fw-bold text-success">{{ total | currency }}</span>
-          </div>
-          
-          <button class="btn btn-success btn-lg w-100 py-3 rounded-pill fw-bold shadow-sm" 
-                  [disabled]="cart.length === 0" 
-                  data-bs-toggle="modal" 
-                  data-bs-target="#modalPago">
-            REGISTRAR PAGO
+          <button class="btn btn-lg w-100 py-3 rounded-4 fw-bolder shadow-sm transform-hover border-0"
+            [ngClass]="!isBoxOpen ? 'btn-secondary opacity-50' : 'btn-success text-white'"
+            [disabled]="cart.length === 0 || !isBoxOpen"
+            data-bs-toggle="modal"
+            data-bs-target="#modalPago">
+            
+            <span *ngIf="isBoxOpen">
+              <i class="fas fa-cash-register me-2"></i> FINALIZAR VENTA
+            </span>
+            <span *ngIf="!isBoxOpen">
+              <i class="fas fa-lock me-2"></i> CAJA CERRADA
+            </span>
           </button>
         </div>
+
       </div>
     </div>
   </div>
 </div>
 
-<app-modalcheckout 
-  [total]="total" 
-  [cart]="cart" 
-  (saleSuccess)="onSaleSuccess()">
-</app-modalcheckout>
+<app-modalcheckout [total]="total" [cart]="cart" (saleSuccess)="onSaleSuccess()"></app-modalcheckout>

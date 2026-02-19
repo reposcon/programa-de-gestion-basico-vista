@@ -1,0 +1,50 @@
+<div class="container-fluid p-0 animate__animated animate__fadeIn">
+  <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+    <app-table-generic 
+      title="Gestión de Clientes" 
+      breadcrumb="Clientes"
+      addButtonText="Nuevo Cliente"
+      addModalTarget="#modalAddCust"
+      [data]="customersFilter"
+      [columns]="columns"
+      [canCreate]="authService.hasPermission('create_customers')"
+      [actionTemplate]="custActions"
+      (onAdd)="customerEdit = {}"
+      (onSearch)="applyFilters($event)">
+    </app-table-generic>
+  </div>
+</div>
+
+<ng-template #custActions let-cust>
+  <div class="d-flex gap-2 justify-content-center">
+    
+    <button *ngIf="authService.hasPermission('update_customers')"
+      class="btn btn-outline-warning btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      (click)="openEditModal(cust)" 
+      data-bs-toggle="modal" 
+      data-bs-target="#modalEditCust"
+      title="Editar información">
+      <i class="bi bi-pencil-fill"></i>
+    </button>
+
+    <button *ngIf="authService.hasPermission('update_customers')"
+      class="btn btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      [ngClass]="cust.state_customer === 1 ? 'btn-outline-danger' : 'btn-outline-success'"
+      (click)="toggleCustomer(cust)"
+      [title]="cust.state_customer === 1 ? 'Desactivar Cliente' : 'Activar Cliente'">
+      <i class="bi" [ngClass]="cust.state_customer === 1 ? 'bi-trash-fill' : 'bi-arrow-clockwise'"></i>
+    </button>
+    
+  </div>
+</ng-template>
+
+<app-modal-add-customer 
+  (onSave)="handleResponse($event)">
+</app-modal-add-customer>
+
+<app-modal-edit-customer 
+  [customerEdit]="customerEdit" 
+  (onUpdate)="handleResponse($event)">
+</app-modal-edit-customer>

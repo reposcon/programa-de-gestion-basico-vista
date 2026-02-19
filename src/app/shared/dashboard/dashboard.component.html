@@ -1,96 +1,105 @@
 <div class="d-flex min-vh-100 bg-light">
 
-  <aside class="bg-white shadow-sm border-end d-flex flex-column col-auto col-md-3 col-xl-2 px-0" id="sidebar">
+  <aside class="bg-white border-end d-flex flex-column col-auto col-md-3 col-xl-2 px-0 shadow-sm" id="sidebar">
 
-    <div class="flex-grow-1 py-4 overflow-auto">
-      <ul class="nav nav-pills flex-column px-3 gap-2">
+    <div class="flex-grow-1 py-3 overflow-auto">
+      <ul class="nav nav-pills flex-column px-3 gap-1">
 
-        <li class="nav-item" *ngIf="authService.hasPermission('create_sales')">
-          <small class="text-muted text-uppercase fw-bold ms-2 mb-2 d-block" style="font-size: 0.65rem;">Ventas</small>
-          <button class="nav-link w-100 text-start rounded-pill py-2" 
-                  [class.active]="currentTab === 'pos'" 
+        <li class="nav-item mt-2" *ngIf="authService.hasPermission('create_sales')">
+          <small class="text-secondary fw-bold ms-2 mb-2 d-block" style="font-size: 0.7rem; letter-spacing: 0.5px;">VENTAS</small>
+          <button class="nav-link w-100 text-start border-0 py-2 transition-all" 
+                  [class.sidebar-active]="currentTab === 'pos'" 
+                  [class.text-dark]="currentTab !== 'pos'"
                   (click)="currentTab = 'pos'">
             <i class="fas fa-cash-register me-3"></i>Punto de Venta
           </button>
         </li>
 
-        <li class="nav-item" *ngIf="authService.hasPermission('view_products') || 
-                                   authService.hasPermission('view_subcategories') || 
-                                   authService.hasPermission('view_categories')">
-          <small class="text-muted text-uppercase fw-bold ms-2 my-2 d-block" style="font-size: 0.65rem;">Inventario</small>
+        <li class="nav-item" *ngIf="authService.hasPermission('view_sales')">
+          <small class="text-secondary fw-bold ms-2 my-2 d-block" style="font-size: 0.7rem; letter-spacing: 0.5px;">CAJA Y CONTROL</small>
+          <button class="nav-link w-100 text-start border-0 py-2 mb-1 transition-all" 
+                  [class.sidebar-active]="currentTab === 'daily-sales'" 
+                  [class.text-dark]="currentTab !== 'daily-sales'"
+                  (click)="currentTab = 'daily-sales'">
+            <i class="fas fa-file-invoice-dollar me-3"></i>Ventas Diarias
+          </button>
+          <button class="nav-link w-100 text-start border-0 py-2 transition-all" 
+                  [class.sidebar-active]="currentTab === 'cash-management'" 
+                  [class.text-dark]="currentTab !== 'cash-management'"
+                  (click)="currentTab = 'cash-management'">
+            <i class="fas fa-vault me-3"></i>Gestión de Caja
+          </button>
+        </li>
 
+        <li class="nav-item" *ngIf="authService.hasPermission('view_customers')">
+          <small class="text-secondary fw-bold ms-2 my-2 d-block" style="font-size: 0.7rem; letter-spacing: 0.5px;">CLIENTES</small>
+          <button class="nav-link w-100 text-start border-0 py-2 transition-all" 
+                  [class.sidebar-active]="currentTab === 'customers'" 
+                  [class.text-dark]="currentTab !== 'customers'"
+                  (click)="currentTab = 'customers'">
+            <i class="fas fa-user-friends me-3"></i>Ver Clientes
+          </button>
+        </li>
+
+        <li class="nav-item" *ngIf="authService.hasPermission('view_products') || authService.hasPermission('view_subcategories')">
+          <small class="text-secondary fw-bold ms-2 my-2 d-block" style="font-size: 0.7rem; letter-spacing: 0.5px;">INVENTARIO</small>
           <button *ngIf="authService.hasPermission('view_products')" 
-                  class="nav-link w-100 text-start rounded-pill py-2 mb-1" 
-                  [class.active]="currentTab === 'products'" (click)="currentTab = 'products'">
+                  class="nav-link w-100 text-start border-0 py-2 mb-1 transition-all" 
+                  [class.sidebar-active]="currentTab === 'products'" (click)="currentTab = 'products'"
+                  [class.text-dark]="currentTab !== 'products'">
             <i class="fas fa-box me-3"></i>Productos
           </button>
-
           <button *ngIf="authService.hasPermission('view_subcategories')" 
-                  class="nav-link w-100 text-start rounded-pill py-2 mb-1" 
-                  [class.active]="currentTab === 'subcategories'" (click)="currentTab = 'subcategories'">
+                  class="nav-link w-100 text-start border-0 py-2 mb-1 transition-all" 
+                  [class.sidebar-active]="currentTab === 'subcategories'" (click)="currentTab = 'subcategories'"
+                  [class.text-dark]="currentTab !== 'subcategories'">
             <i class="fas fa-layer-group me-3"></i>Subcategorías
           </button>
-
           <button *ngIf="authService.hasPermission('view_categories')" 
-                  class="nav-link w-100 text-start rounded-pill py-2" 
-                  [class.active]="currentTab === 'categories'" (click)="currentTab = 'categories'">
+                  class="nav-link w-100 text-start border-0 py-2 transition-all" 
+                  [class.sidebar-active]="currentTab === 'categories'" (click)="currentTab = 'categories'"
+                  [class.text-dark]="currentTab !== 'categories'">
             <i class="fas fa-tags me-3"></i>Categorías
           </button>
         </li>
 
-        <li *ngIf="authService.hasPermission('view_users')" class="nav-item mt-auto">
-          <small class="text-muted text-uppercase fw-bold ms-2 my-2 d-block" style="font-size: 0.65rem;">Admin</small>
-          <button class="nav-link w-100 text-start rounded-pill py-2" 
-                  [class.active]="currentTab === 'users'"
-                  (click)="currentTab = 'users'"> <i class="fas fa-users-cog me-3"></i>Usuarios
+        <li *ngIf="authService.hasPermission('view_users')" class="nav-item">
+          <small class="text-secondary fw-bold ms-2 my-2 d-block" style="font-size: 0.7rem; letter-spacing: 0.5px;">CONFIGURACIÓN</small>
+          <button class="nav-link w-100 text-start border-0 py-2 transition-all" 
+                  [class.sidebar-active]="currentTab === 'users'"
+                  [class.text-dark]="currentTab !== 'users'"
+                  (click)="currentTab = 'users'"> 
+            <i class="fas fa-users-cog me-3"></i>Usuarios
           </button>
         </li>
       </ul>
     </div>
 
-    <div class="p-3 border-top">
-      <button class="btn btn-outline-danger w-100 rounded-pill py-2" (click)="logout($event)">
-        <i class="fas fa-sign-out-alt me-2"></i>Salir
+    <div class="p-3 bg-light border-top">
+      <button class="btn btn-danger w-100 fw-bold border-0 shadow-sm rounded-3 py-2" (click)="logout($event)">
+        <i class="fas fa-sign-out-alt me-2"></i>Salir del Sistema
       </button>
     </div>
   </aside>
 
-  <main class="flex-grow-1 d-flex flex-column overflow-hidden">
-
-    <header class="bg-white border-bottom p-3 d-flex justify-content-between align-items-center px-4 shadow-sm">
-      <div class="d-flex align-items-center gap-2">
-        <h4 class="m-0 fw-bold text-dark">{{ getTitle() }}</h4>
-      </div>
-      <div class="d-flex align-items-center gap-3">
-        <div class="text-end d-none d-md-block border-end pe-3">
-          <small class="text-muted d-block" style="font-size: 0.7rem;">Hoy</small>
-          <span class="fw-bold text-primary">{{ today | date:'dd MMM, yyyy' }}</span>
-        </div>
-      </div>
-    </header>
-
+  <main class="flex-grow-1 d-flex flex-column overflow-hidden bg-light">
     <div class="p-4 overflow-auto flex-grow-1">
       <div [ngSwitch]="currentTab">
-
         <div *ngSwitchCase="'pos'">
-           <app-pos></app-pos> </div>
-
-        <div *ngSwitchCase="'products'" class="card border-0 shadow-sm p-4 rounded-4">
-          <app-product-page></app-product-page>
+           <app-pos></app-pos> 
         </div>
 
-        <div *ngSwitchCase="'subcategories'" class="card border-0 shadow-sm p-4 rounded-4">
-          <app-subcategory-page></app-subcategory-page>
+        <div *ngSwitchDefault class="card border-0 shadow-sm rounded-4 p-2">
+          <div [ngSwitch]="currentTab">
+            <app-daily-sales *ngSwitchCase="'daily-sales'"></app-daily-sales>
+            <app-cash-control *ngSwitchCase="'cash-management'"></app-cash-control>
+            <app-customer *ngSwitchCase="'customers'"></app-customer>
+            <app-product-page *ngSwitchCase="'products'"></app-product-page>
+            <app-subcategory-page *ngSwitchCase="'subcategories'"></app-subcategory-page>
+            <app-category-page *ngSwitchCase="'categories'"></app-category-page>
+            <app-crud-users *ngSwitchCase="'users'"></app-crud-users>
+          </div>
         </div>
-
-        <div *ngSwitchCase="'categories'" class="card border-0 shadow-sm p-4 rounded-4">
-          <app-category-page></app-category-page>
-        </div>
-
-        <div *ngSwitchCase="'users'" class="card border-0 shadow-sm p-4 rounded-4">
-          <app-crud-users></app-crud-users>
-        </div>
-
       </div>
     </div>
   </main>

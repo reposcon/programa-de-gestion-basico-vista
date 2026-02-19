@@ -7,6 +7,7 @@ import { LoadingInterceptor } from './core/loading/loading.interceptor';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 // Librerías externas
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -41,6 +42,11 @@ import { FooterPrivacityComponent } from './shared/footer/footer-privacity/foote
 import { TableGenericComponent } from './shared/table-generic/table-generic.component';
 import { PosComponent } from './modules/pos/pos/pos.component';
 import { ModalcheckoutComponent } from './shared/modals/modal pos/modalcheckout/modalcheckout.component';
+import { CustomerComponent } from './modules/customer/customer/customer.component';
+import { ModalAddCustomerComponent } from './shared/modals/modals customers/modal-add-customer/modal-add-customer.component';
+import { ModalEditCustomerComponent } from './shared/modals/modals customers/modal-edit-customer/modal-edit-customer.component';
+import { CashControlComponent } from './modules/cash-control/cash-control.component';
+import { DailySalesComponent } from './modules/daily-sales/daily-sales.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +73,12 @@ import { ModalcheckoutComponent } from './shared/modals/modal pos/modalcheckout/
     FooterPrivacityComponent,
     TableGenericComponent,
     PosComponent,
-    ModalcheckoutComponent
+    ModalcheckoutComponent,
+    CustomerComponent,
+    ModalAddCustomerComponent,
+    ModalEditCustomerComponent,
+    CashControlComponent,
+    DailySalesComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +87,8 @@ import { ModalcheckoutComponent } from './shared/modals/modal pos/modalcheckout/
     ReactiveFormsModule,
     HttpClientModule,
     NgSelectModule,
-    FullCalendarModule
+    FullCalendarModule,
+    CommonModule
 
   ],
   providers: [

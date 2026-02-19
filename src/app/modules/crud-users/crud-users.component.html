@@ -1,35 +1,55 @@
-
-<app-table-generic 
-  title="Gestión de Usuarios" 
-  breadcrumb="Usuarios"
-  [data]="filteredUsers"
-  [columns]="columns"
-  [canCreate]="userlogged?.id_role === 1 || authService.hasPermission('create_users')"
-  [actionTemplate]="userActions"
-  (onAdd)="openAddModal()"
-  (onSearch)="filterUsers($event)">
-</app-table-generic>
+<div class="container-fluid p-0 animate__animated animate__fadeIn">
+  <div class="bg-white rounded-4 shadow-sm overflow-hidden">
+    <app-table-generic 
+      title="Gestión de Usuarios" 
+      breadcrumb="Usuarios"
+      addButtonText="Nuevo Usuario"
+      [data]="filteredUsers"
+      [columns]="columns"
+      [canCreate]="userlogged?.id_role === 1 || authService.hasPermission('create_users')"
+      [actionTemplate]="userActions"
+      (onAdd)="openAddModal()"
+      (onSearch)="filterUsers($event)">
+    </app-table-generic>
+  </div>
+</div>
 
 <ng-template #userActions let-user>
-  <button
-    *ngIf="userlogged?.id_role === 1 || authService.hasPermission('update_users')"
-    class="btn btn-outline-warning btn-sm rounded-circle shadow-sm p-2"
-    (click)="openEditModal(user)" title="Editar">
-    <i class="bi bi-pencil-fill mx-1"></i>
-  </button>
+  <div class="d-flex gap-2 justify-content-center">
+    
+    <button
+      *ngIf="userlogged?.id_role === 1 || authService.hasPermission('update_users')"
+      class="btn btn-outline-warning btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      (click)="openEditModal(user)" 
+      title="Editar Usuario">
+      <i class="bi bi-pencil-fill"></i>
+    </button>
 
-  <button
-    *ngIf="userlogged?.id_role === 1 || authService.hasPermission('delete_users')"
-    class="btn btn-outline-danger btn-sm rounded-circle shadow-sm p-2"
-    [disabled]="user.state_user === 0"
-    (click)="deleteUser(user)" title="Desactivar">
-    <i class="bi bi-trash-fill mx-1"></i>
-  </button>
+    <button
+      *ngIf="userlogged?.id_role === 1 || authService.hasPermission('delete_users')"
+      class="btn btn-outline-danger btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center border-2 transform-hover"
+      style="width: 38px; height: 38px;"
+      [disabled]="user.state_user === 0"
+      (click)="deleteUser(user)" 
+      title="Desactivar Usuario">
+      <i class="bi bi-trash-fill"></i>
+    </button>
+    
+  </div>
 </ng-template>
 
+<app-modal-add-user 
+  *ngIf="showModal" 
+  [userlogged]="userlogged"
+  (save)="handleSuccess()" 
+  (close)="closeModal()">
+</app-modal-add-user>
 
-<app-modal-add-user *ngIf="showModal" [userlogged]="userlogged"
-  (save)="handleSuccess()" (close)="closeModal()"></app-modal-add-user>
-<app-modal-edit-user *ngIf="showEditModal" [userlogged]="userlogged"
-  [user]="userToEdit" (update)="handleSuccess()"
-  (close)="closeModal()"></app-modal-edit-user>
+<app-modal-edit-user 
+  *ngIf="showEditModal" 
+  [userlogged]="userlogged"
+  [user]="userToEdit" 
+  (update)="handleSuccess()"
+  (close)="closeModal()">
+</app-modal-edit-user>

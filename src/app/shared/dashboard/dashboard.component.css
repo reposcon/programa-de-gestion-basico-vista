@@ -1,17 +1,19 @@
-.nav-link {
-    border: 1px solid transparent;
-    transition: all 0.3s ease;
-    color: #6c757d;
+/* Estado activo del menú sidebar */
+.sidebar-active {
+  background-color: #e7f1ff !important; /* Azul muy suave */
+  color: #0d6efd !important;           /* Azul Bootstrap fuerte */
+  font-weight: 800 !important;
+  border-left: 4px solid #0d6efd !important;
+  border-radius: 0 50px 50px 0 !important; /* Redondeado solo a la derecha */
 }
 
-.nav-link.active {
-    background-color: #0d6efd !important; /* Azul primario */
-    color: white !important;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+/* Estilo para los botones no activos */
+.nav-link.text-dark:hover {
+  background-color: #f8f9fa !important;
+  color: #000 !important;
 }
 
-.nav-link:hover:not(.active) {
-    background-color: #f8f9fa;
-    color: #0d6efd;
+/* Transición suave */
+.transition-all {
+  transition: all 0.2s ease-in-out;
 }

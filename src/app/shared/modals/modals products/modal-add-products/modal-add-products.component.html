@@ -1,6 +1,6 @@
 <div class="modal fade" id="modalAddProd" tabindex="-1" aria-hidden="true"
     data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
 
             <div
@@ -11,7 +11,7 @@
                     <div
                         class="bg-white rounded-circle p-2 me-3 d-flex align-items-center justify-content-center shadow-sm"
                         style="width: 35px; height: 35px;">
-                        <i class="fas fa-box text-success"
+                        <i class="fas fa-plus text-success"
                             style="font-size: 0.9rem;"></i>
                     </div>
                     Nuevo Producto
@@ -22,94 +22,119 @@
             </div>
 
             <div class="modal-body p-4">
-
                 <div class="mb-3">
                     <label
-                        class="form-label small fw-bold text-muted text-uppercase mb-2"
-                        style="letter-spacing: 0.5px;">
-                        Nombre del Producto
-                    </label>
+                        class="form-label small fw-bold text-muted text-uppercase mb-2">Nombre
+                        del Producto</label>
                     <div class="input-group">
                         <span
-                            class="input-group-text bg-light border-0 ps-3 text-muted">
-                            <i class="fas fa-box me-2"></i>
-                        </span>
-                        <input type="text"
-                            class="form-control bg-light border-0 py-2 ps-2"
-                            [(ngModel)]="prod.name_product" name="name_product"
+                            class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                                class="fas fa-box"></i></span>
+                        <input type="text" name="name_product"
+                            class="form-control bg-light border-0 py-2"
+                            [(ngModel)]="prod.name_product"
                             placeholder="Ej: Camiseta de Algodón">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Precio
+                            Venta</label>
+                        <div class="input-group">
+                            <span
+                                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                                    class="fas fa-dollar-sign"></i></span>
+                            <input type="number" name="price_sell"
+                                class="form-control bg-light border-0 py-2"
+                                [(ngModel)]="prod.price_sell">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Precio
+                            Costo</label>
+                        <div class="input-group">
+                            <span
+                                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                                    class="fas fa-hand-holding-usd"></i></span>
+                            <input type="number" name="price_cost"
+                                class="form-control bg-light border-0 py-2"
+                                [(ngModel)]="prod.price_cost">
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Stock
+                            Inicial</label>
+                        <div class="input-group">
+                            <span
+                                class="input-group-text bg-light border-0 ps-3 text-muted"><i
+                                    class="fas fa-warehouse"></i></span>
+                            <input type="number" name="stock"
+                                class="form-control bg-light border-0 py-2"
+                                [(ngModel)]="prod.stock">
+                        </div>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label
-                            class="form-label small fw-bold text-muted text-uppercase mb-2"
-                            style="letter-spacing: 0.5px;">
-                            Categoría
-                        </label>
-                        <div class="input-group">
-                            <span
-                                class="input-group-text bg-light border-0 ps-3 text-muted">
-                                <i class="fas fa-tags me-2"></i>
-                            </span>
-                            <select
-                                class="form-select bg-light border-0 py-2 ps-2"
-                                [(ngModel)]="prod.category_id"
-                                (change)="prod.subcategory_id = null">
-                                <option [ngValue]="null"
-                                    disabled>Seleccionar...</option>
-                                <option *ngFor="let c of categories"
-                                    [value]="c.id_category">
-                                    {{ c.name_category }}
-                                </option>
-                            </select>
-                        </div>
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Impuesto
+                            (IVA)</label>
+                        <select name="tax_id"
+                            class="form-select bg-light border-0 py-2"
+                            [(ngModel)]="prod.tax_id">
+                            <option [ngValue]="null" disabled>Seleccione
+                                impuesto</option>
+                            <option *ngFor="let t of taxes"
+                                [value]="t.id_tax">{{ t.tax_name }}
+                                ({{t.tax_rate}}%)</option>
+                        </select>
                     </div>
-
                     <div class="col-md-6 mb-3">
                         <label
-                            class="form-label small fw-bold text-muted text-uppercase mb-2"
-                            style="letter-spacing: 0.5px;">
-                            Subcategoría
-                        </label>
-                        <div class="input-group">
-                            <span
-                                class="input-group-text bg-light border-0 ps-3 text-muted">
-                                <i class="fas fa-layer-group me-2"></i>
-                            </span>
-                            <select
-                                class="form-select bg-light border-0 py-2 ps-2"
-                                [(ngModel)]="prod.subcategory_id"
-                                [disabled]="!prod.category_id">
-                                <option [ngValue]="null"
-                                    disabled>Seleccionar...</option>
-                                <option
-                                    *ngFor="let s of subcategoryActiveFiltered"
-                                    [value]="s.id_subcategory">
-                                    {{ s.name_subcategory }}
-                                </option>
-                            </select>
-                        </div>
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">¿Precio
+                            incluye IVA?</label>
+                        <select name="is_tax_included"
+                            class="form-select bg-light border-0 py-2"
+                            [(ngModel)]="prod.is_tax_included">
+                            <option [ngValue]="true">Sí, el precio ya tiene
+                                IVA</option>
+                            <option [ngValue]="false">No, sumar IVA al
+                                vender</option>
+                        </select>
                     </div>
                 </div>
 
-                <div class="mb-2">
-                    <label
-                        class="form-label small fw-bold text-muted text-uppercase mb-2"
-                        style="letter-spacing: 0.5px;">
-                        Estado Inicial
-                    </label>
-                    <div class="input-group">
-                        <span
-                            class="input-group-text bg-light border-0 ps-3 text-muted">
-                            <i class="fas fa-check-circle"></i>
-                        </span>
-                        <select
-                            class="form-select bg-light border-0 py-2 ps-2 fw-medium"
-                            [(ngModel)]="prod.state_product">
-                            <option [value]="1">Activo</option>
-                            <option [value]="0">Inactivo</option>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Categoría</label>
+                        <select name="category_id"
+                            class="form-select bg-light border-0 py-2"
+                            [(ngModel)]="prod.category_id">
+                            <option [ngValue]="null" disabled>Seleccione
+                                categoría</option>
+                            <option *ngFor="let cat of categories"
+                                [value]="cat.id_category">{{ cat.name_category
+                                }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label
+                            class="form-label small fw-bold text-muted text-uppercase mb-2">Subcategoría</label>
+                        <select name="subcategory_id"
+                            class="form-select bg-light border-0 py-2"
+                            [(ngModel)]="prod.subcategory_id">
+                            <option [ngValue]="null" disabled>Seleccione
+                                subcategoría</option>
+                            <option
+                                *ngFor="let sub of subcategoryActiveFiltered"
+                                [value]="sub.id_subcategory">{{
+                                sub.name_subcategory }}</option>
                         </select>
                     </div>
                 </div>
@@ -121,11 +146,12 @@
                     data-bs-dismiss="modal" (click)="resetForm()">
                     Cancelar
                 </button>
+
                 <button type="button"
                     class="btn btn-success rounded-pill px-4 fw-bold shadow-sm"
                     data-bs-dismiss="modal"
                     (click)="save()"
-                    [disabled]="!prod.name_product || !prod.category_id">
+                    [disabled]="!prod.name_product || !prod.category_id || !prod.subcategory_id">
                     <i class="fas fa-plus-circle me-2"></i>Crear Producto
                 </button>
             </div>

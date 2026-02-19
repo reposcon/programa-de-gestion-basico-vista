@@ -13,6 +13,10 @@ export class SaleService {
 
   constructor(private http: HttpClient) {}
 
+  getSales(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
+  }
+
   getPaymentMethods(): Observable<PaymentMethod[]> {
     return this.http.get<PaymentMethod[]>(`${this.configUrl}/paymentmethods`);
   }
