@@ -66,16 +66,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of paginatedData" class="product-row-hover">
+          <tr *ngFor="let item of paginatedData; trackBy: trackByFn"
+            class="product-row-hover">
             <td *ngFor="let col of columns" class="px-4 py-3 border-top">
               <ng-container [ngSwitch]="col.type">
 
                 <div *ngSwitchCase="'custom_product'">
                   <div class="text-dark fw-bold mb-0">{{ item.name_category
                     }}</div>
-                  <div class="small text-muted"><i
-                      class="bi bi-chevron-right small"></i> {{
-                    item.name_subcategory }}</div>
+                  <div class="small text-muted">
+                    <i class="bi bi-chevron-right small"></i> {{
+                    item.name_subcategory }}
+                  </div>
                 </div>
 
                 <span *ngSwitchCase="'stock'"

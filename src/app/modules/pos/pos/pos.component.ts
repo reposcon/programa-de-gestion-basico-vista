@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductServiceService } from '../../../services/product-service.service';
-import { ReportService } from '../../../services/report.service'; // Tu servicio de caja
+import { ReportService } from '../../../services/report.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,17 +15,24 @@ export class PosComponent implements OnInit {
   cart: any[] = [];
   total: number = 0;
   searchQuery: string = '';
-
   isBoxOpen: boolean = false;
 
   constructor(
     private productService: ProductServiceService,
-    private reportService: ReportService // Inyectado según tu código
+    private reportService: ReportService
   ) { }
 
   ngOnInit(): void {
     this.checkCashStatus();
     this.loadProducts();
+  }
+
+  trackByProduct(index: number, item: any): number {
+    return item.id_product;
+  }
+
+  trackByCartItem(index: number, item: any): string {
+    return `${item.id_product}-${index}`;
   }
 
   checkCashStatus() {
@@ -37,6 +44,13 @@ export class PosComponent implements OnInit {
         this.isBoxOpen = false;
         console.error("No se pudo verificar el estado de la caja");
       }
+    });
+  }
+
+  loadProducts() {
+    this.productService.getAll().subscribe(res => {
+      this.products = res;
+      this.filteredProducts = res;
     });
   }
 
@@ -60,16 +74,6 @@ export class PosComponent implements OnInit {
     this.calculateTotal();
   }
 
-  alertBoxClosed() {
-    Swal.fire({
-      title: 'Caja Cerrada',
-      text: 'Debes abrir una sesión de caja antes de realizar ventas.',
-      icon: 'warning',
-      confirmButtonColor: '#3498db',
-      confirmButtonText: 'Entendido'
-    });
-  }
-
   calculateTotal() {
     this.total = this.cart.reduce((acc, item) => acc + (item.subtotal || 0), 0);
   }
@@ -84,11 +88,9 @@ export class PosComponent implements OnInit {
     );
   }
 
-  loadProducts() {
-    this.productService.getAll().subscribe(res => {
-      this.products = res;
-      this.filteredProducts = res;
-    });
+  removeFromCart(index: number) {
+    this.cart.splice(index, 1);
+    this.calculateTotal();
   }
 
   onSaleSuccess() {
@@ -104,9 +106,15 @@ export class PosComponent implements OnInit {
     const backdrops = document.querySelectorAll('.modal-backdrop');
     backdrops.forEach(b => b.remove());
   }
-  removeFromCart(index: number) {
-    this.cart.splice(index, 1);
-    this.calculateTotal();
+
+  alertBoxClosed() {
+    Swal.fire({
+      title: 'Caja Cerrada',
+      text: 'Debes abrir una sesión de caja antes de realizar ventas.',
+      icon: 'warning',
+      confirmButtonColor: '#3498db',
+      confirmButtonText: 'Entendido'
+    });
   }
 
   clearCart() {

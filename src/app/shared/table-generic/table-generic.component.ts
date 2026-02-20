@@ -14,7 +14,7 @@ export class TableGenericComponent {
   @Input() canCreate: boolean = false;
   @Input() addButtonText: string = 'Añadir';
   @Input() addModalTarget: string = '';
-  @Input() backLink?: string; 
+  @Input() backLink?: string;
   @Output() onAdd = new EventEmitter<void>();
   @Output() onSearch = new EventEmitter<string>();
 
@@ -23,6 +23,10 @@ export class TableGenericComponent {
   pageSizeOptions = [5, 10, 20];
 
   @Input() actionTemplate: TemplateRef<any> | null = null;
+
+  trackByFn(index: number, item: any): any {
+    return item.id_product || item.id_sale || item.id_category || item.id_subcategory || index;
+  }
 
   get totalPages(): number {
     return Math.ceil(this.data.length / (this.pageSize || 1));
