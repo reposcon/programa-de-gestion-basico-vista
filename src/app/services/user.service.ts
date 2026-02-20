@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { User } from '../models/user.model';
+import { MI_URL_DE_RAILWAY } from '../api-config'; // 1. Importamos la base
 
 @Injectable({ providedIn: 'root' })
 export class userService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  // 2. Cambiamos el localhost por la constante (que ya trae el /api)
+  private apiUrl = MI_URL_DE_RAILWAY;
 
   private userSubject = new BehaviorSubject<any>(null);
   public userObservable$ = this.userSubject.asObservable();
@@ -22,8 +24,8 @@ export class userService {
   notifyUserChange(user: any) {
     this.userSubject.next(user);
   }
-  // ------------------------------------------
 
+  // Los métodos ahora llamarán a Railway automáticamente
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/users`);
   }
@@ -39,6 +41,4 @@ export class userService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/users/${id}`);
   }
-
-
 }

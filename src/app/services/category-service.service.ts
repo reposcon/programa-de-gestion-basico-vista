@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MI_URL_DE_RAILWAY } from '../api-config'; // <--- 1. Importas la URL base
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryServiceService {
-  private apiUrl = 'http://127.0.0.1:8000/api/categories';
+  private apiUrl = `${MI_URL_DE_RAILWAY}/categories`;
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +30,4 @@ export class CategoryServiceService {
   toggle(id: number) {
     return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
   }
-
-
-
 }

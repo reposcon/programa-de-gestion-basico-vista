@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { MI_URL_DE_RAILWAY } from '../api-config'; // 1. Importamos la base mágica
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubcategoryServiceService {
-  private apiUrl = 'http://127.0.0.1:8000/api/subcategories';
+  private apiUrl = `${MI_URL_DE_RAILWAY}/subcategories`;
 
   constructor(private http: HttpClient) { }
 
+  // Los métodos ya quedan conectados a la nube automáticamente
   getAll(): Observable<any> {
     return this.http.get(this.apiUrl);
   }
@@ -27,9 +29,6 @@ export class SubcategoryServiceService {
   }
 
   toggle(id: number) {
-  return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
-}
-
-
-
+    return this.http.put(`${this.apiUrl}/${id}/toggle`, {});
+  }
 }

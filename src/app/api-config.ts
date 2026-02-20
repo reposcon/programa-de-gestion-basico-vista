@@ -1,0 +1,1 @@
+export const MI_URL_DE_RAILWAY = 'programa-de-gestion-basico-api-production.up.railway.app';

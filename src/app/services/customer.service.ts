@@ -3,10 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Customer } from '../models/customer.model';
 import { map } from 'rxjs/operators';
+import { MI_URL_DE_RAILWAY } from '../api-config'; // 1. Importamos la base
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
-    private apiUrl = 'http://127.0.0.1:8000/api/customers';
+    private apiUrl = `${MI_URL_DE_RAILWAY}/customers`;
 
     constructor(private http: HttpClient) { }
 

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { MI_URL_DE_RAILWAY } from '../api-config'; // <--- 1. Ya lo tienes importado correctamente
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8000/api';
+  private apiUrl = MI_URL_DE_RAILWAY; 
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -24,7 +25,6 @@ export class AuthService {
     }
   }
 
-  // En tu AuthService o UserService
   hasPermission(permission: string): boolean {
     const user = this.getCurrentUser();
     return !!user && user.permissions?.includes(permission);
@@ -34,15 +34,14 @@ export class AuthService {
     const user = this.getCurrentUser();
     return !!user && user.name_role?.[0] === roleName;
   }
+
   login(name_user: string, password_user: string): Observable<any> {
+    // Aquí automáticamente usará la URL de Railway
     return this.http.post(`${this.apiUrl}/login`, { name_user, password_user }).pipe(
       tap((response: any) => {
         if (response && response.access_token) {
-          // Guardamos el token y el usuario
           localStorage.setItem('token', response.access_token);
           localStorage.setItem('user', JSON.stringify(response.user));
-
-          // Notificamos al BehaviorSubject para que toda la app sepa quién entró
           this.currentUserSubject.next(response.user);
         }
       })
