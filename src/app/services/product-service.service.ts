@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { MI_URL_DE_RAILWAY } from '../api-config'; // 1. Importas la constante de Railway
+import { MI_URL_DE_RAILWAY } from '../api-config'; 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductServiceService {
 
-  // 2. Reemplazas el localhost por la constante + /products
   private apiUrl = `${MI_URL_DE_RAILWAY}/products`;
 
   constructor(private http: HttpClient) { }
 
-  // Todos los métodos de abajo se actualizan solos al cambiar la variable apiUrl
   
   getAll(): Observable<any> {
     return this.http.get(this.apiUrl);
