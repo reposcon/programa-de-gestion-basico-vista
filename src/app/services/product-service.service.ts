@@ -42,4 +42,9 @@ export class ProductServiceService {
     formData.append('file', file);
     return this.http.post(`${this.apiUrl}/import`, formData);
   }
+
+  getAiInsights(): Observable<any> {
+    const aiUrl = `${MI_URL_DE_RAILWAY}/inventory/ai-insights`;
+    return this.http.get(aiUrl);
+  }
 }

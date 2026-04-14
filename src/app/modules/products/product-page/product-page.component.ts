@@ -11,6 +11,7 @@ import { Subcategory } from '../../../models/subcategory.model';
 import { ToolService } from '../../../services/tool.service';
 import { UiMessageService } from '../../../services/ui-message.service';
 import { AuthService } from '../../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-product-page',
@@ -122,18 +123,53 @@ export class ProductPageComponent implements OnInit, OnDestroy {
       confirmText: 'Sí, importar'
     }).then(confirmed => {
       if (confirmed) {
+        Swal.fire({
+          title: 'Procesando subida...',
+          text: 'Se están cargando los productos por lotes, por favor espera.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         this.productService.importExcel(file).subscribe({
           next: (res) => {
+            Swal.close();
             this.uiMessage.show(res.message || 'Importación exitosa', 'success');
             this.toolservice.notifyUpdate(); // Recarga la tabla
           },
           error: (err) => {
-            const errorMsg = err.error?.message || 'Error al procesar el archivo Excel';
-            this.uiMessage.show(errorMsg, 'warning');
+            Swal.close();
           }
         });
       }
       event.target.value = ''; 
+    });
+  }
+
+  getAiInsights(): void {
+    Swal.fire({
+      title: 'Auditor Gemini...',
+      text: 'Analizando el inventario mediante IA...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
+
+    this.productService.getAiInsights().subscribe({
+      next: (res) => {
+        Swal.fire({
+          title: '<h3 style="color:var(--primary-hover)">✨ Recomendación IA</h3>',
+          html: `<p style="text-align:justify; font-size:1.05em; line-height:1.6">${res.insight}</p>`,
+          icon: 'info',
+          confirmButtonText: 'Genial, gracias',
+          customClass: { popup: 'glass-panel border-0' }
+        });
+      },
+      error: () => {
+        Swal.close();
+      }
     });
   }
 
